@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-explanation-security-lifecycle)=
+(livepatch-explanation-livepatch-client-security-lifecycle)=
 
-# Security Lifecycle
+# Livepatch Client Security Lifecycle
 
 The Livepatch Client is released as a snap. The releases for the client are done ad-hoc as a number of features and bug fixes are implemented. When a security vulnerability in an upstream dependency is detected, a best-case effort is made to upgrade the dependency to the latest version that fixes the vulnerability. This security fix is then included in the next ad-hoc release.
 

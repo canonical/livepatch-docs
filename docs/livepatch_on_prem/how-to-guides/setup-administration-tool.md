@@ -4,9 +4,9 @@ myst:
     description: "How to setup administration tool with Livepatch on-prem."
 ---
 
-(on-prem-server-how-to-guides-setup-administration-tool)=
+(livepatch_on_prem-how-to-guides-how-to-setup-livepatch-on-prem-server-administration-tool)=
 
-# Setup administration tool
+# How to setup Livepatch on-prem server administration tool
 
 To perform operations such as promoting patches to tiers and issuing tokens for machines to attach to the livepatch server, an administration tool is provided as a snap:
 
@@ -27,7 +27,7 @@ There are two ways for the livepatch administration tool to authenticate with th
 - Ubuntu SSO
 - Username/password
 
-(password-authentication)=
+(livepatch_on_prem-how-to-guides-password-authentication)=
 
 ## Password authentication
 

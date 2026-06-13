@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(livepatch_on_prem-index)=
+(livepatch_on_prem)=
 
 # On-Prem erver
 
@@ -27,7 +27,7 @@ Canonical customers can receive support and report issues on the Ubuntu Livepatc
 The projects maintain bug trackers at
 
 - [Livepatch client bug tracker](https://bugs.launchpad.net/canonical-livepatch-client/+filebug)
-- [Livepatch on-prem bugtracker](https://bugs.launchpad.net/livepatch-onprem/+filebug)
+- [Livepatch on-prem bug tracker](https://bugs.launchpad.net/livepatch-onprem/+filebug)
 
 ```{toctree}
 :titlesonly:
@@ -35,8 +35,8 @@ The projects maintain bug trackers at
 :glob:
 :hidden:
 
-tutorial/index
-how-to-guides/index
-reference/index
-explanation/index
+Tutorial <tutorial/index.md>
+How-to guides <how-to-guides/index.md>
+Reference <reference/index.md>
+Explanation <explanation/index.md>
 ```

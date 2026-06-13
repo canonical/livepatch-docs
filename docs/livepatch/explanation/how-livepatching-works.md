@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-explanation-how-livepatching-works)=
+(livepatch-explanation-how-kernel-livepatching-works)=
 
-# How Livepatching works?
+# How kernel Livepatching works?
 
 ## The livepatching process
 

@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(client-how-to-guides-index)=
+(livepatch-how-to-guides)=
 
 # How-To-Guides
 
@@ -25,16 +25,16 @@ Step-by-step guides covering key operations and common tasks related to Livepatc
 :glob:
 :hidden:
 
-enable-client
-disable-client
-check-client-status
-configure-proxy
-use-patch-cut-off-date
-configure-livepatch-client
-disable-livepatch-during-startup
-securely-configure-and-operate-the-client
-securely-decommission-the-client
-report-client-vulnerability
-enable-client-on-ubuntu-core
-enable-and-configure-the-livepatch-client-with-cloud-init
+Enable client <enable-client.md>
+Disable client <disable-client.md>
+Check client status <check-client-status.md>
+Configure proxy <configure-proxy.md>
+Use patch cut-off date <use-patch-cut-off-date.md>
+Configure Livepatch client <configure-livepatch-client.md>
+Disable Lilvepatch during startup <disable-livepatch-during-startup.md>
+Securely configure and operate the client <securely-configure-and-operate-the-client.md>
+Securely decommission the client <securely-decommission-the-client.md>
+Report client vulnerability <report-client-vulnerability.md>
+Enable client on Ubuntu Core <enable-client-on-ubuntu-core.md>
+Enable and configure the Livepatch client with cloud-init <enable-and-configure-the-livepatch-client-with-cloud-init.md>
 ```

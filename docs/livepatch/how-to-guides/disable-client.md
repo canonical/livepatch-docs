@@ -4,9 +4,9 @@ myst:
     description: "How to disable client with Livepatch client."
 ---
 
-(client-how-to-guides-disable-client)=
+(livepatch-how-to-guides-how-to-disable-the-livepatch-client)=
 
-# Disable client
+# How to disable the Livepatch client
 
 In case the livepatch client needs to be disabled, there are several ways of approaching this.
 

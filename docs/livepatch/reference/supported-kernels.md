@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-reference-supported-kernels)=
+(livepatch-reference-kernels-covered-by-livepatch)=
 
-# Supported kernels
+# Kernels covered by Livepatch
 
 | Ubuntu release | Arch | Kernel Version | Kernel Variants | Upgrade and Reboot\* |
 | ---------------- | ---------- | -------------- | -------------------------------------------------------------------------------------------------------- | ------------------- |

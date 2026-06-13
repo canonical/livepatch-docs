@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(on-prem-server-tutorial-index)=
+(livepatch_on_prem-tutorial)=
 
 # Tutorial
 
@@ -16,8 +16,8 @@ A hands-on introduction for Livepatch on-prem server for new users:
 
 Setting up Livepatch in an airgapped environment:
 
-- [Getting started with Air-gapped Livepatch On-Prem on MicroK8s](/livepatch_on_prem/tutorial/air-gapped-livepatch-and-microk8s.md)
-- [Getting started with air-gapped Livepatch On-Prem using Snaps ](/livepatch_on_prem/tutorial/air-gapped-livepatch-and-snap.md)
+- [Getting started with Airgapped Livepatch On-Prem on MicroK8s](/livepatch_on_prem/tutorial/airgapped-livepatch-and-microk8s.md)
+- [Getting started with airgapped Livepatch On-Prem using Snaps ](/livepatch_on_prem/tutorial/airgapped-livepatch-and-snap.md)
 
 ```{toctree}
 :titlesonly:
@@ -27,6 +27,6 @@ Setting up Livepatch in an airgapped environment:
 
 livepatch-and-lxd
 livepatch-and-microk8s
-air-gapped-livepatch-and-microk8s
-air-gapped-livepatch-and-snap
+airgapped-livepatch-and-microk8s
+airgapped-livepatch-and-snap
 ```

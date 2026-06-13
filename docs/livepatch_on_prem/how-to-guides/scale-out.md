@@ -4,9 +4,9 @@ myst:
     description: "How to scale out with Livepatch on-prem."
 ---
 
-(on-prem-server-how-to-guides-scale-out)=
+(livepatch_on_prem-how-to-guides-how-to-scale-out-a-livepatch-on-prem-deployment)=
 
-# Scale out
+# How to scale out a Livepatch on-prem deployment
 
 There are several possible scenarios where scaling out a livepatch deployment could be necessary:
 

@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-reference-patch-lifecycle)=
+(livepatch-reference-patch-lifecycle-from-cve-to-client-machines)=
 
-# Patch Lifecycle
+# Patch Lifecycle: From CVE to Client Machines
 
 This document outlines the comprehensive lifecycle of kernel live patches, from the initial identification of Common Vulnerabilities and Exposures (CVEs), to their distribution and ongoing monitoring on customer systems. It details the rigorous quality assurance (QA) methods employed to ensure the stability and effectiveness of patches, and how they are delivered and observed in the field.
 

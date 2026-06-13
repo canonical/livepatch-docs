@@ -4,9 +4,9 @@ myst:
     description: "Tutorial: Livepatch and Microk8s - hands-on introduction to Livepatch on-prem."
 ---
 
-(on-prem-server-tutorial-livepatch-and-microk8s)=
+(livepatch_on_prem-tutorial-getting-started-with-livepatch-on-prem-and-microk8s)=
 
-# Livepatch and Microk8s
+# Getting started with Livepatch On-Prem and Microk8s
 
 ## Introduction
 
@@ -79,9 +79,9 @@ The bundle and charmed operators necessary to deploy livepatch server are availa
 
 https://charmhub.io/canonical-livepatch-onprem
 
-Livepatch On-Prem needs a place to store patches that it syncs from the upstream. By default the above "k8s" bundle will store patches in Postgres directly. Other options including S3 storage are available and can be configured as described [here](/livepatch_on_prem/explanation/patch-storage/index.md).
+Livepatch On-Prem needs a place to store patches that it syncs from the upstream. By default the above "k8s" bundle will store patches in PostgreSQL directly. Other options including S3 storage are available and can be configured as described [here](/livepatch_on_prem/explanation/patch-storage/index.md).
 
-In order to ensure Postgres has enough space, see our [resources topic](/livepatch_on_prem/reference/resource-requirements.md) for requirements on virtual machines running livepatch on-prem. Although this information relates to the deployment of Livepatch on virtual machines, the storage requirements remain similar.
+In order to ensure PostgreSQL has enough space, see our [resources topic](/livepatch_on_prem/reference/resource-requirements.md) for requirements on virtual machines running livepatch on-prem. Although this information relates to the deployment of Livepatch on virtual machines, the storage requirements remain similar.
 
 To start the deployment within the previously created juju model, run:
 

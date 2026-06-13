@@ -4,9 +4,9 @@ myst:
     description: "How to upgrade a deployment with Livepatch on-prem."
 ---
 
-(on-prem-server-how-to-guides-upgrade-a-deployment)=
+(livepatch_on_prem-how-to-guides-how-to-upgrade-a-livepatch-on-prem-deployment)=
 
-# Upgrade a deployment
+# How to upgrade a Livepatch on-prem deployment
 
 To upgrade the livepatch on-prem deployment, each application needs to be upgraded separately:
 

@@ -5,13 +5,13 @@ myst:
 ---
 
 
-(on-prem-server-how-to-guides-configure-logging-and-monitoring)=
+(livepatch_on_prem-how-to-guides-configure-logging-and-monitoring-for-livepatch-server)=
 
-# Configure logging and monitoring
+# Configure logging and monitoring for Livepatch server
 
 The Livepatch Server provides structured security event logging and Prometheus metrics for monitoring. This document describes how to configure and consume these security-relevant features. For general monitoring concepts and debug endpoints, see the existing [Logging and Monitoring explanation](/livepatch_on_prem/explanation/logging-and-monitoring.md).
 
-(configure-the-log-level)=
+(livepatch_on_prem-how-to-guides-configure-the-log-level)=
 
 ## Configure the log level
 

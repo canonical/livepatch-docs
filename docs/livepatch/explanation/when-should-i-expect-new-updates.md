@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-explanation-when-should-i-expect-new-updates)=
+(livepatch-explanation-when-should-i-expect-new-updates)=
 
-# When should I expect new updates?
+# When should I expect new updates??
 
 Livepatches are related to and are ''usually'' derived from, but are not the same as, the kernel SRU updates for CVEs. While the vulnerabilities being addressed by both kernel SRU updates and livepatches are the same, the process for development and testing are not. A livepatch for a vulnerability can be significantly more complex than an ordinary kernel patch, and due to the additional complexity, can take more time to develop and test.
 

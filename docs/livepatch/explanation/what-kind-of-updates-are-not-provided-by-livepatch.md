@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-explanation-what-kind-of-updates-are-not-provided-by-livepatch)=
+(livepatch-explanation-what-kind-of-updates-are-not-provided-by-the-livepatch-service)=
 
-# What kind of updates are not provided by Livepatch?
+# What kind of updates are not provided by the Livepatch service?
 
 The livepatch service provides patches exclusively for Canonical-released kernels, addressing security issues that have been assigned a CVE and are rated as high or critical priority.
 

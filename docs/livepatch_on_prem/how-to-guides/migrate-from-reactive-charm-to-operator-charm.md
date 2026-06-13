@@ -4,9 +4,9 @@ myst:
     description: "How to migrate from reactive charm to operator charm with Livepatch on-prem."
 ---
 
-(on-prem-server-how-to-guides-migrate-from-reactive-charm-to-operator-charm)=
+(livepatch_on_prem-how-to-guides-migrating-from-the-old-livepatch-charm)=
 
-# Migrate from Reactive charm to Operator charm
+# Migrating from the old livepatch charm
 
 The Juju framework offered a, now deprecated, way to write charms called [reactive charms](https://documentation.ubuntu.com/juju/3.6/reference/charm/#reactive-charm). The modern framework is known as the [operator framework](https://documentation.ubuntu.com/juju/latest/reference/charm/#ops-charm).
 Below we explain how to identify which type of charm you are running.

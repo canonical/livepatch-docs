@@ -4,9 +4,9 @@ myst:
     description: "How to check client status with Livepatch client."
 ---
 
-(client-how-to-guides-check-client-status)=
+(livepatch-how-to-guides-how-to-check-the-livepatch-client-status)=
 
-# Check client status
+# How to check the Livepatch client status
 
 Once `canonical-livepatch`, the livepatch client, is running on a machine, it will periodically (every hour by default) check for new patches.
 

@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-06-11
+
+### Added
+
+- Added skills to the repository under `.github/skills/`.
+
+### Changed
+
+- Standardized terminology and naming:
+    - `PostgreSQL` preferred in prose (instead of mixed `Postgres` usage).
+    - `airgapped` preferred in prose and tutorial naming.
+    - `bug tracker` preferred (instead of `bugtracker`).
+    - `Snap Store` preferred (instead of `Snapstore`).
+    - `patch store` wording clarified where applicable.
+- Renamed tutorial files to match standard naming
+- Updated links, toctree entries, and anchors to use renamed files.
+- Normalized heading structure across affected markdown files (single H1 and valid heading hierarchy).
+
 ## [0.1.0] - 2026-06-10
 
 ### Added

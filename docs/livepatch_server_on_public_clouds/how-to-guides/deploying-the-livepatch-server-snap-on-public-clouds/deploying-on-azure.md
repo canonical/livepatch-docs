@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(livepatch-server-on-public-clouds-how-to-guides-deploying-the-livepatch-server-snap-on-public-clouds-deploying-on-azure)=
+(livepatch_server_on_public_clouds-how-to-guides-deploying-the-livepatch-server-snap-on-azure)=
 
-# Deploying on Azure
+# Deploying the Livepatch Server snap on Azure
 
 This section details how to deploy the Livepatch Server snap in auto-scaling configuration on Azure.
 
@@ -32,7 +32,7 @@ In Azure, Livepatch can be deployed on VMSS behind an Application Gateway with a
 
 Configure a VNet with 3 different subnets, one for each: Application Gateway, VMSS, DB. The Application Gateway subnet should have at least 256 addresses.
 
-Create an Azure-managed Postgres DB with PostgreSQL password authentication. Disable public access and use the DB subnet from the VNet to provision the DB. Create a database in this PostgreSQL server for Livepatch Server to use (this can be done from Azure UI).
+Create an Azure-managed PostgreSQL DB with PostgreSQL password authentication. Disable public access and use the DB subnet from the VNet to provision the DB. Create a database in this PostgreSQL server for Livepatch Server to use (this can be done from Azure UI).
 
 Create a Managed Identity. This will be assigned to the VMSS to allow access to Azure Key Vault.
 

@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-how-to-guides-securely-configure-and-operate-the-client)=
+(livepatch-how-to-guides-how-to-securely-configure-and-operate-the-livepatch-client)=
 
-# Securely configure and operate the client
+# How to securely configure and operate the Livepatch client
 
 The Livepatch client is available for use as a confined snap, and therefore only has access to the specific interfaces defined for it. This massively reduces the attack vector, in the case that the Livepatch client is compromised. However, administrators and users of the Livepatch client snap must still ensure that the recommended security practices are followed, to maintain the security of the snap in their environments.
 
@@ -36,7 +36,7 @@ sudo snap refresh canonical-livepatch --channel=latest/stable
 
 The default configuration of the Livepatch client uses the Canonical-hosted Livepatch server as the remote-server, with no additional ca-certs or proxy configurations enabled. Using the default configuration ensures that the data is always encrypted in transit, as the Livepatch client uses TLS (minimum v1.2) with server-side authentication while communicating with the Canonical-hosted Livepatch server.
 
-However, for on-premises Livepatch server deployments, users can decide to forgo TLS while communicating with the Livepatch server, as there is no strict TLS enforcement at the client-side. It is strongly recommended to enable TLS for communication between the client and the on-prem Livepatch servers, to prevent attacks from malicious actors. The Livepatch client supports using TLS for such communications, by providing a way to configure additional CA certificates and route traffic through proxies. See these how-to guides on [configuring the client for TLS with custom certificates](/livepatch_on_prem/how-to-guides/setup-tls.md#configuring-livepatch-client-with-tls-5) and [configuring the client to use proxies](/livepatch/how-to-guides/configure-proxy.md).
+However, for on-premises Livepatch server deployments, users can decide to forgo TLS while communicating with the Livepatch server, as there is no strict TLS enforcement at the client-side. It is strongly recommended to enable TLS for communication between the client and the on-prem Livepatch servers, to prevent attacks from malicious actors. The Livepatch client supports using TLS for such communications, by providing a way to configure additional CA certificates and route traffic through proxies. See these how-to guides on [configuring the client for TLS with custom certificates](/livepatch_on_prem/how-to-guides/setup-tls.md#configuring-livepatch-client-with-tls) and [configuring the client to use proxies](/livepatch/how-to-guides/configure-proxy.md).
 
 It is also recommended to enforce TLS for patch downloads, when using an on-premises deployment of the Livepatch server, by setting the `tls-patch-download` configuration option to `true`.
 

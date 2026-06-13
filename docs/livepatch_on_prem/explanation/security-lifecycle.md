@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(on-prem-server-explanation-security-lifecycle)=
+(livepatch_on_prem-explanation-security-lifecycle)=
 
 # Security Lifecycle
 

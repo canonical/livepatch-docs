@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-how-to-guides-disable-livepatch-during-startup)=
+(livepatch-how-to-guides-how-to-disable-livepatch-during-startup)=
 
-# Disable Livepatch during startup
+# How to disable Livepatch during startup
 
 The Livepatch client will make a best-effort attempt to [prevent re-inserting and reloading a faulty patch](/livepatch/reference/patch-installation.md) that causes a system crash or causes kernel bug log entries. In the extremely rare case that a faulty patch causes a system crash loop, recovery methods are available to disable the Livepatch daemon, thereby preventing the application of the faulty patch. The following methods explain how to recover the system in such scenarios. These recovery methods rely on setting different values for the [Livepatch mode](/livepatch/how-to-guides/disable-client.md).
 

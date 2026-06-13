@@ -4,9 +4,9 @@ myst:
     description: "How to configure proxy for fetching patches with Livepatch on-prem."
 ---
 
-(on-prem-server-how-to-guides-configure-proxy-for-fetching-patches)=
+(livepatch_on_prem-how-to-guides-use-a-proxy-when-fetching-patches)=
 
-# Configure proxy for fetching patches
+# Use a proxy when fetching patches
 
 Livepatch on-prem server can fetch patches through an HTTP proxy. The configuration steps vary depending on the deployment platform.
 

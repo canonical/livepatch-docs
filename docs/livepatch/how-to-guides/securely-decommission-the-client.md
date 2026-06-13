@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-how-to-guides-securely-decommission-the-client)=
+(livepatch-how-to-guides-how-to-securely-decommission-the-livepatch-client)=
 
-# Securely Decommission the client
+# How to securely decommission the Livepatch client
 
 The canonical-livepatch snap holds user, application and configuration data during its lifecycle. The canonical-livepatch snap also produces application and security logs. This guide provides an overview on how to decommission the Livepatch client securely.
 

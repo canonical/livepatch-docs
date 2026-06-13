@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(client-reference-patch-installation)=
+(livepatch-reference-patch-installation)=
 
 # Patch Installation
 

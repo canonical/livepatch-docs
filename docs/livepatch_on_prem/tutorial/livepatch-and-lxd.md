@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(on-prem-server-tutorial-livepatch-and-lxd)=
+(livepatch_on_prem-tutorial-livepatch-and-lxd)=
 
 # Livepatch and LXD
 

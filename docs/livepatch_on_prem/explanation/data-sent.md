@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-explanation-data-sent)=
+(livepatch_on_prem-explanation-data-sent-to-canonical-servers)=
 
-# Data sent
+# Data sent to Canonical servers
 
 Livepatch on-prem deployments periodically send requests to servers hosted by Canonical to check for the availability of new livepatches. These requests contain a unique ID of the deployment and the number of machines served by the deployment.
 

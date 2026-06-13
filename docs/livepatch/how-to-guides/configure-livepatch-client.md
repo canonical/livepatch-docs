@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-how-to-guides-configure-livepatch-client)=
+(livepatch-how-to-guides-how-to-configure-the-livepatch-client)=
 
-# Configure Livepatch client
+# How to configure the Livepatch client
 
 Livepatch client can be configured using the CLI or its configuration file at `/var/snap/canonical-livepatch/common/config`.
 

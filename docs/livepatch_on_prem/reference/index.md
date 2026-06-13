@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(on-prem-server-reference-index)=
+(livepatch_on_prem-reference)=
 
 # Reference
 

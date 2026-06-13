@@ -126,7 +126,6 @@ backport
 blocklisted
 blocklisting
 bugfixes
-bugtracker
 charmstore
 downloader
 Downloader
@@ -149,12 +148,10 @@ mitigations
 patchstore
 plaintext
 postgres
-Postgres
 proxying
 redownloading
 rollouts
 snapstore
-Snapstore
 unapplied
 unpatchable
 unpatched

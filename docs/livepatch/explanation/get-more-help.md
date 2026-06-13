@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-explanation-get-more-help)=
+(livepatch-explanation-how-do-i-get-more-help)=
 
-# Get more help
+# How do I get more help?
 
 To access Livepatch see the [Ubuntu Pro](https://www.ubuntu.com/ubuntu-advantage) subscription.
 

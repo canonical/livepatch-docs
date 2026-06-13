@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(on-prem-server-how-to-guides-index)=
+(livepatch_on_prem-how-to-guides)=
 
 # How-To-Guides
 
@@ -39,25 +39,25 @@ Step-by-step guides covering key operations and common tasks related to Livepatc
 :glob:
 :hidden:
 
-deploy-via-juju
-deploy-via-snap
-deploy-cve-service-via-snap
-use-livepatch-client-with-on-prem-server
-setup-administration-tool
-fetch-patches
-configure-proxy-for-fetching-patches
-manage-fleet-of-machines
-generate-patch-health-report
-upgrade-a-deployment
-scale-out
-configure-logging-and-monitoring
-harden-your-deployment
-setup-tls
-report-vulnerabilities
-use-the-patch-downloader-tool
-chain-livepatch-servers
-migrate-from-reactive-charm-to-snap
-migrate-from-reactive-charm-to-operator-charm
-migrate-from-reactive-charm-to-k8s-operator-charm
-decommission
+Deploy via juju <deploy-via-juju.md>
+Deploy via snap <deploy-via-snap.md>
+Deploy cve service via snap <deploy-cve-service-via-snap.md>
+Use livepatch client with on-prem server <use-livepatch-client-with-on-prem-server.md>
+Setup administration tool <setup-administration-tool.md>
+Fetch patches <fetch-patches.md>
+Configure proxy for fetching patches <configure-proxy-for-fetching-patches.md>
+Manage fleet of machines <manage-fleet-of-machines.md>
+Generate patch health report <generate-patch-health-report.md>
+Upgrade a deployment <upgrade-a-deployment.md>
+Scale out <scale-out.md>
+Configure logging and-monitoring <configure-logging-and-monitoring.md>
+Harden your deployment <harden-your-deployment.md>
+Setup tls <setup-tls.md>
+Report vulnerabilities <report-vulnerabilities.md>
+Use the patch downloader tool <use-the-patch-downloader-tool.md>
+Chain livepatch servers <chain-livepatch-servers.md>
+Migrate from reactive charm to snap <migrate-from-reactive-charm-to-snap.md>
+Migrate from reactive charm to operator charm <migrate-from-reactive-charm-to-operator-charm.md>
+Migrate from reactive charm to k8s operator charm <migrate-from-reactive-charm-to-k8s-operator-charm.md>
+Decommission <decommission.md>
 ```

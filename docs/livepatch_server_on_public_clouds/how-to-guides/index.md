@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(livepatch-server-on-public-clouds-how-to-guides-index)=
+(livepatch_server_on_public_clouds-how-to-guides)=
 
-# How-To-Guides
+# Livepatch Server On Public Clouds How-to Guides
 
 A how-to guide for deploying the Livepatch server snap on public clouds, using cloud-init, along with template cloud-init modules to use:
 

@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-how-to-guides-migrate-from-reactive-charm-to-snap)=
+(livepatch_on_prem-how-to-guides-migration-from-livepatch-server-reactive-machine-charm-to-the-on-prem-snap)=
 
-# Migrate from Reactive charm to snap
+# Migration from Livepatch Server Reactive Machine charm to the On-prem snap
 
 The Juju framework offered a way to write charms using the [Reactive](https://charmsreactive.readthedocs.io/en/latest/) framework and these were called [reactive charms](https://documentation.ubuntu.com/juju/3.6/reference/charm/#reactive-charm). Reactive charms have been deprecated and the Livepatch server reactive charm that allowed users to run an On-prem deployment of the Livepatch server is no longer actively maintained. The recommended way of deploying the Livepatch server currently, is to use the [Kubernetes charm](https://charmhub.io/canonical-livepatch-server-k8s) or the [Livepatch server snap package](https://snapcraft.io/canonical-livepatch-server). This document describes how to migrate a Livepatch server instance deployed with a reactive charm, to an instance deployed with the Livepatch server snap package.
 
@@ -96,14 +96,14 @@ The new Livepatch server operator charms and snaps have different configuration 
      sudo snap set canonical-livepatch-server lp.<key>=<value>
      ```
 
-(database-migration)=
+(livepatch_on_prem-how-to-guides-database-migration)=
 
 ## Database Migration
 
-Data migration from the [PostgreSQL database machine charm](https://charmhub.io/postgresql) used by the Livepatch server reactive charm, to the database used by the Livepatch server snap is essential to preserve the machine and patch data that has already been stored. There are however, a few nuances in migrating this data from the charm to the snap. We do not want to preserve the roles and ownership created by the Postgres charm, because these roles only make sense in the context of charms and Juju. This is taken into account when describing the steps for data migration below.
+Data migration from the [PostgreSQL database machine charm](https://charmhub.io/postgresql) used by the Livepatch server reactive charm, to the database used by the Livepatch server snap is essential to preserve the machine and patch data that has already been stored. There are however, a few nuances in migrating this data from the charm to the snap. We do not want to preserve the roles and ownership created by the PostgreSQL charm, because these roles only make sense in the context of charms and Juju. This is taken into account when describing the steps for data migration below.
 
 ````{note}
-It is assumed that the Postgres database was deployed using the [machine charm](https://charmhub.io/postgresql) to interact with the Livepatch server charm. For the Livepatch server snap, deploy Postgres in a suitable production environment. **For simplicity, in this guide, the Livepatch server snap connects to a Postgres instance running in a Docker container. This is not recommended for using Postgres in production environments.**
+It is assumed that the PostgreSQL database was deployed using the [machine charm](https://charmhub.io/postgresql) to interact with the Livepatch server charm. For the Livepatch server snap, deploy PostgreSQL in a suitable production environment. **For simplicity, in this guide, the Livepatch server snap connects to a PostgreSQL instance running in a Docker container. This is not recommended for using PostgreSQL in production environments.**
 
 ```shell
 docker run \
@@ -118,33 +118,33 @@ This setup can differ on a case by case basis and would result in slightly diffe
 
 ````
 
-1. Download the tools necessary for Postgres database migration.
+1. Download the tools necessary for PostgreSQL database migration.
    ```shell
    sudo apt install postgresql-client postgresql-client-common
    ```
 
-2. Obtain the IP address of the primary Postgres database unit using the output of `juju status`.
+2. Obtain the IP address of the primary PostgreSQL database unit using the output of `juju status`.
    |Unit|Workload|Machine|Public address|Ports| Message|
    |------|----------|--------------|----------------------|--------|------------|
    |postgresql/0\*| active| 1 | 10.239.140.105| 5432/tcp | Primary
 
-3. Get the system user’s password for the Postgres database charm unit. The password is obtained by using the [\`get-password\` action](https://charmhub.io/postgresql/actions#get-password) defined by the PostgreSQL machine charm. The action gets the password for the `operator` username by default. The action must be run for the unit configured to be the primary database.
+3. Get the system user’s password for the PostgreSQL database charm unit. The password is obtained by using the [\`get-password\` action](https://charmhub.io/postgresql/actions#get-password) defined by the PostgreSQL machine charm. The action gets the password for the `operator` username by default. The action must be run for the unit configured to be the primary database.
 
    ```shell
    juju run postgresql/0 get-password
    ```
 
-4. Dump the database data from the Postgres unit, using the [pg_dump tool](https://www.postgresql.org/docs/14/app-pgdump.html). The command below will prompt the `operator` user for a password, at which point the password obtained from the previous step needs to be entered.
+4. Dump the database data from the PostgreSQL unit, using the [pg_dump tool](https://www.postgresql.org/docs/14/app-pgdump.html). The command below will prompt the `operator` user for a password, at which point the password obtained from the previous step needs to be entered.
 
    ```shell
    pg_dump -Fc livepatch -h <postgres-IP> -U operator > dump-file
    ```
 
 ```{note}
-If the reactive charm deployment of the Livepatch server uses the \`filesystem\` patch storage  type, the database dump step might be a little different. Refer the [Patch Migration section](#patch-migration) below for more information on a different command to run for the database dump.
+If the reactive charm deployment of the Livepatch server uses the \`filesystem\` patch storage  type, the database dump step might be a little different. Refer the [Patch Migration section](#livepatch_on_prem-how-to-guides-patch-migration) below for more information on a different command to run for the database dump.
 ```
 
-5. Copy the dump file to an environment accessible by the new Postgres database deployment. In our case, the dump file will be copied to the docker container running the database i.e. container with name `postgresql`.
+5. Copy the dump file to an environment accessible by the new PostgreSQL database deployment. In our case, the dump file will be copied to the docker container running the database i.e. container with name `postgresql`.
 
    ```shell
    docker cp dump-file postgresql:/dump_file
@@ -165,19 +165,19 @@ If the reactive charm deployment of the Livepatch server uses the \`filesystem\`
    postgresql://livepatch:testing@localhost:5432/livepatch
    ```
 
-After successfully completing these steps, the new Postgres database will contain all the data present in the Postgres charm. The next section explains how the patches synced from the upstream Livepatch server can be migrated to be used by the Livepatch server snap.
+After successfully completing these steps, the new PostgreSQL database will contain all the data present in the PostgreSQL charm. The next section explains how the patches synced from the upstream Livepatch server can be migrated to be used by the Livepatch server snap.
 
-(patch-migration)=
+(livepatch_on_prem-how-to-guides-patch-migration)=
 
 ## Patch Migration
 
-Data and Patch Migration are closely related because the type of patch storage used by the Livepatch server, running as a reactive machine charm, would define which migration steps are necessary (or not), so that these patches and their corresponding data are effectively migrated to the Livepatch server snap. Note that, only the patch data migration would need additional steps depending on the type of patch storage used. All other data stored by the Livepatch server in the Postgres database can be directly migrated to the new database used by the Livepatch server snap.
+Data and Patch Migration are closely related because the type of patch storage used by the Livepatch server, running as a reactive machine charm, would define which migration steps are necessary (or not), so that these patches and their corresponding data are effectively migrated to the Livepatch server snap. Note that, only the patch data migration would need additional steps depending on the type of patch storage used. All other data stored by the Livepatch server in the PostgreSQL database can be directly migrated to the new database used by the Livepatch server snap.
 
 Let us consider the different patch storage types and the migration steps necessary to migrate the patches and data.
 
-1. **Postgres**
-   The `postgres` patch storage type implies that the patches were stored in a postgres database in the `patch_file_data` table. In this case, patch migration does not need any extra steps. Migrating the data from the Postgres database used by the reactive charm to the Postgres database used by the snap is sufficient, for patch migration. If a dedicated Postgres database is being used for patch storage, follow the exact steps for database migration as mentioned above, to also migrate the database containing the patches.\
-   The `patch-storage.postgres-connection-string` configuration of the Livepatch server snap, needs to be set with the connection string of the Postgres database containing the migrated patches.
+1. **PostgreSQL**
+   The `postgres` patch storage type implies that the patches were stored in a postgres database in the `patch_file_data` table. In this case, patch migration does not need any extra steps. Migrating the data from the PostgreSQL database used by the reactive charm to the PostgreSQL database used by the snap is sufficient, for patch migration. If a dedicated PostgreSQL database is being used for patch storage, follow the exact steps for database migration as mentioned above, to also migrate the database containing the patches.\
+   The `patch-storage.postgres-connection-string` configuration of the Livepatch server snap, needs to be set with the connection string of the PostgreSQL database containing the migrated patches.
 
    ```shell
    sudo snap set canonical-livepatch-server \
@@ -214,7 +214,7 @@ Let us consider the different patch storage types and the migration steps necess
     > dump-file
     ```
 
-  - This command will ensure that the patch file data in specific tables is not migrated. The rest of the steps for database migration are the same as described in the [Database migration section](#database-migration).
+  - This command will ensure that the patch file data in specific tables is not migrated. The rest of the steps for database migration are the same as described in the [Database migration section](#livepatch_on_prem-how-to-guides-database-migration).
 
   - This enables users to sync patches from the upstream Livepatch server and fill the patch file data in the database. The steps for patch synchronization and populating patch file data are described in the next section.
 

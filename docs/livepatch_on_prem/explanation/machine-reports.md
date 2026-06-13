@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-explanation-machine-reports)=
+(livepatch_on_prem-explanation-machine-reports)=
 
-# Machine reports
+# Machine Reports
 
 Each machine running the Livepatch Client will periodically check in with its configured server.
 

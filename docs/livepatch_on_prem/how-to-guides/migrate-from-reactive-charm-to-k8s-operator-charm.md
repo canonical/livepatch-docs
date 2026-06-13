@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-how-to-guides-migrate-from-reactive-charm-to-k8s-operator-charm)=
+(livepatch_on_prem-how-to-guides-migrating-from-the-livepatch-machine-charm-to-the-k8s-charm)=
 
-# Migrate from Reactive Charm to K8s Operator charm
+# Migrating From The Livepatch Machine Charm to the K8s Charm
 
 The Juju framework offered a way to write what were called [reactive charms](https://documentation.ubuntu.com/juju/3.6/reference/charm/#reactive-charm) using the [Reactive](https://charmsreactive.readthedocs.io/en/latest/) framework. Reactive charms have been deprecated and the Livepatch server reactive charm is no longer actively maintained.
 
@@ -132,7 +132,7 @@ This only updates configuration values set in the file; any configuration not sp
 
 ## Database migration
 
-> NOTE: This guide assumes the PostgreSQL database was deployed using the machine charm to interact with the livepatch server charm. For the livepatch K8s charm, deploy a K8s PostgreSQL charm in a Juju model (the same model as the livepatch K8s charm or a different model). In this section, the Postgres 14 charm is deployed on the same model as the livepatch K8s charm.
+> NOTE: This guide assumes the PostgreSQL database was deployed using the machine charm to interact with the livepatch server charm. For the livepatch K8s charm, deploy a K8s PostgreSQL charm in a Juju model (the same model as the livepatch K8s charm or a different model). In this section, the PostgreSQL 14 charm is deployed on the same model as the livepatch K8s charm.
 
 ### Dump the machine charm database
 

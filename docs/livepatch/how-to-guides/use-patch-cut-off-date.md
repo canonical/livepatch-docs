@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-how-to-guides-use-patch-cut-off-date)=
+(livepatch-how-to-guides-how-to-use-a-patch-cut-off-date)=
 
-# Use patch cut-off date
+# How to use a patch cut-off date
 
 See our [explanation](/livepatch/explanation/what-is-patch-cut-off-date.md) to understand the patch cut-off date feature.
 

@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-explanation-logging-and-monitoring)=
+(livepatch_on_prem-explanation-logging-and-monitoring)=
 
-# Logging and monitoring
+# Logging and Monitoring
 
 Monitoring of the Livepatch server can be most easily done by setting up monitoring on one or more endpoints. Livepatch server exposes two endpoints, in particular, `/debug/info` and `/debug/status`, that provide information on the server’s version and the server’s database/related services, respectively. Any monitoring solution can periodically check `/debug/info` as a liveliness check to ensure the service is running.
 

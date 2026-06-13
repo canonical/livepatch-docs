@@ -4,7 +4,7 @@ myst:
     description: "Explanation - learn about this topic in Livepatch client."
 ---
 
-(client-explanation-index)=
+(livepatch-explanation)=
 
 # Explanation
 
@@ -50,22 +50,22 @@ Where to get support and file bugs.
 :glob:
 :hidden:
 
-how-livepatching-works
-livepatch-security-notices
-security-overview
-security-lifecycle
-what-kind-of-updates-are-provided-by-livepatch
-what-kind-of-updates-are-not-provided-by-livepatch
-when-should-i-expect-new-updates
-do-i-need-to-reboot
-how-cves-are-rated
-what-happens-when-a-problem-cannot-be-patched
-why-are-there-missing-patches
-service-access-problem
-why-livepatch-is-not-working-on-my-machine
-what-are-livepatch-tiers
-what-is-patch-cut-off-date
-which-are-the-supported-architectures
-report-bugs
-get-more-help
+How livepatching works <how-livepatching-works.md>
+Livepatch security notices <livepatch-security-notices.md>
+Security overview <security-overview.md>
+Security lifecycle <security-lifecycle.md>
+What kind of updates are provided by Livepatch <what-kind-of-updates-are-provided-by-livepatch.md>
+What kind of updates are not provided by Livepatch <what-kind-of-updates-are-not-provided-by-livepatch.md>
+When should i expect new updates <when-should-i-expect-new-updates.md>
+Do i need to reboot <do-i-need-to-reboot.md>
+How CVEs are rated <how-cves-are-rated.md>
+What happens when a problem cannot be patched <what-happens-when-a-problem-cannot-be-patched.md>
+Why are there missing patches <why-are-there-missing-patches.md>
+Service access problem <service-access-problem.md>
+Why Livepatch is not working on my machine <why-livepatch-is-not-working-on-my-machine.md>
+What are Livepatch tiers <what-are-livepatch-tiers.md>
+What is patch cut-off date <what-is-patch-cut-off-date.md>
+Which are the supported architectures <which-are-the-supported-architectures.md>
+Report bugs <report-bugs.md>
+Get more help <get-more-help.md>
 ```

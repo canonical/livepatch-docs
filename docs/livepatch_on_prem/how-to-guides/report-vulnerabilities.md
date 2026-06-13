@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-how-to-guides-report-vulnerabilities)=
+(livepatch_on_prem-how-to-guides-report-a-livepatch-server-vulnerability)=
 
-# Report vulnerabilities
+# Report a Livepatch Server vulnerability
 
 To report a security issue, file a [Private/Embargoed Security Bug](https://bugs.launchpad.net/livepatch-onprem/+filebug) on Launchpad with a description of the issue, the steps you took to reproduce the issue, affected versions, and, if known, mitigations for the issue. See [this](https://blog.launchpad.net/general/reimagining-the-nature-of-privacy-in-launchpad-part-1) for more information on how to file a private security bug on Launchpad.
 

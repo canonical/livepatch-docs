@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-reference-authentication)=
+(livepatch_on_prem-reference-livepatch-server-authentication)=
 
-# Authentication
+# Livepatch Server Authentication
 
 This document provides a technical reference for all authentication and authorization mechanisms used by the on-premises Livepatch Server. It covers the authentication flows for each API surface and the cryptographic technologies involved.
 
@@ -17,11 +17,11 @@ These APIs are consumed by administrators through the Livepatch Admin Tool.
 
 The following authentication flows are supported:
 
-- **Basic Auth → Macaroon**: Login using [Basic Auth](#basic-auth) to obtain a [macaroon](#macaroons), then use the macaroon to authenticate subsequent requests. Macaroons expire after 240 hours.
+- **Basic Auth → Macaroon**: Login using [Basic Auth](#livepatch_on_prem-reference-basic-auth) to obtain a [macaroon](#livepatch_on_prem-reference-macaroons), then use the macaroon to authenticate subsequent requests. Macaroons expire after 240 hours.
 
 All admin activity is logged as a structured security event with the `authz_admin` event code.
 
-(client-apis)=
+(livepatch_on_prem-reference-client-apis)=
 
 ## Client APIs
 
@@ -41,7 +41,7 @@ These APIs are used for patch synchronization between on-premises servers and th
 
 ## Technologies
 
-(basic-auth)=
+(livepatch_on_prem-reference-basic-auth)=
 
 ### Basic Auth
 
@@ -53,7 +53,7 @@ Go packages used:
 - [`crypto/subtle`](https://pkg.go.dev/crypto/subtle)
 - [`golang.org/x/crypto/bcrypt`](http://golang.org/x/crypto/bcrypt)
 
-(macaroons)=
+(livepatch_on_prem-reference-macaroons)=
 
 ### Macaroons
 

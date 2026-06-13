@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(on-prem-server-explanation-index)=
+(livepatch_on_prem-explanation)=
 
 # Explanation
 

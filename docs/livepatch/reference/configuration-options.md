@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-reference-configuration-options)=
+(livepatch-reference-livepatch-client-configuration-options)=
 
-# Configuration Options
+# Livepatch client configuration options
 
 The following configuration options are available for the Livepatch client, which can be set following the [How to configure Livepatch client](/livepatch/how-to-guides/configure-livepatch-client.md) how-to guide.
 

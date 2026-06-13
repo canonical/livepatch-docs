@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-reference-data-sent)=
+(livepatch-reference-data-sent-to-canonical)=
 
-# Data sent
+# Data sent to Canonical
 
 Livepatch client instances ping servers hosted by Canonical at a configurable schedule (every hour by default) to check for the availability of new patches. These requests contain the following information:
 

@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(on-prem-server-reference-configuration)=
+(livepatch_on_prem-reference-configuration)=
 
 # Configuration
 
@@ -103,7 +103,7 @@ The following values configure how the server interacts with its database.
 
 | Name | Description | Value(s) |
 | - | - | - |
-| `database.connection-string` | Postgres connection string (unavailable for charmed deployments, handled with Juju relations). | `string` |
+| `database.connection-string` | PostgreSQL connection string (unavailable for charmed deployments, handled with Juju relations). | `string` |
 | `database.connection-pool-max` | Max pool for connections. | `int` |
 | `database.connection-lifetime-max` | Max lifetime of connections. | `int` |
 | `database.work-mem` | The maximum amount of memory in MB available for each query operation. | `int` |
@@ -152,7 +152,7 @@ See our [how-to](/livepatch_on_prem/explanation/patch-storage/index.md) on patch
 | `patch-storage.swift-tenant` | Swift tenancy. | `string` |
 | `patch-storage.swift-container` | Swift container bucket. | `string` |
 | `patch-storage.swift-region` | Swift region. | `string` |
-| `patch-storage.postgres-connection-string` | Postgres connection string (can be left blank in charmed deployments to use Juju relations). | `string` |
+| `patch-storage.postgres-connection-string` | PostgreSQL connection string (can be left blank in charmed deployments to use Juju relations). | `string` |
 | `patch-storage.s3-bucket` | S3 Bucket to store patches. | `string` |
 | `patch-storage.s3-endpoint` | S3 endpoint. | `string` |
 | `patch-storage.s3-region` | AWS Region for S3. | `string` |
@@ -214,7 +214,7 @@ KPIs include aggregated information on client machines e.g. the client version, 
 ### Machine reports
 
 The following values configure the server's behavior with machine reports.
-Machine reports are stored in Postgres and store information when client's check-in.
+Machine reports are stored in PostgreSQL and store information when client's check-in.
 
 <!---
 The config values for `event-bus` are intended for Canonical internal use only.

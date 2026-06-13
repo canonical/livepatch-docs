@@ -4,9 +4,9 @@ myst:
     description: "How to use the patch downloader tool with Livepatch on-prem."
 ---
 
-(on-prem-server-how-to-guides-use-the-patch-downloader-tool)=
+(livepatch_on_prem-how-to-guides-how-to-use-the-canonical-livepatch-downloader)=
 
-# Use the Patch Downloader Tool
+# How to use the Canonical Livepatch Downloader
 
 The Canonical Livepatch downloader tool is a CLI application that provides basic commands to query and download patch files.
 

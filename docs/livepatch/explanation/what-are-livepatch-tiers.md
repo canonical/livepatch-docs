@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(client-explanation-what-are-livepatch-tiers)=
+(livepatch-explanation-what-are-livepatch-tiers)=
 
 # What are Livepatch tiers?
 

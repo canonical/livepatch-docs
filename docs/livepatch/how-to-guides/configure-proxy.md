@@ -4,9 +4,9 @@ myst:
     description: "How to configure proxy with Livepatch client."
 ---
 
-(client-how-to-guides-configure-proxy)=
+(livepatch-how-to-guides-how-to-configure-a-proxy-in-the-livepatch-client)=
 
-# Configure proxy
+# How to configure a proxy in the Livepatch client
 
 Livepatch client users have the option to communicate with the Livepatch server through a proxy. Livepatch supports communicating through HTTP, HTTPS, or SOCKS5 proxies. To do so, there are a few configuration parameters that should be assigned.
 

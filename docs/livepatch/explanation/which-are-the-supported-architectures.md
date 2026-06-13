@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(client-explanation-which-are-the-supported-architectures)=
+(livepatch-explanation-which-are-the-supported-architectures)=
 
 # Which are the supported architectures?
 

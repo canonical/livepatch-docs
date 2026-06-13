@@ -5,9 +5,9 @@ myst:
 ---
 
  
-(client-explanation-why-are-there-missing-patches)=
+(livepatch-explanation-why-was-there-no-livepatch-for-some-particular-high-or-critical-cve)=
 
-# Why are there missing patches?
+# Why was there no livepatch for some particular high or critical CVE?
 
 Livepatches are only produced for [supported kernels](/livepatch/reference/supported-kernels.md), and only for CVEs that require a Linux kernel modification to fix the problem (for example, a CPU bug may not have a kernel fix). Further, livepatches do not address security problems in Ubuntu software packages, or in third-party drivers that do not ship as part of the Linux kernel (i.e. NVIDIA GPU drivers).
 

@@ -5,7 +5,7 @@ myst:
 ---
 
  
-(client-explanation-what-is-patch-cut-off-date)=
+(livepatch-explanation-what-is-patch-cut-off-date)=
 
 # What is patch cut-off date?
 

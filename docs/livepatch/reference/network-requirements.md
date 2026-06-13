@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-reference-network-requirements)=
+(livepatch-reference-livepatch-client-firewall-configuration)=
 
-# Network requirements
+# Livepatch client firewall configuration
 
 On firewalled machines, `canonical-livepatch` needs access to two hostnames:
 

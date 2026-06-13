@@ -4,9 +4,9 @@ myst:
     description: "How to deploy via snap with Livepatch on-prem."
 ---
 
-(on-prem-server-how-to-guides-deploy-via-snap)=
+(livepatch_on_prem-how-to-guides-getting-started-with-the-livepatch-server-snap)=
 
-# Deploy via Snap
+# Getting started with the Livepatch Server Snap
 
 Canonical Livepatch Server enables the delivery of Livepatch's to Livepatch clients, allowing reboots of critical infrastructure to be scheduled at a convenient time.
 
@@ -17,7 +17,7 @@ In this tutorial we will setup the Livepatch Server snap.
 **Requirements**
 At minimum, the server requires a PostgreSQL (*At least version 12*) instance to persist data. For the sake of simplicity, we will use docker to illustrate this server setup. However, feel free to use an existing instance if you have one available to you!
 
-> **Note**: For a production environment take a look at this [tutorial](https://ubuntu.com/server/docs/databases-postgresql) to install Postgres with persistent storage.
+> **Note**: For a production environment take a look at this [tutorial](https://ubuntu.com/server/docs/databases-postgresql) to install PostgreSQL with persistent storage.
 
 Run the following to start a PostgreSQL instance in Docker:
 

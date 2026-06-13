@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(client-reference-index)=
+(livepatch-reference)=
 
 # Reference
 
@@ -50,12 +50,12 @@ Livepatch client can be configured with a variety of options, which are listed h
 :glob:
 :hidden:
 
-network-requirements
-data-sent
-supported-kernels
-patch-lifecycle
-patch-security
-patch-installation
-content-caching
-configuration-options
+Network requirements <network-requirements.md>
+Data sent <data-sent.md>
+Supported kernels <supported-kernels.md>
+Patch lifecycle <patch-lifecycle.md>
+Patch security <patch-security.md>
+Patch installation <patch-installation.md>
+Content caching <content-caching.md>
+Configuration options <configuration-options.md>
 ```

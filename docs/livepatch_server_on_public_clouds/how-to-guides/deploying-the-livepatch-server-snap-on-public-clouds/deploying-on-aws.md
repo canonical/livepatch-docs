@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(livepatch-server-on-public-clouds-how-to-guides-deploying-the-livepatch-server-snap-on-public-clouds-deploying-on-aws)=
+(livepatch_server_on_public_clouds-how-to-guides-deploying-the-livepatch-server-snap-on-aws)=
 
-# Deploying on AWS
+# Deploying the Livepatch Server Snap on AWS
 
 This section details how to deploy the Livepatch Server snap in auto-scaling configuration on Azure.
 

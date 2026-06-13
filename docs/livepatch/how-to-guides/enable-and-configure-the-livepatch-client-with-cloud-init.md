@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-how-to-guides-enable-and-configure-the-livepatch-client-with-cloud-init)=
+(livepatch-how-to-guides-how-to-enable-and-configure-the-livepatch-client-with-cloud-init)=
 
-# Enable and Configure The Livepatch Client With Cloud-Init
+# How to enable and configure the Livepatch client with cloud-init
 
 This guide walks through how to enable and configure the Livepatch client with [cloud-init](https://docs.cloud-init.io/en/latest/). Livepatch client supports cloud-init for communicating with the Canonical-hosted Livepatch server, and for an on-prem Livepatch server.
 

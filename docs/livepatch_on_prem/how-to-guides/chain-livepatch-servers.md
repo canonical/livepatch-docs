@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-how-to-guides-chain-livepatch-servers)=
+(livepatch_on_prem-how-to-guides-chain-on-prem-servers)=
 
-# Chain Livepatch Servers
+# Chain On-Prem Servers
 
 As your Livepatch deployment grows, you may want to scale out beyond a single deployment.
 This how-to document shows you how to chain multiple Livepatch on-prem servers together.

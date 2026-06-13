@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(client-explanation-livepatch-security-notices)=
+(livepatch-explanation-livepatch-security-notices)=
 
 # Livepatch security notices
 

@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-explanation-patch-sync-filters)=
+(livepatch_on_prem-explanation-patch-sync-filters)=
 
-# Patch sync filters
+# Patch Sync Filters
 
 Livepatch on-prem enables users to synchronise with the hosted server, and this synchronisation process is configurable.
 

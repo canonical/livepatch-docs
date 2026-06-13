@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-explanation-how-cves-are-rated)=
+(livepatch-explanation-how-do-you-rate-a-cve)=
 
-# How CVEs are rated?
+# How do you rate a CVE?
 
 We do not use an external rating system, but rate based on these qualifications:
 

@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-explanation-patch-storage-index)=
+(livepatch_on_prem-explanation-patch-storage)=
 
-# Patch-Storage
+# Livepatch on-prem patch storage
 
 Livepatch server supports several different drivers for storing patch files downloaded from livepatch.canonical.com:
 
@@ -28,5 +28,5 @@ See the [patch storage](/livepatch_on_prem/reference/configuration.md) config fo
 :glob:
 :hidden:
 
-use-s3-for-patch-storage
+Use S3 for patch storage <use-s3-for-patch-storage.md>
 ```

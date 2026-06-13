@@ -4,9 +4,9 @@ myst:
     description: "How to fetch patches with Livepatch on-prem."
 ---
 
-(on-prem-server-how-to-guides-fetch-patches)=
+(livepatch_on_prem-how-to-guides-how-to-fetch-patches-to-livepatch-on-prem-server)=
 
-# Fetch patches
+# How to fetch patches to livepatch on-prem server
 
 The livepatch application is configured to fetch patch updates every 24 hours. This setting is [configurable](/livepatch_on_prem/reference/configuration.md).
 

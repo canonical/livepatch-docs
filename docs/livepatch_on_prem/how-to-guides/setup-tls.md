@@ -4,9 +4,9 @@ myst:
     description: "How to setup tls with Livepatch on-prem."
 ---
 
-(on-prem-server-how-to-guides-setup-tls)=
+(livepatch_on_prem-how-to-guides-how-to-setup-tls-for-livepatch-on-prem)=
 
-# Setup TLS
+# How to setup TLS for Livepatch on-prem
 
 The security of livepatching depends not only on the signed kernel modules but also on the secure TLS channel between the livepatch client and the on-prem server. It is thus paramount to setup the necessary TLS keys and certificates for the on-prem service to provide the necessary security.
 
@@ -47,7 +47,7 @@ juju deploy ch:canonical-livepatch-onprem --overlay ./tls-overlay.yaml
 4. Run `juju status` to verify that the haproxy service is now exposing port 443
 ![screenshot_20210603_165758|690x55](/_static/images/nuS5aGmo44qwv5vagLczO0tnfog.png)
 
-(configuring-livepatch-client-with-tls-5)=
+(livepatch_on_prem-how-to-guides-configuring-livepatch-admin-tool-with-tls)=
 
 ## Configuring livepatch admin tool with TLS
 

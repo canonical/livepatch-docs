@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-reference-network-access)=
+(livepatch_on_prem-reference-livepatch-on-prem-network-access-requirements)=
 
-# Network access
+# Livepatch on-prem network access requirements
 
 On firewalled deployments, Livepatch on-prem needs access to the following hostnames:
 

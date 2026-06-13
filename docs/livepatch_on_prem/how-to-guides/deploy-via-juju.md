@@ -4,9 +4,9 @@ myst:
     description: "How to deploy via juju with Livepatch on-prem."
 ---
 
-(on-prem-server-how-to-guides-deploy-via-juju)=
+(livepatch_on_prem-how-to-guides-how-to-deploy-livepatch-on-prem)=
 
-# Deploy via Juju
+# How to deploy Livepatch on-prem
 
 ## Prerequisites
 

@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-how-to-guides-decommission)=
+(livepatch_on_prem-how-to-guides-decommission-livepatch-server-securely)=
 
-# Decommission
+# Decommission Livepatch server securely
 
 This document provides guidance on securely removing the Livepatch Server and all associated data from the environment.
 

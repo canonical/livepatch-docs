@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-reference-resource-requirements)=
+(livepatch_on_prem-reference-machine-resources-for-livepatch-on-prem)=
 
-# Resource requirements
+# Machine resources for livepatch on-prem
 
 The resource requirements for machines running livepatch on-prem components (postgresql, haproxy, livepatch) depend on the amount of machines being serviced by the deployment.
 

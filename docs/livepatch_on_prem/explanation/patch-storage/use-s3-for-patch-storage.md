@@ -5,9 +5,9 @@ myst:
 ---
 
  
-(on-prem-server-explanation-patch-storage-use-s3-for-patch-storage)=
+(livepatch_on_prem-explanation-livepatch-on-prem-with-aws-s3-patch-storage)=
 
-# Use S3 for patch storage
+# Livepatch on-prem with AWS S3 patch storage
 
 In an AWS EC2 deployment of livepatch on-prem, it makes sense to use S3 for patch storage if the expected number of client machines is high (over 2000).
 

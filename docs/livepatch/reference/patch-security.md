@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(client-reference-patch-security)=
+(livepatch-reference-patch-security)=
 
 # Patch Security
 

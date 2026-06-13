@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-how-to-guides-enable-client-on-ubuntu-core)=
+(livepatch-how-to-guides-how-to-enable-the-livepatch-client-on-ubuntu-core)=
 
-# Enable client on Ubuntu Core
+# How to enable the Livepatch client on Ubuntu Core
 
 Canonical Livepatch supports live kernel patching on Ubuntu Core machines. Livepatch is supported on Core20+ for amd64 and Core26+ for arm64 architectures. Canonical Livepatch is typically enabled using the Pro Client on classic Ubuntu machines. The Pro Client is not available for install on Ubuntu Core machines, therefore users must enable Livepatch client directly. To do so, follow these steps on the Ubuntu Core machine:
 

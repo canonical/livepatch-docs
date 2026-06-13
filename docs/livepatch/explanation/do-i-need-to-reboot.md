@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(client-explanation-do-i-need-to-reboot)=
+(livepatch-explanation-do-i-need-to-reboot)=
 
 # Do I need to reboot?
 

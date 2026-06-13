@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(livepatch-server-on-public-clouds-how-to-guides-deploying-the-livepatch-server-snap-on-public-clouds-index)=
+(livepatch_server_on_public_clouds-how-to-guides-deploying-the-livepatch-server-snap-on-public-clouds)=
 
-# Deploying-The-Livepatch-Server-Snap-On-Public-Clouds
+# Deploying The Livepatch Server Snap On Public Clouds
 
 This section details how to launch the Livepatch server snap on public clouds, with single or multi unit deployments using an auto scaling solution from the cloud provider.
 

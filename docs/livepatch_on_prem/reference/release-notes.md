@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(on-prem-server-reference-release-notes)=
+(livepatch_on_prem-reference-release-notes-for-the-canonical-livepatch-server-k8s-charm)=
 
-# Release Notes
+# Release Notes for the Canonical Livepatch Server (K8s charm)
 
 The [Livepatch Server K8s charm](https://charmhub.io/canonical-livepatch-server-k8s) is the easiest and the recommended way to deploy Livepatch Server on K8s. This charm configures and runs the Livepatch Server, which serves livepatches and associated metadata to clients. Use the latest/stable channel charm for production environments.
 
@@ -29,7 +29,7 @@ What's New:
 
 Bug Fixes:
 
-- Fixed race condition in Postgres patch storage.
+- Fixed race condition in PostgreSQL patch storage.
 
 </details>
 <details><summary>v1.17.17</summary>

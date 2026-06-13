@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(client-index)=
+(livepatch)=
 
 # Client
 
@@ -26,7 +26,7 @@ Canonical customers can receive support and report issues on the Ubuntu Livepatc
 The projects maintain bug trackers at
 
 - [Livepatch client bug tracker](https://bugs.launchpad.net/canonical-livepatch-client/+filebug)
-- [Livepatch on-prem bugtracker](https://bugs.launchpad.net/livepatch-onprem/+filebug)
+- [Livepatch on-prem bug tracker](https://bugs.launchpad.net/livepatch-onprem/+filebug)
 
 ```{toctree}
 :titlesonly:
@@ -34,7 +34,7 @@ The projects maintain bug trackers at
 :glob:
 :hidden:
 
-how-to-guides/index
-reference/index
-explanation/index
+How-to guides <how-to-guides/index.md>
+Reference <reference/index.md>
+Explanation <explanation/index.md>
 ```

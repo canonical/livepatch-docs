@@ -1,11 +1,11 @@
 ---
 myst:
   html_meta:
-    description: "Content Caching - technical reference for Livepatch client."
+    description: "Content caching - technical reference for Livepatch client."
 ---
 
 
-(client-reference-content-caching)=
+(livepatch-reference-content-caching)=
 
 # Content Caching
 

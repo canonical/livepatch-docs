@@ -5,9 +5,9 @@ myst:
 ---
 
   
-(client-explanation-why-livepatch-is-not-working-on-my-machine)=
+(livepatch-explanation-why-isnt-livepatch-working-on-my-machine)=
 
-# Why Livepatch is not working on my machine?
+# Why isn’t Livepatch working on my machine??
 
 ## UNSUPPORTED KERNELS
 

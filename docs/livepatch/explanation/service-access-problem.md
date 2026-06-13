@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-explanation-service-access-problem)=
+(livepatch-explanation-i-cannot-access-the-livepatch-service)=
 
-# Service access problem
+# I cannot access the Livepatch service
 
 Network access to the Ubuntu Livepatch Service ([https://livepatch.canonical.com:443](https://livepatch.canonical.com/)) is necessary as well as snapd version 2.15 - check your snapd version with `snap version`.
 

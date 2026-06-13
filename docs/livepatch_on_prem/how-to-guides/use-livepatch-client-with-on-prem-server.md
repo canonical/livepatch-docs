@@ -4,9 +4,9 @@ myst:
     description: "How to use livepatch client with on-prem server with Livepatch on-prem."
 ---
 
-(on-prem-server-how-to-guides-use-livepatch-client-with-on-prem-server)=
+(livepatch_on_prem-how-to-guides-how-to-use-livepatch-client-with-an-on-prem-server)=
 
-# Use Livepatch client with on-prem server
+# How to use Livepatch client with an on-prem server
 
 ## Network access
 
@@ -14,8 +14,8 @@ Machines running livepatch-client will need network access to the on-prem server
 
 In addition to that, machines will require access to the Canonical snap store to install the livepatch client snap:
 
-- Snapstore: `api.snapcraft.io:443`
-- Snapstore CDN: `*.snapcraftcontent.com:443`
+- Snap Store: `api.snapcraft.io:443`
+- Snap Store CDN: `*.snapcraftcontent.com:443`
 
 ## Generating the authorization token
 

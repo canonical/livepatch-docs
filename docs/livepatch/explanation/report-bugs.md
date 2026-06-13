@@ -5,9 +5,9 @@ myst:
 ---
 
 
-(client-explanation-report-bugs)=
+(livepatch-explanation-reporting-bugs)=
 
-# Report bugs
+# Reporting bugs
 
 Please file bugs at [the canonical-livepatch launchpad project](https://bugs.launchpad.net/canonical-livepatch-client/+filebug). When you open a bug, please provide the output from the following commands, so that we can troubleshoot your issue:
 

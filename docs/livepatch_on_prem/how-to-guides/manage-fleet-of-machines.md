@@ -4,9 +4,9 @@ myst:
     description: "How to manage fleet of machines with Livepatch on-prem."
 ---
 
-(on-prem-server-how-to-guides-manage-fleet-of-machines)=
+(livepatch_on_prem-how-to-guides-how-to-manage-livepatch-on-prem-fleet)=
 
-# Manage fleet of machines
+# How to manage Livepatch on-prem fleet
 
 Livepatch server stores information about the status of machines attached to it. This can be used to identify machines which failed to apply patches.
 
