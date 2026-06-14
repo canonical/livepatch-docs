@@ -36,3 +36,12 @@ self
 client/index
 server/index
 ```
+
+```{toctree}
+:hidden:
+:maxdepth: 2
+
+Release Notes <release-notes/index.md>
+Contribute <contribute/index.md>
+Support <support/index.md>
+```

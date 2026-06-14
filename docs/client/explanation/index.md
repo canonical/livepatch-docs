@@ -37,13 +37,6 @@ Understanding when Livepatch is not supported or networking constraints are inte
 - [Service access problem](/client/explanation/service-access-problem.md)
 - [Why Livepatch is not working on my machine?](/client/explanation/why-livepatch-is-not-working-on-my-machine.md)
 
-## Support
-
-Where to get support and file bugs.
-
-- [Report bugs](/client/explanation/report-bugs.md)
-- [Get more help](/client/explanation/get-more-help.md)
-
 ```{toctree}
 :titlesonly:
 :maxdepth: 2
@@ -66,6 +59,4 @@ why-livepatch-is-not-working-on-my-machine
 what-are-livepatch-tiers
 what-is-patch-cut-off-date
 which-are-the-supported-architectures
-report-bugs
-get-more-help
 ```
