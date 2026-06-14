@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-06-15
+
+### Added
+
+- Introduced top-level documentation sections for:
+    - `client`
+    - `server`
+    - `support`
+    - `release-notes`
+    - `contribute`
+- Added release notes pages for client and server documentation.
+- Added contribution and AI usage policy guidance in `docs/contribute/index.md`.
+
+### Changed
+
+- Refactored the documentation structure from legacy `livepatch*` paths to `client/` and `server/` spaces.
+- Introduced a third-level Diátaxis-style organization in key areas (for example: `architecture`, `security`, `troubleshooting`, `configuration`, `installation`, `operations`, and `patch-management`).
+- Standardized MyST heading IDs to the new path-based naming convention and updated in-page/cross-page anchor usages accordingly.
+- Normalized toctree entries to explicit titled form (for example: `Installation <installation/index.md>`).
+
+### Fixed
+
+- Expanded `docs/redirects.txt` to preserve old URLs across the restructure, including legacy `livepatch/`, `livepatch_on_prem/`, and `livepatch_server_on_public_clouds/` paths.
+- Added missing redirects from moved client explanation pages to `support/` pages.
+- Removed shell prompt prefixes (`$`) from fenced command examples for consistency and copy/paste usability.
+
 ## [0.2.0] - 2026-06-11
 
 ### Added

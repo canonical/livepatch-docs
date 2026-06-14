@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(livepatch-explanation-reporting-bugs)=
+(support-reporting-bugs)=
 
 # Reporting bugs
 

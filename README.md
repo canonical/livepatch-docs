@@ -9,8 +9,7 @@ Livepatch shrinks the exploit window for critical and high severity Linux kernel
 Documentation for:
 
 - Livepatch Client
-- Livepatch On-Prem Server
-- Livepatch Server on public clouds
+- Livepatch Server
 
 ## Useful links
 

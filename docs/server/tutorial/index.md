@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(livepatch_on_prem-tutorial)=
+(server-tutorial)=
 
 # Tutorial
 
@@ -25,8 +25,8 @@ Setting up Livepatch in an airgapped environment:
 :glob:
 :hidden:
 
-livepatch-and-lxd
-livepatch-and-microk8s
-airgapped-livepatch-and-microk8s
-airgapped-livepatch-and-snap
+Livepatch and lxd <livepatch-and-lxd.md>
+Livepatch and microk8s <livepatch-and-microk8s.md>
+Airgapped livepatch and microk8s <airgapped-livepatch-and-microk8s.md>
+Airgapped livepatch and snap <airgapped-livepatch-and-snap.md>
 ```

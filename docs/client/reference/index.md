@@ -5,57 +5,26 @@ myst:
 ---
 
 
-(livepatch-reference)=
+(client-reference)=
 
 # Reference
 
 Technical information - security, APIs, architecture, etc., related to Livepatch.
 
-## Networking
+## In this section
 
-Livepatch client requires Internet access in order to fetch kernel patches from the server.
-
-- [Network requirements](/client/reference/network-requirements.md)
-
-## Compatibility
-
-Livepatch determines which kernel patch may be applied based on your kernel version.
-
-- [Supported kernels](/client/reference/supported-kernels.md)
-- [How do I know if the patch is designed for my system?](/client/reference/patch-installation.md#how-do-i-know-if-the-patch-is-designed-for-my-system)
-
-## Security and privacy
-
-Livepatch sends specific data about your system in order to patch your kernel.
-
-- [Data sent](/client/reference/data-sent.md)
-- [Patch Security](/client/reference/patch-security.md)
-
-## Kernel patching
-
-Livepatch inserts modules into a running kernel, this has inherent risks and the following can detail some of these risks and misunderstandings.
-
-- [Patch Lifecycle](/client/reference/patch-lifecycle.md)
-- [Patch Installation](/client/reference/patch-installation.md)
-
-## Configuration
-
-Livepatch client can be configured with a variety of options, which are listed here.
-
-- [Configuration Options](/client/reference/configuration-options.md)
+- [Platform](/client/reference/platform/index.md) — Supported kernels, architectures, and client configuration options.
+- [Networking](/client/reference/networking/index.md) — Network requirements, content caching, and data sent to Canonical.
+- [Patches](/client/reference/patches/index.md) — How patches are installed, their lifecycle, and their security.
+- [Releases](/release-notes/client/index.md) — Release notes for the Livepatch Client.
 
 ```{toctree}
 :titlesonly:
 :maxdepth: 2
-:glob:
 :hidden:
 
-Network requirements <network-requirements.md>
-Data sent <data-sent.md>
-Supported kernels <supported-kernels.md>
-Patch lifecycle <patch-lifecycle.md>
-Patch security <patch-security.md>
-Patch installation <patch-installation.md>
-Content caching <content-caching.md>
-Configuration options <configuration-options.md>
+Platform <platform/index.md>
+Networking <networking/index.md>
+Patches <patches/index.md>
+Releases <../../release-notes/client/index.md>
 ```

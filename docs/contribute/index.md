@@ -4,7 +4,8 @@ myst:
     description: "How to contribute to Livepatch documentation."
 ---
 
-(contribute-to-our-docs)=
+(contribute-contribute-to-our-docs)=
+
 # Contribute to our docs
 
 Our documentation is a community effort, published on the [Livepatch docs](https://ubuntu.com/security/livepatch/docs).
@@ -14,7 +15,6 @@ Our documentation is a community effort, published on the [Livepatch docs](https
 Contributing to documentation can be a fantastic way to get started as a contributor to open source projects, no matter your level of experience!
 
 We hope to make it as easy as possible to contribute. If you need help at all with the contribution process, please let us know!
-
 
 ## Publishing and hosting
 
@@ -78,7 +78,8 @@ to create it. We don't want to average those away by passing the documentation t
 This policy exists to protect our readers, our community of contributors, and the project maintainers.
 As AI continues to evolve, we will update these guidelines accordingly.
 
-(acceptable-use-of-ai)=
+(contribute-acceptable-use-of-ai)=
+
 ### Acceptable use of AI
 
 We don't ban our contributors from using AI. However, we do expect anyone contributing to this project to use it responsibly, as a helper, and not as something that replaces them. Some examples of acceptable usage include:

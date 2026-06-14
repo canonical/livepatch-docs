@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(server-index)=
+(server)=
 
 # Server
 
@@ -17,7 +17,7 @@ Its purpose is to pull in patch updates from Canonical and allow more fine-grain
 
 | | |
 |-|-|
-| [Tutorials](/server/how-to-guides/index.md) </br> Get started with a hands-on introduction for new users deploying Livepatch. | [How-to guides](/server/how-to-guides/index.md) </br> Step-by-step guides covering key operations and common tasks</br> |
+| [Tutorials](/server/tutorial/index.md) </br> Get started with a hands-on introduction for new users deploying Livepatch. | [How-to guides](/server/how-to-guides/index.md) </br> Step-by-step guides covering key operations and common tasks</br> |
 | [Explanation](/server/explanation/index.md) </br> Discussion and clarification of key topics | [Reference](/server/reference/index.md) </br> Technical information - specifications, APIs, architecture |
 
 ## Getting support

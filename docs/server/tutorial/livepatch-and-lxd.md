@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(livepatch_on_prem-tutorial-livepatch-and-lxd)=
+(server-tutorial-livepatch-and-lxd)=
 
 # Livepatch and LXD
 
@@ -17,7 +17,7 @@ We will be using LXD, Juju and the Livepatch server machine charm/bundle.
 
 For this how-to, you do not require any previous or advanced knowledge of [LXD](https://ubuntu.com/lxd/), [Juju](https://canonical.com/juju) or [Charmed Operators](https://documentation.ubuntu.com/juju/latest/reference/charm/) to proceed and deploy Livepatch on-premise.
 
-If you’ve already deployed Livepatch before, and wish to keep your same configuration, we’ve rewritten our machine charm and the configuration has changed. Please see [here](/server/how-to-guides/migrate-from-reactive-charm-to-operator-charm.md) for instructions on how to migrate.
+If you’ve already deployed Livepatch before, and wish to keep your same configuration, we’ve rewritten our machine charm and the configuration has changed. Please see [here](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-operator-charm.md) for instructions on how to migrate.
 
 ### JQ
 
@@ -156,7 +156,7 @@ The {filename} segment is a special variable which Livepatch will insert file na
 ```{note}
 Using an AWS S3 bucket is one option for patch storage. 
 To redirect clients  for patch downloads your URL template may resemble 
-``https://s3-eu-west-2.amazonaws.com/client/patches/{filename}``
+``https://s3-eu-west-2.amazonaws.com/livepatch/patches/{filename}``
 ```
 
 For this tutorial, we’ll use the server itself to server patches. The Livepatch server has a special endpoint for serving patches at:
@@ -265,12 +265,12 @@ Trigger a sync with:
 livepatch-admin sync trigger --wait
 ```
 
-For further information on the admin tool, see [How to setup administration tool](/server/how-to-guides/setup-administration-tool.md).
-Additionally, see how-to [configure patch sync filters](/server/explanation/patch-sync-filters.md) to limit what patches you download.
+For further information on the admin tool, see [How to setup administration tool](/server/how-to-guides/security/setup-administration-tool.md).
+Additionally, see how-to [configure patch sync filters](/server/reference/patch-management/patch-sync-filters.md) to limit what patches you download.
 
 ## Enabling machine status reporting
 
-Each livepatch on-prem instance can optionally send information about the status of the machines it's serving back to Canonical. Full details on what information is sent is available [here](/client/reference/data-sent.md)
+Each livepatch on-prem instance can optionally send information about the status of the machines it's serving back to Canonical. Full details on what information is sent is available [here](/client/reference/networking/data-sent.md)
 
 ```
 juju config livepatch patch-sync.send-machine-reports=true

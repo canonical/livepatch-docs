@@ -5,7 +5,7 @@ myst:
 ---
 
 
-(livepatch)=
+(client)=
 
 # Client
 
@@ -13,11 +13,10 @@ Livepatch client is the software running on a machine, that periodically checks 
 
 ## In this documentation
 
-| | |
-| ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| [How-to guides](/client/how-to-guides/index.md) </br> Step-by-step guides covering key operations and common tasks |
-| [Explanation](/client/explanation/index.md) </br> Discussion and clarification of key topics | |
-[Reference](/client/reference/index.md) </br> Technical information - specifications, APIs, architecture |
+|                                                                                              | |
+|----------------------------------------------------------------------------------------------|-|
+| Tutorials </br> Get started with Canonical Livepatch Client.                                 | [How-to guides](/client/how-to-guides/index.md) </br> Step-by-step guides covering key operations and common tasks</br> |
+| [Explanation](/client/explanation/index.md) </br> Discussion and clarification of key topics | [Reference](/client/reference/index.md) </br> Technical information - specifications, APIs, architecture |
 
 ## Getting support
 

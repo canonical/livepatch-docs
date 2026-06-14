@@ -4,14 +4,14 @@ myst:
     description: "Release notes for Livepatch client and server."
 ---
 
-(release-notes-index)=
+(release-notes)=
 
 # Release notes
 
 Find release notes for both Livepatch components:
 
-- [Client release notes](/release-notes/client.md)
-- [Server release notes](/release-notes/server.md)
+- [Client release notes](/release-notes/client/index.md)
+- [Server release notes](/release-notes/server/index.md)
 
 ```{toctree}
 :titlesonly:
@@ -19,6 +19,6 @@ Find release notes for both Livepatch components:
 :glob:
 :hidden:
 
-client
-server
+Client <client/index.md>
+Server <server/index.md>
 ```

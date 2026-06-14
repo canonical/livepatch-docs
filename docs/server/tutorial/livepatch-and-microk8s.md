@@ -4,7 +4,7 @@ myst:
     description: "Tutorial: Livepatch and Microk8s - hands-on introduction to Livepatch on-prem."
 ---
 
-(livepatch_on_prem-tutorial-getting-started-with-livepatch-on-prem-and-microk8s)=
+(server-tutorial-getting-started-with-livepatch-on-prem-and-microk8s)=
 
 # Getting started with Livepatch On-Prem and Microk8s
 
@@ -12,7 +12,7 @@ myst:
 
 Livepatch on-prem is a self-hosted version of the Livepatch server, enabling the delivery of patches to machines within network restricted environments.
 
-This tutorial will deploy the Livepatch On-prem server as a Kubernetes application. We will deploy and configure the livepatch on-prem server using Juju and Charmed Operators. Juju is an Open Source Charmed Operator Framework that controls the whole lifecycle of an application. While this is one option for deploying the on-prem server, another is to deploy to virtual machines as described [here](/server/how-to-guides/deploy-via-juju.md).
+This tutorial will deploy the Livepatch On-prem server as a Kubernetes application. We will deploy and configure the livepatch on-prem server using Juju and Charmed Operators. Juju is an Open Source Charmed Operator Framework that controls the whole lifecycle of an application. While this is one option for deploying the on-prem server, another is to deploy to virtual machines as described [here](/server/how-to-guides/deployment/deploy-via-juju.md).
 
 For this tutorial we will use Microk8s, a lightweight tool for creating a local Kubernetes cluster.
 
@@ -79,9 +79,9 @@ The bundle and charmed operators necessary to deploy livepatch server are availa
 
 https://charmhub.io/canonical-livepatch-onprem
 
-Livepatch On-Prem needs a place to store patches that it syncs from the upstream. By default the above "k8s" bundle will store patches in PostgreSQL directly. Other options including S3 storage are available and can be configured as described [here](/server/explanation/patch-storage/index.md).
+Livepatch On-Prem needs a place to store patches that it syncs from the upstream. By default the above "k8s" bundle will store patches in PostgreSQL directly. Other options including S3 storage are available and can be configured as described [here](/server/reference/patch-storage/index.md).
 
-In order to ensure PostgreSQL has enough space, see our [resources topic](/server/reference/resource-requirements.md) for requirements on virtual machines running livepatch on-prem. Although this information relates to the deployment of Livepatch on virtual machines, the storage requirements remain similar.
+In order to ensure PostgreSQL has enough space, see our [resources topic](/server/reference/platform/resource-requirements.md) for requirements on virtual machines running livepatch on-prem. Although this information relates to the deployment of Livepatch on virtual machines, the storage requirements remain similar.
 
 To start the deployment within the previously created juju model, run:
 
@@ -188,7 +188,7 @@ juju config livepatch auth.basic.enabled=true
 juju config livepatch auth.basic.users='username:$2y$10$74ZgHaxn...UH/Bbw6W2bmctm'
 ```
 
-See [Administration Tool](/server/how-to-guides/setup-administration-tool.md) topic for instructions on installing the administration tool and setting up authentication.
+See [Administration Tool](/server/how-to-guides/security/setup-administration-tool.md) topic for instructions on installing the administration tool and setting up authentication.
 
 Once this has been done, the livepatch admin tool can be used to authenticate:
 
@@ -199,7 +199,7 @@ livepatch-admin login -a username:password
 
 ### 6. Downloading patches
 
-The final step before attaching client machines to the server is to download patches from Canonical servers. This can be done using the admin tool. See [How to setup administration tool](/server/how-to-guides/setup-administration-tool.md) for installation steps.
+The final step before attaching client machines to the server is to download patches from Canonical servers. This can be done using the admin tool. See [How to setup administration tool](/server/how-to-guides/security/setup-administration-tool.md) for installation steps.
 
 To download patches, run:
 
@@ -219,7 +219,7 @@ And to check for any sync failures run:
 livepatch-admin sync report
 ```
 
-To limit which patches are downloaded see this [document](/server/explanation/patch-sync-filters.md).
+To limit which patches are downloaded see this [document](/server/reference/patch-management/patch-sync-filters.md).
 
 ## Enabling machine status reporting
 

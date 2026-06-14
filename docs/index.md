@@ -15,7 +15,7 @@ Canonical Livepatch is meant for critical infrastructure, where unscheduled down
 
 If you're using [Ubuntu Pro](http://ubuntu.com/pro), then you'll have access to two additional Livepatch features.
 
-1. Delayed updates for your [Livepatch clients](/client/index.md),, providing further security and protection.
+1. Delayed updates for your [Livepatch clients](/client/index.md), providing further security and protection.
 2. Access to the [on-prem server](/server/index.md).
 
 ## [Livepatch Client](/client/index.md)
@@ -32,9 +32,8 @@ Complex enterprise environments often follow policies that require a gradual rol
 :glob:
 :hidden:
 
-self
-client/index
-server/index
+Client <client/index.md>
+Server <server/index.md>
 ```
 
 ```{toctree}

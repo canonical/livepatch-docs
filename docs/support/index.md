@@ -5,11 +5,11 @@ myst:
 ---
 
 
-(support-index)=
+(support)=
 
-# Get more help / Support
+# Support
 
-To access Livepatch, see the [Ubuntu Pro](https://www.ubuntu.com/ubuntu-advantage) subscription.
+To access Livepatch, see the [Ubuntu Pro](https://www.ubuntu.com/pro) subscription.
 
 Canonical customers can receive support on the Ubuntu Livepatch service, client, and server via Canonical's support portal:
 
@@ -30,6 +30,6 @@ For more ways to get help, see [Get more help](/support/get-more-help.md).
 :glob:
 :hidden:
 
-get-more-help
-report-bugs
+Get more help <get-more-help.md>
+Report bugs <report-bugs.md>
 ```
