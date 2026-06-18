@@ -1,32 +1,29 @@
 ---
 myst:
   html_meta:
-    description: "Livepatch on-premises server documentation home."
+    description: "Reference and how-to documentation for the Livepatch on-premises server, including deployment, configuration, authentication, patch management, and telemetry."
 ---
-
 
 (server)=
 
 # Server
 
-Livepatch on-prem is an on-premises deployment of the Livepatch server.
-
-Its purpose is to pull in patch updates from Canonical and allow more fine-grained control of patch rollout to the machines running on your infrastructure.
+Livepatch on-prem is an on-premises deployment of the Livepatch Server. It pulls live kernel patch updates from Canonical and allows fine-grained control over patch rollout to the machines in your infrastructure.
 
 ## In this documentation
 
-| | |
-|-|-|
-| [Tutorials](/server/tutorial/index.md) </br> Get started with a hands-on introduction for new users deploying Livepatch. | [How-to guides](/server/how-to-guides/index.md) </br> Step-by-step guides covering key operations and common tasks</br> |
-| [Explanation](/server/explanation/index.md) </br> Discussion and clarification of key topics | [Reference](/server/reference/index.md) </br> Technical information - specifications, APIs, architecture |
+|     |     |
+| --- | --- |
+| [Tutorial](/server/tutorial/index.md) </br> Get started with a hands-on introduction to deploying Livepatch. | [How-to guides](/server/how-to-guides/index.md) </br> Step-by-step guides covering key operations and common tasks. |
+| [Reference](/server/reference/index.md) </br> Technical reference for the Livepatch Server, including platform requirements, authentication, and patch management. | [Explanation](/server/explanation/index.md) </br> Discussion and clarification of key Livepatch Server topics. |
 
 ## Getting support
 
-Canonical customers can receive support and report issues on the Ubuntu Livepatch service, Livepatch client or Livepatch on-prem, on Canonical's [support portal](https://portal.support.canonical.com/).
+Canonical customers can receive support and report issues with the Ubuntu Livepatch service, the Livepatch Client, or Livepatch on-prem through the [Canonical support portal](https://portal.support.canonical.com/).
 
-The projects maintain bug trackers at
+The projects maintain bug trackers at:
 
-- [Livepatch client bug tracker](https://bugs.launchpad.net/canonical-livepatch-client/+filebug)
+- [Livepatch Client bug tracker](https://bugs.launchpad.net/canonical-livepatch-client/+filebug)
 - [Livepatch on-prem bug tracker](https://bugs.launchpad.net/livepatch-onprem/+filebug)
 
 ```{toctree}

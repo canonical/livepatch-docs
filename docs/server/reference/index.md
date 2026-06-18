@@ -1,23 +1,22 @@
 ---
 myst:
   html_meta:
-    description: "Reference - technical reference for Livepatch on-prem server."
+    description: "Technical reference for the Livepatch on-premises server, covering platform configuration, authentication, patch management, patch storage, telemetry, and release notes."
 ---
-
 
 (server-reference)=
 
 # Reference
 
-Technical information - specifications, APIs, architecture, etc., related to Livepatch on-prem server.
+This section provides technical reference information for the Livepatch on-premises server.
 
 ## In this section
 
-- [Platform](/server/reference/platform/index.md) — Configuration, resource requirements, and network access.
-- [Authentication](/server/reference/authentication/index.md) — Authentication reference for the Livepatch Server.
-- [Patch management](/server/reference/patch-management/index.md) — Patch management settings and patch sync filters.
-- [Patch storage](/server/reference/patch-storage/index.md) — Configure patch storage backends such as S3 for the Livepatch Server.
-- [Telemetry](/server/reference/telemetry/index.md) — Data sent to Canonical and machine reports.
+- [Platform](/server/reference/platform/index.md) — Configuration options, resource requirements, and network access rules.
+- [Authentication](/server/reference/authentication/index.md) — Authentication and authorization mechanisms for the Livepatch Server APIs.
+- [Patch management](/server/reference/patch-management/index.md) — Managing patch tiers, promotion workflows, and sync filter options.
+- [Patch storage](/server/reference/patch-storage/index.md) — Configuring patch storage backends such as S3 for the Livepatch Server.
+- [Telemetry](/server/reference/telemetry/index.md) — Data sent to Canonical during patch synchronisation and machine reporting.
 - [Releases](/release-notes/server/index.md) — Release notes for the Livepatch Server.
 
 ```{toctree}

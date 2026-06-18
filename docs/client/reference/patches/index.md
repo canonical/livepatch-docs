@@ -1,19 +1,18 @@
 ---
 myst:
   html_meta:
-    description: "How patches are installed, their lifecycle, and their security."
+    description: "Reference for Livepatch Client patch handling, including how patches are verified, signed, and secured during download and application."
 ---
-
 
 (client-reference-patches)=
 
 # Patches
 
-How patches are installed, their lifecycle, and their security.
+How patches are verified, signed, and secured during download and application by the Livepatch Client.
 
 ## In this section
 
-- [Patch Security](/client/reference/patches/patch-security.md)
+- [Patch security](/client/reference/patches/patch-security.md) — Cryptographic mechanisms used for patch verification, digital signatures, and TLS communication.
 
 ```{toctree}
 :titlesonly:

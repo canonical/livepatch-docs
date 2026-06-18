@@ -1,23 +1,22 @@
 ---
 myst:
   html_meta:
-    description: "Authentication - technical reference for Livepatch on-prem server."
+    description: "Technical reference for Livepatch on-premises server authentication, covering Basic Auth, macaroons, client tokens, sync tokens, and cryptographic technologies."
 ---
-
 
 (server-reference-livepatch-server-authentication)=
 
-# Livepatch Server Authentication
+# Livepatch Server authentication
 
-This document provides a technical reference for all authentication and authorization mechanisms used by the on-premises Livepatch Server. It covers the authentication flows for each API surface and the cryptographic technologies involved.
+This document provides a technical reference for the authentication and authorization mechanisms used by the on-premises Livepatch Server. It covers the authentication flows for each API surface and the cryptographic technologies involved.
 
 ## Admin APIs
 
-These APIs are consumed by administrators through the Livepatch Admin Tool.
+Admin APIs are consumed by administrators through the Livepatch Admin Tool.
 
-The following authentication flows are supported:
+The following authentication flow is supported:
 
-- **Basic Auth → Macaroon**: Login using [Basic Auth](#server-reference-basic-auth) to obtain a [macaroon](#server-reference-macaroons), then use the macaroon to authenticate subsequent requests. Macaroons expire after 240 hours.
+- **Basic Auth → Macaroon**: Authenticate using [Basic Auth](#server-reference-basic-auth) to obtain a [macaroon](#server-reference-macaroons). Use the macaroon to authenticate subsequent requests. Macaroons expire after 240 hours.
 
 All admin activity is logged as a structured security event with the `authz_admin` event code.
 
@@ -25,19 +24,22 @@ All admin activity is logged as a structured security event with the `authz_admi
 
 ## Client APIs
 
-These APIs are consumed by Livepatch Client instances.
+Client APIs are consumed by Livepatch Client instances.
 
-- **Auth Token**: A UUIDv4 token used to authenticate and register a machine. After successful registration, a machine token is issued for subsequent requests. This is a legacy token format that is no longer used for new clients.
+- **Auth Token**: A UUIDv4 token used to authenticate and register a machine. After successful registration, a machine token is issued for subsequent requests. This is a legacy token format no longer used for new clients.
 - **Resource Token**: A macaroon verified against the Ubuntu Pro backend to authenticate requests. This token is provided to the Livepatch Client by the Ubuntu Pro client when enabling Pro.
 
 After authentication, client requests are authorized based on tier and affordances (architecture and kernel compatibility).
 
 ## Server APIs
 
-These APIs are used for patch synchronization between on-premises servers and their upstream patch source (Canonical's hosted Livepatch service or another on-premises server).
+Server APIs are used for patch synchronisation between on-premises servers and their upstream patch source (Canonical's hosted Livepatch service or another on-premises server).
 
-- **Contract Resource Token**: A resource token obtained from the Ubuntu Pro contracts service, used to authenticate the on-premises server with Canonical's hosted Livepatch service. For charm deployments, obtained via the `get-resource-token` Juju action (`juju run canonical-livepatch-server-k8s/<leader> get-resource-token contract-token=<TOKEN>`). For snap deployments, obtained implicitly by setting the contract token (`sudo snap set canonical-livepatch-server token=<CONTRACT_TOKEN>`); the snap's configure hook exchanges it for a resource token and sets `patch-sync.token` automatically. The process exchanges a contract token for a machine token and then retrieves the resource token with appropriate affordances.
-- **Sync Token**: A UUIDv4 generated through the Admin APIs of the upstream server (`livepatch-admin sync-tokens add <tier> <token-name>`). Used in both direct (hosted) and federated (on-premises to on-premises) synchronization. Like client tokens, sync tokens specify which tier patches will be retrieved from. Configured via `patch-sync.token`. Stored in PostgreSQL with verification by direct comparison.
+- **Contract Resource Token**: A resource token obtained from the Ubuntu Pro contracts service, used to authenticate the on-premises server with Canonical's hosted Livepatch service.
+  - For charm deployments, obtain the token using the `get-resource-token` Juju action: `juju run canonical-livepatch-server-k8s/<leader> get-resource-token contract-token=<TOKEN>`.
+  - For snap deployments, the token is obtained implicitly by setting the contract token (`sudo snap set canonical-livepatch-server token=<CONTRACT_TOKEN>`). The snap's configure hook exchanges it for a resource token and sets `patch-sync.token` automatically.
+  - The process exchanges a contract token for a machine token, then retrieves the resource token with appropriate affordances.
+- **Sync Token**: A UUIDv4 token generated through the Admin APIs of the upstream server (`livepatch-admin sync-tokens add <tier> <token-name>`). Used in both direct (hosted) and federated (on-premises to on-premises) synchronisation. Sync tokens specify which tier patches are retrieved from. Configured via `patch-sync.token`. Stored in PostgreSQL with verification by direct comparison.
 
 ## Technologies
 

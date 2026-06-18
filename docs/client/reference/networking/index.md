@@ -1,26 +1,25 @@
 ---
 myst:
   html_meta:
-    description: "Network requirements, content caching, and data sent to Canonical."
+    description: "Reference for Livepatch Client networking, including firewall requirements and data transmitted during patch status checks."
 ---
-
 
 (client-reference-networking)=
 
 # Networking
 
-Network requirements, content caching, and data sent to Canonical.
+Network requirements, firewall configurations, and data sent by the Livepatch Client during its periodic patch checks.
 
 ## In this section
 
-- [Network requirements](/client/reference/networking/network-requirements.md)
-- [Data sent](/client/reference/networking/data-sent.md)
+- [Firewall configuration](/client/reference/networking/network-requirements.md) — Hostnames and ports the Livepatch Client requires for outbound connectivity.
+- [Data sent to Canonical](/client/reference/networking/data-sent.md) — Information included in the client's periodic patch status requests.
 
 ```{toctree}
 :titlesonly:
 :maxdepth: 1
 :hidden:
 
-Network requirements <network-requirements.md>
-Data sent <data-sent.md>
+Firewall configuration <network-requirements.md>
+Data sent to Canonical <data-sent.md>
 ```

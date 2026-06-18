@@ -1,24 +1,23 @@
 ---
 myst:
   html_meta:
-    description: "Resource requirements - technical reference for Livepatch on-prem server."
+    description: "Reference for Livepatch on-premises server resource requirements, listing minimum CPU, memory, and disk allocations for PostgreSQL, HAProxy, and Livepatch components."
 ---
-
 
 (server-reference-machine-resources-for-livepatch-on-prem)=
 
 # Machine resources for Livepatch on-prem
 
-The resource requirements for machines running Livepatch on-prem components (postgresql, haproxy, livepatch) depend on the amount of machines being serviced by the deployment.
+The resource requirements for machines running Livepatch on-prem components (PostgreSQL, HAProxy, and Livepatch) depend on the number of machines served by the deployment.
 
-Minimal requirements are:
+The following are the minimum recommended allocations:
 
-|Service|Memory|CPUs|Disk|
-| --- | --- | --- | --- |
-|postgresql|4GB|1|50GB|
-|haproxy|2GB|1|50GB|
-|livepatch|2GB|1|50GB|
+| Service    | Memory | CPUs | Disk |
+| ---------- | ------ | ---- | ---- |
+| PostgreSQL | 4 GB   | 1    | 50 GB |
+| HAProxy    | 2 GB   | 1    | 50 GB |
+| Livepatch  | 2 GB   | 1    | 50 GB |
 
-If postgresql is going to be used as the patchstore, it is recommended to increase disk allocated to postgresql to 100GB.
+If PostgreSQL is configured as the patch storage backend, increase the disk allocation for PostgreSQL to 100 GB.
 
-The bundle needs to be deployed on machines running Ubuntu focal.
+The bundle must be deployed on machines running Ubuntu Focal (20.04 LTS).

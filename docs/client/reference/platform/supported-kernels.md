@@ -1,16 +1,17 @@
 ---
 myst:
   html_meta:
-    description: "Supported kernels - technical reference for Livepatch client."
+    description: "Reference of kernel versions, flavours, and Ubuntu releases with Livepatch support, including upgrade and reboot interval guidance."
 ---
-
 
 (client-reference-kernels-covered-by-livepatch)=
 
 # Kernels covered by Livepatch
 
-| Ubuntu release | Arch | Kernel Version | Kernel Variants | Upgrade and Reboot\* |
-| ---------------- | ---------- | -------------- | -------------------------------------------------------------------------------------------------------- | ------------------- |
+The following table lists the kernel versions, flavours, and Ubuntu releases for which live kernel patches are available.
+
+| Ubuntu release | Architecture | Kernel version | Kernel flavours | Upgrade and reboot interval* |
+| -------------- | ------------ | -------------- | --------------- | --------------------------- |
 | Ubuntu 26.04 LTS | arm64 | 7.0 (GA) | aws, azure, fips, gcp, generic, gke, ibm, lowlatency, oracle | every 13 months |
 | Ubuntu 26.04 LTS | 64-bit x86 | 7.0 (GA) | aws, azure, fips, gcp, generic, gke, ibm, ibm-gt, ibm-gt-tdx, lowlatency, oracle | every 13 months |
 | Ubuntu 24.04 LTS | 64-bit x86 | 7.0 (HWE) | aws, azure, fips, gcp, generic, gke, ibm | every 13 months |
@@ -30,12 +31,12 @@ myst:
 | Ubuntu 16.04 LTS | 64-bit x86 | 4.4 (GA) | aws, fips, generic, lowlatency | every 13 months |
 | Ubuntu 14.04 LTS | 64-bit x86 | 4.4 (HWE) | generic, lowlatency | every 13 months |
 
-**Upgrade and Reboot Interval:** Security patches are only created for a kernel for up to 9-13 months from the release date of the kernel. It is recommended to update and restart the machine within this period to continue receiving Livepatch updates. New kernel ABIs are provided during the Ubuntu Pro security coverage period, which can be learned more about [here](https://ubuntu.com/pro).
+**\*Upgrade and reboot interval:** Security patches are created for a kernel for up to 9–13 months from its release date. Upgrade and restart the machine within this period to continue receiving Livepatch patches. New kernel ABIs are provided during the [Ubuntu Pro security coverage period](https://ubuntu.com/pro).
 
-GA is the kernel a release launched with, while [HWE or Hardware Enablement](https://ubuntu.com/kernel/lifecycle) kernels are a set of newer kernel that become available in the current LTS release as these newer kernels are released with subsequent Ubuntu versions, up until the next LTS release.
+GA refers to the kernel a release launched with. [HWE (Hardware Enablement)](https://ubuntu.com/kernel/lifecycle) kernels are newer kernels introduced into the current LTS release as they ship with subsequent Ubuntu versions, up until the next LTS release.
 
-There will be Livepatch support for HWE kernels across a limited combination of kernel flavour (variants), kernel version, and Ubuntu release as detailed above.
+Livepatch provides HWE kernel support for a limited combination of kernel flavour, kernel version, and Ubuntu release, as described in the table above.
 
-Livepatch will provide security coverage for ARM64 architectures from release 26.04. Older releases are not covered for the ARM64 architecture, due to limitations in the tooling available in these releases.
+Livepatch provides security coverage for ARM64 (arm64) architectures from release 26.04 onward. Older releases are not covered for the ARM64 architecture due to limitations in the available tooling.
 
-See [this page](/client/explanation/troubleshooting/why-livepatch-is-not-working-on-my-machine.md) to better understand why your kernel might not be supported.
+For help diagnosing why a specific kernel may not be receiving patches, see the [troubleshooting guide](/client/explanation/troubleshooting/why-livepatch-is-not-working-on-my-machine.md).

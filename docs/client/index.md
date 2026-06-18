@@ -1,30 +1,31 @@
 ---
 myst:
   html_meta:
-    description: "Livepatch client documentation home."
+    description: "Reference and how-to documentation for the Livepatch Client, including configuration, networking, patch management, and troubleshooting."
 ---
-
 
 (client)=
 
 # Client
 
-Livepatch client is the software running on a machine, that periodically checks for the availability of new patches. Once new patches are available, they are downloaded, verified and applied to the current kernel.
+The Livepatch Client runs on each registered machine to periodically check for the availability of new live kernel patches. When new patches are available, the client downloads, verifies, and applies them to the running kernel without requiring a system reboot.
+
+The Livepatch Client can connect to Canonical's hosted Livepatch service or to an on-premises Livepatch Server.
 
 ## In this documentation
 
-|                                                                                              | |
-|----------------------------------------------------------------------------------------------|-|
-| Tutorials </br> Get started with Canonical Livepatch Client.                                 | [How-to guides](/client/how-to-guides/index.md) </br> Step-by-step guides covering key operations and common tasks</br> |
-| [Explanation](/client/explanation/index.md) </br> Discussion and clarification of key topics | [Reference](/client/reference/index.md) </br> Technical information - specifications, APIs, architecture |
+|     |     |
+| --- | --- |
+| [How-to guides](/client/how-to-guides/index.md) </br> Step-by-step guides covering key operations and common tasks. | [Reference](/client/reference/index.md) </br> Technical reference for the Livepatch Client, including platform support, networking requirements, and patch security. |
+| [Explanation](/client/explanation/index.md) </br> Discussion and clarification of key Livepatch Client topics. | |
 
 ## Getting support
 
-Canonical customers can receive support and report issues on the Ubuntu Livepatch service, Livepatch client or Livepatch on-prem, on Canonical's [support portal](https://portal.support.canonical.com/).
+Canonical customers can receive support and report issues with the Ubuntu Livepatch service, the Livepatch Client, or Livepatch on-prem through the [Canonical support portal](https://portal.support.canonical.com/).
 
-The projects maintain bug trackers at
+The projects maintain bug trackers at:
 
-- [Livepatch client bug tracker](https://bugs.launchpad.net/canonical-livepatch-client/+filebug)
+- [Livepatch Client bug tracker](https://bugs.launchpad.net/canonical-livepatch-client/+filebug)
 - [Livepatch on-prem bug tracker](https://bugs.launchpad.net/livepatch-onprem/+filebug)
 
 ```{toctree}

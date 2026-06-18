@@ -1,22 +1,21 @@
 ---
 myst:
   html_meta:
-    description: "Data sent - technical reference for Livepatch client."
+    description: "Reference listing the system information transmitted by the Livepatch Client to Canonical during periodic patch status checks."
 ---
-
 
 (client-reference-data-sent-to-canonical)=
 
 # Data sent to Canonical
 
-Livepatch client instances ping servers hosted by Canonical at a configurable schedule (every hour by default) to check for the availability of new patches. These requests contain the following information:
+The Livepatch Client sends periodic requests to servers hosted by Canonical to check for the availability of new patches. These requests are sent at a configurable interval (every 60 minutes by default) and include the following information:
 
-- system architecture
+- System architecture
 - CPU model
-- kernel version
-- boot time and uptime
-- unique machine identifier, based on `/etc/machine-id`
-- version of the currently applied live kernel patch (if any)
-- current state of the system (whether a live kernel patch has been applied or not)
-- time of the last server request
-- version of the client
+- Kernel version
+- Boot time and uptime
+- Unique machine identifier, derived from `/etc/machine-id`
+- Version of the currently applied live kernel patch, if any
+- Current state of the system (whether a live kernel patch has been applied)
+- Time of the last server request
+- Livepatch Client version

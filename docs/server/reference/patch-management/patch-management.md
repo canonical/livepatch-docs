@@ -1,25 +1,26 @@
 ---
 myst:
   html_meta:
-    description: "Patch management - technical reference for Livepatch on-prem server."
+    description: "Technical reference for managing patches in an on-premises Livepatch deployment, covering tier-based patch rollout and promotion using livepatch-admin."
 ---
-
 
 (server-reference-managing-patches-in-an-on-prem-livepatch-deployment)=
 
 # Managing patches in an on-prem Livepatch deployment
 
-Livepatch patches are managed using tiers. Tiers are basically containers that patches are put into. Each Livepatch client instance is associated with a specific tier (via the token). After deployment the server comes with a default tier list: edge, beta, candidate and stable. This list can be modified using the Livepatch administration tool.
+Livepatch patches are managed using tiers — ordered groups that patches are placed into. Each Livepatch Client instance is associated with a specific tier through its token. After deployment, the server includes a default tier list: `edge`, `beta`, `candidate`, and `stable`. This list can be modified using the Livepatch administration tool.
 
-![image2|624x428](/_static/images/a5BXTUhxJVYx45D4Bb4Av7VtVW3.png)
+![Patch tier overview](/_static/images/a5BXTUhxJVYx45D4Bb4Av7VtVW3.png)
 
-The tiers form an ordered list. When the on-prem server pulls in patches from Canonical's servers, these patches are initially assigned to the first tier in the list. The order of tiers in the output of the Livepatch admin tool command is in the order of patch promotion. In this example the `edge` tier is the initial tier patches will be assigned to:
+The tiers form an ordered list. When the on-premises server pulls patches from Canonical's servers, patches are initially assigned to the first tier in the list. The order of tiers in the output of the `livepatch-admin` tool reflects the order of patch promotion.
+
+To view the current tier order:
 
 ```
 livepatch-admin tier list
 ```
 
-... should produce output like this:
+The output resembles:
 
 ```
 Tiers:
@@ -29,34 +30,36 @@ Tiers:
 - Name: <on-prem>
 ```
 
-If no further validation of patches is necessary, all Livepatch client instances can be associated with that tier and the patches will become available to them as soon as they have been downloaded.
+If no further validation of patches is required, associate all Livepatch Client instances with the first tier. Patches become available as soon as they have been downloaded.
 
-![image4|623x263](/_static/images/z7xA042h7EvRf7fRFNqLGiGi9Mw.png)
+![Single-tier deployment](/_static/images/z7xA042h7EvRf7fRFNqLGiGi9Mw.png)
 
-If, however, validation or a staggered rollout of patches is required, the patch tiers can be used to implement that. In such a scenario, a small portion of testing machines can be associated with the beta tier and patches can be promoted to higher tiers once they have been validated.
+If validation or a staggered rollout of patches is required, use the patch tiers to implement this workflow. Associate a small portion of testing machines with the `beta` tier, and promote patches to higher tiers once they have been validated.
 
-![image3|624x526](/_static/images/hJiubhhVct8K28ljnzbxYhdyjza.png)
+![Multi-tier promotion](/_static/images/hJiubhhVct8K28ljnzbxYhdyjza.png)
 
-To promote a patch to a different tier, use the command:
+### Promote a patch to a different tier
+
+To promote an individual patch to a different tier:
 
 ```
 livepatch-admin patch promote <patch-version> <tier>
 ```
 
-The patch version here is the numerical patch version (e.g. 57.1).
+The `patch-version` is the numerical patch version (for example, `57.1`).
 
-## Promoting all patches in a tier
+### Promote all patches in a tier
 
-To promote all patches in one tier to another, there is a shortcut command `promote-all`:
+To promote all patches from one tier to another, use the `promote-all` shortcut:
 
 ```
 livepatch-admin patch promote-all <from-tier> <to-tier>
 ```
 
-This tool is useful during the initial setup of **Livepatch on-prem**, when all patches are imported into the edge tier and other tiers are empty. By running:
+This command is useful during initial setup of Livepatch on-prem, when all patches are imported into the `edge` tier and other tiers are empty. For example:
 
 ```text
 livepatch-admin patch promote-all edge stable
 ```
 
-...you can make the contents of all the tiers from edge to stable identical.
+This makes the contents of all tiers from `edge` to `stable` identical.
