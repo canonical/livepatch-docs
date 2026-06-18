@@ -1,28 +1,31 @@
 ---
 myst:
   html_meta:
-    description: "Support information for Livepatch client and server."
+    description: "Support and bug reporting information for the Livepatch client and on-premises server."
 ---
-
 
 (support)=
 
 # Support
 
-To access Livepatch, see the [Ubuntu Pro](https://www.ubuntu.com/pro) subscription.
+This section provides details on obtaining support for the Ubuntu Livepatch service, the Livepatch client, and the Livepatch on-premises server. It also covers how to report bugs for each component.
 
-Canonical customers can receive support on the Ubuntu Livepatch service, client, and server via Canonical's support portal:
+## Getting support
 
-- https://portal.support.canonical.com
+Access to the Ubuntu Livepatch service requires an [Ubuntu Pro](https://ubuntu.com/pro) subscription.
 
-The projects maintain bug trackers at:
+Canonical customers can receive support on the Ubuntu Livepatch service, client, and on-premises server through the [Canonical support portal](https://portal.support.canonical.com/).
+
+For information on filing support tickets, see [Get more help](/support/get-more-help.md).
+
+## Reporting bugs
+
+The Livepatch projects maintain dedicated bug trackers:
 
 - [Livepatch client bug tracker](https://bugs.launchpad.net/canonical-livepatch-client/+filebug)
 - [Livepatch on-prem bug tracker](https://bugs.launchpad.net/livepatch-onprem/+filebug)
 
-For client bug reporting details, see [Report bugs](/support/report-bugs.md).
-
-For more ways to get help, see [Get more help](/support/get-more-help.md).
+For details on reporting client bugs, including the diagnostic information to include, see [Report bugs](/support/report-bugs.md).
 
 ```{toctree}
 :titlesonly:
