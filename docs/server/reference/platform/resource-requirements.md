@@ -19,6 +19,6 @@ Minimal requirements are:
 |haproxy|2GB|1|50GB|
 |livepatch|2GB|1|50GB|
 
-If postgresql is going to be used as the patchstore, we recommend increasing disk allocated to postgresql to 100GB.
+If postgresql is going to be used as the patchstore, it is recommended to increase disk allocated to postgresql to 100GB.
 
 The bundle needs to be deployed on machines running Ubuntu focal.

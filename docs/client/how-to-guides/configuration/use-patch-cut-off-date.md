@@ -9,7 +9,7 @@ myst:
 
 # How to use a patch cut-off date
 
-See our [explanation](/client/explanation/troubleshooting/what-is-patch-cut-off-date.md) to understand the patch cut-off date feature.
+See the [explanation](/client/explanation/troubleshooting/what-is-patch-cut-off-date.md) to understand the patch cut-off date feature.
 
 ## Checking the cut-off date
 

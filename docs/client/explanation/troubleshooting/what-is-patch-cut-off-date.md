@@ -54,7 +54,7 @@ UBUNTU-CVE-2025-0927   2025-03-26 09:20:22 +0000 UTC  LSN-0110-1
 
 ```
 
-## What if I already have a patch applied?
+## What if a patch has already been applied?
 
 If you already have a patch applied and its release date is after the cut-off date to fully remove the changes from your system, you will need to reboot the machine.
 

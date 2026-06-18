@@ -139,7 +139,7 @@ TimescaleDB can be enabled along side or can replace InfluxDB for KPI metrics.
 ### Patch Storage
 
 The following values configure how the server interacts with its patch storage.\
-See our [how-to](/server/reference/patch-storage/index.md) on patch storage.
+See the [how-to](/server/reference/patch-storage/index.md) on patch storage.
 
 | Name | Description | Value(s) |
 | - | - | - |

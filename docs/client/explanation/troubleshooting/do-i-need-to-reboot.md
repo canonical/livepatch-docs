@@ -7,7 +7,7 @@ myst:
 
 (client-explanation-do-i-need-to-reboot)=
 
-# Do I need to reboot?
+# Does Ubuntu need to be rebooted?
 
 To upgrade (not just patch) your kernel to the newest version livepatching is not sufficient, and you need to reboot. Note that livepatches include only high and critical kernel vulnerabilities. The service provides protection from serious security issues, but this is just one aspect of keeping your system secure and well maintained. There are a number of other software components that can require you to reboot your system, including, but not limited to:
 

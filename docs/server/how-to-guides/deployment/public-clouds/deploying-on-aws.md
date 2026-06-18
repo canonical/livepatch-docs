@@ -36,7 +36,7 @@ To create a launch template, log in to the AWS console and navigate to the Launc
 
 You want to select an instance type that has sufficient CPU and memory capacity. The minimum instance type for Livepatch server to run efficiently is the t3.medium instance type, with 2 vCPU and 4 GB memory. For the storage options, the default volume size of 8 GB will be sufficient.
 
-For the network settings, select a security group that only allows network traffic from within AWS. We will set up a load balancer with internet access and redirect to our server instances later. For debugging purposes, you can create an SSH Key Pair to connect to the instance.
+For the network settings, select a security group that only allows network traffic from within AWS. Set up a load balancer with internet access and redirect to the server instances later. For debugging purposes, you can create an SSH Key Pair to connect to the instance.
 
 In the advanced details section, set the IAM instance profile to the profile with the `AWSSecretsManagerClientReadOnlyAccess` role and `AmazonS3ReadOnlyAccess` role. Also in the Advanced Details section, scroll down to the user data field. This is where you can upload or copy and paste the cloud-init module. The following example shows the cloud-init template from earlier configured to run on AWS using S3 buckets as patch storage.
 
@@ -166,7 +166,7 @@ cloud-init status --long
 
 If the status shows: **error**, then something went wrong during the cloud-init procedure. You can view the command output logs at `/var/log/cloud-init-output.log`.
 
-With the server launch template ready, next navigate to the auto-scaling groups section and head to **Create Auto Scaling Group**. Give it a name and select the launch template we just created in the previous step. For optimal availability, set the number of instances to be between two and four.
+With the server launch template ready, next navigate to the auto-scaling groups section and head to **Create Auto Scaling Group**. Give it a name and select the launch template created in the previous step. For optimal availability, set the number of instances to be between two and four.
 
 Next, select the region and availability zones you want instances to be created in. Give the auto-scaling group a security group that has access to inside AWS (for the server instances), but allow all HTTP and HTTPS traffic so a load balancer can route incoming traffic. The default VPC will suffice for a multi-unit deployment.
 

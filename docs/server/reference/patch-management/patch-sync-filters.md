@@ -19,4 +19,4 @@ The primary synchronisation filters are:
 
 Set sync filters if you want to reduce the amount of space consumed by Livepatch files and/or you know your client machines will be limited to a certain set of kernel variants.
 
-A full list of the available sync filters can be found in our [config](/server/reference/platform/configuration.md).
+A full list of the available sync filters can be found in the [config](/server/reference/platform/configuration.md).

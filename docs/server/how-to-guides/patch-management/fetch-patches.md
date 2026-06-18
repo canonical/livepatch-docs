@@ -16,7 +16,7 @@ Patch snapshot downloads can also be manually triggered:
 livepatch-admin sync trigger --wait
 ```
 
-We recommend triggering a patch snapshot download once the server is successfully set up.
+It is recommended to trigger a patch snapshot download once the server is successfully set up.
 
 ## Verifying that server is up to date
 

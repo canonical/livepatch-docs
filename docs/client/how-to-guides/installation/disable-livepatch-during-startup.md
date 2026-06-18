@@ -34,7 +34,7 @@ sudo bash -c 'echo -n stop > /var/local/canonical_livepatch_mode'
 
 ## Resume the normal operation of Livepatch
 
-After recovering from the crash loop, resuming the normal operation of the Livepatch client and daemon is necessary to secure the running kernel. However, we need to ensure that enabling Livepatch does not result in a crash loop again.
+After recovering from the crash loop, resuming the normal operation of the Livepatch client and daemon is necessary to secure the running kernel. However, it is necessary to ensure that enabling Livepatch does not result in a crash loop again.
 
 - The Livepatch client sends anonymous pings before, during and after a patch is applied, to the Livepatch server. The client pings are continuously [monitored by the Livepatch team](/client/explanation/patches/patch-lifecycle.md) to ensure the sanity of the patches. If the analysis of the ping metrics points towards a patch being faulty, it is [blocklisted](/client/explanation/patches/patch-lifecycle.md) to prevent it from being served to client machines.
 - Users can also [report bugs](https://bugs.launchpad.net/canonical-livepatch-client) upon facing a system crash loop that could be caused by the application of a patch. If the patch is found to be faulty by the Livepatch team, it will be blocklisted.
@@ -49,7 +49,7 @@ The process to resume the normal operation of Livepatch depends on the recovery 
 
 The process of reporting, blocklisting, and releasing a replacement Livepatch takes time. If installing a kernel package update is not possible, it is possible to exclude one or more LSNs by enabling Livepatch with a cutoff date. The `cutoff-date` configuration option available in the Livepatch client can be used to selectively apply some LSNs to a kernel, and selectively omit one or more newer LSNs. The `cutoff-date` config option allows users to set a date in the past, and only patches released before this `cutoff-date` will be applied to the kernel. This will allow users to apply the desired LSNs to the kernel, and omit certain LSNs by date. The following steps outline how this can be accomplished:
 
-1. If the current Livepatch mode in the `/var/local/canonical_livepatch_mode` file is `stop` and the Livepatch daemon is not running, we cannot make any configuration changes.
+1. If the current Livepatch mode in the `/var/local/canonical_livepatch_mode` file is `stop` and the Livepatch daemon is not running, no configuration changes can be made.
 2. Set the Livepatch mode to `no-apply` using `sudo bash -c 'echo -n no-apply > /var/local/canonical_livepatch_mode'`
 3. Run `sudo snap restart canonical-livepatch`. This should enable the Livepatch daemon. The daemon will refresh patch information but never apply the patch to the kernel in this mode.
 4. Once the daemon is enabled, set the `cutoff-date` configuration option to a date before the faulty patch was released. For example, `sudo canonical-livepatch config cutoff-date=2024-01-01T01:00:00Z`. The release date for the problematic LSN can be found [here](https://ubuntu.com/security/notices?details=lsn).

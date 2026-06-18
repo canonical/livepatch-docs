@@ -83,7 +83,7 @@ Livepatch On-Prem needs a place to store patches that it syncs from the upstream
 
 In order to ensure PostgreSQL has enough space, see our [resources topic](/server/reference/platform/resource-requirements.md) for requirements on virtual machines running livepatch on-prem. Although this information relates to the deployment of Livepatch on virtual machines, the storage requirements remain similar.
 
-To start the deployment within the previously created juju model, run:
+To start the deployment within the previously created Juju model, run:
 
 ```
 juju deploy canonical-livepatch-onprem --channel=k8s/stable --trust
@@ -151,7 +151,7 @@ To run this in a production environment, you will need to expose this MicroK8s c
 
 #### Deploying with a config overlay (Optional)
 
-These settings can be configured at deploy-time by using a juju bundle overlay:
+These settings can be configured at deploy-time by using a Juju bundle overlay:
 
 ```
 juju deploy ch:canonical-livepatch-onprem –channel=k8s/stable --overlay config.yaml
@@ -235,7 +235,7 @@ The information sent back about each machine includes:
 - Obfuscated machine id
 - Status of the patch currently applied to the machine's kernel
 
-To enable this reporting, run the following juju command:
+To enable this reporting, run the following Juju command:
 
 ```
 juju config livepatch patch-sync.send-machine-reports=true

@@ -9,7 +9,7 @@ myst:
 
 # How do you rate a CVE?
 
-We do not use an external rating system, but rate based on these qualifications:
+Canonical does not use an external rating system, but rates based on these qualifications:
 
 | | |
 |-----------------------|-----------------------------------------------------------------------|

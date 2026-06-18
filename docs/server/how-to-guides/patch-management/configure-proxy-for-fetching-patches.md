@@ -10,7 +10,7 @@ myst:
 
 Livepatch on-prem server can fetch patches through an HTTP proxy. The configuration steps vary depending on the deployment platform.
 
-See our [patch-sync config](/server/reference/platform/configuration.md) for more details.
+See the [patch-sync config](/server/reference/platform/configuration.md) for more details.
 
 ## Juju deployments (latest charms)
 
@@ -25,7 +25,7 @@ juju config livepatch \
 
 ## Juju deployments (deprecated charm)
 
-If Livepatch on-prem has been deployed using Juju with our older reactive charm (see our migration guide [here](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-operator-charm.md)), run the following Juju configuration command:
+If Livepatch on-prem has been deployed using Juju with the older reactive charm (see the migration guide [here](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-operator-charm.md)), run the following Juju configuration command:
 
 ```bash
 juju config livepatch \

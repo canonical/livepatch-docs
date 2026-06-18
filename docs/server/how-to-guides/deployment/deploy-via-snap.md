@@ -70,7 +70,7 @@ Given you are a customer of Ubuntu Pro, you will have Livepatch On-Premise avail
 You can obtain your token from: https://ubuntu.com/pro/dashboard
 
 **Updating Livepatch to use your Ubuntu Pro token**
-As previously stated, we can update the servers configuration through the snap daemon, so let's update the server to use this token and enable Livepatch On-Premise:
+As previously stated, the server's configuration can be updated through the snap daemon, so update the server to use this token and enable Livepatch On-Premise:
 
 ```
  sudo snap set canonical-livepatch-server token=<Ubuntu Pro token>
@@ -105,20 +105,20 @@ If you would like to generate your own, you can do so as follows:
  htpasswd -bnBC 10 <username> <password>
 ```
 
-Next, we need to manually enable basic authentication:
+Next, manually enable basic authentication:
 
 ```
  sudo snap set canonical-livepatch-server lp.auth.basic.enabled=true
 ```
 
-Finally, we can login with the administrator tool like so presuming you have used the example user and password:
+Finally, login with the administrator tool as follows, assuming the example username and password have been used:
 
 ```
  canonical-livepatch-server-admin.livepatch-admin login -a admin:admin123
 ```
 
 **Synchronizing with hosted Livepatch**
-Now you have a running, fully configured On-Premise Livepatch server, we can synchronise patches from hosted Livepatch into your server. Run the following within your administrator tool:
+Now you have a running, fully configured On-Premise Livepatch server, synchronise patches from hosted Livepatch into the server. Run the following within your administrator tool:
 
 ```
  canonical-livepatch-server-admin.livepatch-admin sync trigger 

@@ -30,7 +30,7 @@ myst:
 | Ubuntu 16.04 LTS | 64-bit x86 | 4.4 (GA) | aws, fips, generic, lowlatency | every 13 months |
 | Ubuntu 14.04 LTS | 64-bit x86 | 4.4 (HWE) | generic, lowlatency | every 13 months |
 
-**Upgrade and Reboot Interval:** Security patches are only created for a kernel for up to 9-13 months from the release date of the kernel. We recommend updating and restarting your machine within this period to continue receiving Livepatch updates. New kernel ABIs are provided during the Ubuntu Pro security coverage period, which you can learn more about [here](https://ubuntu.com/pro).
+**Upgrade and Reboot Interval:** Security patches are only created for a kernel for up to 9-13 months from the release date of the kernel. It is recommended to update and restart the machine within this period to continue receiving Livepatch updates. New kernel ABIs are provided during the Ubuntu Pro security coverage period, which can be learned more about [here](https://ubuntu.com/pro).
 
 GA is the kernel a release launched with, while [HWE or Hardware Enablement](https://ubuntu.com/kernel/lifecycle) kernels are a set of newer kernel that become available in the current LTS release as these newer kernels are released with subsequent Ubuntu versions, up until the next LTS release.
 

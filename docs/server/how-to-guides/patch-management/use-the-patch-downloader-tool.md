@@ -34,7 +34,7 @@ canonical-livepatch-downloader enable <token>
 
 ### Downloading single patches
 
-For this section we will list and download patches for a specific kernel release. Using the host system's kernel and assuming an `amd64` architecture.
+For this section, list and download patches for a specific kernel release. Using the host system's kernel and assuming an `amd64` architecture.
 
 ```
 KERNEL_VERSION=$(cat /proc/version_signature  | cut -d ' ' -f 2)
@@ -55,7 +55,7 @@ canonical-livepatch-downloader list --kernel=5.15.0-107.117-generic --architectu
   hash: a603d9c7448d874625a95a2c06cbf554d3184868e803fb98b310a5722e9f359b
 ```
 
-Next we will download the latest patch for your kernel.
+Next, download the latest patch for your kernel.
 
 ```
 canonical-livepatch-downloader get-latest --kernel=$KERNEL_VERSION --architecture=amd64
@@ -81,7 +81,7 @@ canonical-livepatch-downloader get-files livepatch-5.15.0-107.117-generic-105.1-
 
 Syncing a group of patches is useful when you want to manually transfer patches from into an airgapped environment.
 
-To sync a group of patches we will utilise the `list` and `get-files` commands. Note that, again, because of snap confinement we must place the output of the `list` command in a location that the snap can access.
+To sync a group of patches, utilise the `list` and `get-files` commands. Note that, again, because of snap confinement, place the output of the `list` command in a location that the snap can access.
 
 The list command provides filtering based on the following parameters:
 
@@ -92,7 +92,7 @@ The list command provides filtering based on the following parameters:
 
 The same flag cannot be passed multiple times. If multiple kernel versions, flavours or architectures are desired, run the following commands with each combination.
 
-Assuming that we want to sync all patches for architecture `amd64`, kernel `4.4.0-1100` and flavour `aws`:
+Assuming that all patches need to be synced for architecture `amd64`, kernel `4.4.0-1100` and flavour `aws`:
 
 ```
 canonical-livepatch-downloader list --architecture=amd64 --flavour=aws --kernel=4.4.0-1100  > ~/snap/canonical-livepatch-downloader/common/patch-list.txt
@@ -112,7 +112,7 @@ The default behavior of the patch-downloader is to download the patch tarball se
 
 This behaviour can be overridden to save the downloaded patch tarballs in a permanent location for further use, by using the `-K` or `--keep-tarball` option with the `get-latest` or `get-files` commands. A potential use-case for doing this could be to move the patch tarballs to the configured on-prem patch storage, when a patch sync with the hosted Livepatch server cannot be performed.
 
-For example, if we want to store the downloaded patch tarballs and the extracted patch files for the architecture `amd64`, kernel `5.15.0-25` and flavour `generic`:
+For example, to store the downloaded patch tarballs and the extracted patch files for the architecture `amd64`, kernel `5.15.0-25` and flavour `generic`:
 
 ```
 canonical-livepatch-downloader list --kernel 5.15.0-25 --architecture amd64 --flavour generic > ~/snap/canonical-livepatch-downloader/common/patch-list.txt

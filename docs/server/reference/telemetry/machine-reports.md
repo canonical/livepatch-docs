@@ -15,12 +15,12 @@ The machine checks for patches and sends machine status information. The full li
 
 ## Enabling Machine Reports
 
-See our [machine reports config](/server/reference/platform/configuration.md) to enable machine reports and configure their retention period.
+See the [machine reports config](/server/reference/platform/configuration.md) to enable machine reports and configure their retention period.
 
 ## Generating Machine Reports
 
 To generate machine reports use the Livepatch admin tool.
-See [our how-to](/server/how-to-guides/security/setup-administration-tool.md) on setting up the admin tool.
+See [the how-to](/server/how-to-guides/security/setup-administration-tool.md) on setting up the admin tool.
 
 You can create machine reports where you query machines by their tier, last applied patch version or patch state.
 

@@ -9,7 +9,7 @@ myst:
 # Migrating from the old livepatch charm
 
 The Juju framework offered a, now deprecated, way to write charms called [reactive charms](https://documentation.ubuntu.com/juju/3.6/reference/charm/#reactive-charm). The modern framework is known as the [operator framework](https://documentation.ubuntu.com/juju/latest/reference/charm/#ops-charm).
-Below we explain how to identify which type of charm you are running.
+Below, the process to identify which type of charm is running is explained.
 
 Run `juju status` and observe the charm name and channel. The output will resemble the following.
 ![livepatch-status|800x31](/_static/images/2uNc2yggCQnxXj7gfkmcBVE0j2H.png)

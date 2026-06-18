@@ -24,7 +24,7 @@ Before deploying the server snap, you will need the following:
 
 > Note: This setup is incompatible with Ubuntu core.
 
-Sensitive data such as connection strings, and the pro token, should be stored in a vault we will access later during the installation.
+Sensitive data such as connection strings, and the pro token, should be stored in a vault that will be accessed later during the installation.
 
 ## Livepatch server installation with cloud-init
 
@@ -108,7 +108,7 @@ This template config performs the following commands:
 - Starts the server with the provided configuration.
 - Cleans up temporary files used in configuration.
 
-This cloud-init module expects to find required parameters (secrets, user strings, database DNS) in root-only files located at `/etc/livepatch/` during boot time. Specifics on getting required secrets are unique to the cloud environment. We recommend using the cloud’s vault provider to securely access the secrets and write them to the required locations. The files are deleted during the last step of the cloud-init setup.
+This cloud-init module expects to find required parameters (secrets, user strings, database DNS) in root-only files located at `/etc/livepatch/` during boot time. Specifics on getting required secrets are unique to the cloud environment. It is recommended to use the cloud’s vault provider to securely access the secrets and write them to the required locations. The files are deleted during the last step of the cloud-init setup.
 
 In the config, you may also want to setup basic authentication, and add a user for the admin tool with these commands:
 

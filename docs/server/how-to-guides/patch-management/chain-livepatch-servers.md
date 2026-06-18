@@ -24,11 +24,11 @@ In order to chain on-prem server you need:
 - A new deployment of the Livepatch on-prem server.
 - The Livepatch admin tool [setup](/server/how-to-guides/security/setup-administration-tool.md) against the existing server.
 
-When deploying an instance of the Livepatch server (see our existing [guides](/server/how-to-guides/index.md)) you will normally use an Ubuntu Pro token to configure the on-premise server to sync with Canonical's hosted Livepatch server.
+When deploying an instance of the Livepatch server (see the existing [guides](/server/how-to-guides/index.md)) you will normally use an Ubuntu Pro token to configure the on-premise server to sync with Canonical's hosted Livepatch server.
 
-In this scenario, we can skip that step as we will use a token provided by our existing Livepatch server.
+In this scenario, skip that step and use a token provided by the existing Livepatch server.
 
-Below we refer to the "upstream" server as the original Livepatch server and the "downstream" server as the new deployment that will sync from the "upstream".
+Below, the "upstream" server is referred to as the original Livepatch server and the "downstream" server as the new deployment that will sync from the "upstream".
 
 ## On the upstream server
 
@@ -45,7 +45,7 @@ Change `edge` if you would like to sync from a different tier.
 
 ```{note}
 
-See our [reference doc](/server/reference/patch-management/patch-management.md) to better understand how tiers work and how patches are synced.
+See the [reference doc](/server/reference/patch-management/patch-management.md) to better understand how tiers work and how patches are synced.
 
 ```
 
@@ -64,7 +64,7 @@ This process can be repeated as many times as desired.
 Conventionally, each Livepatch on-prem server provides its own patch management using local tiers.
 Patches can be promoted between tiers to provide phased rollouts.
 
-To cater for scenarios where patch management should only be done in one place and synced to various downstream server, we offer the ability to sync tiers.
+To cater for scenarios where patch management should only be done in one place and synced to various downstream servers, the ability to sync tiers is offered.
 
 Enabling this feature will do the following:
 

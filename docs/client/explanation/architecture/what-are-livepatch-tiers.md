@@ -18,6 +18,6 @@ Livepatch delivers patches to “tiers”. A tier is a target audience for the d
 | Updates | For free users of Ubuntu Pro. Patches are delivered to these machines next. |
 | Stable | For paid users of Ubuntu Pro. Patches are delivered to these machines last. |
 
-Our kernel team closely monitors the patch health within internal before promoting to updates and further monitoring is done before promoting the patch to stable.
+The kernel team closely monitors the patch health within internal before promoting to updates and further monitoring is done before promoting the patch to stable.
 
 For finer-grained control over patch roll-out take a look at [Livepatch On-Prem](/server/index.md).

@@ -1,13 +1,13 @@
 ---
 myst:
   html_meta:
-    description: "Why Livepatch is not working on my machine? - learn about this topic in Livepatch client."
+    description: "Why is Livepatch not working as expected? - learn about this topic in Livepatch client."
 ---
 
   
 (client-explanation-why-isnt-livepatch-working-on-my-machine)=
 
-# Why isn’t Livepatch working on my machine??
+# Why is Livepatch not working as expected?
 
 ## UNSUPPORTED KERNELS
 
@@ -38,7 +38,7 @@ While Livepatch supports the GA kernel and the HWE that you eventually settle on
 
 It is possible to switch from an HWE kernel to the GA if desired by following the instructions [here](https://wiki.ubuntu.com/Kernel/LTSEnablementStack). One should take care to backup data and other important information before making such system level changes.
 
-Finally, while prior to Ubuntu 22.04 LTS, Livepatch offered no support for interim kernel versions, recently Livepatch has grown support for some flavours of interim HWE kernels as described in our [blog post](https://ubuntu.com/blog/canonical-livepatch-gets-even-better-now-supporting-hardware-enablement-kernels). Kernels for desktop users are the "generic" flavour, while kernels for public clouds have their own unique flavours, supporting cloud specific functionality. Livepatch is now supported on interim HWE kernels for various public cloud flavours. Check your kernel flavour with `uname -r`.
+Finally, while prior to Ubuntu 22.04 LTS, Livepatch offered no support for interim kernel versions, recently Livepatch has grown support for some flavours of interim HWE kernels as described in the [blog post](https://ubuntu.com/blog/canonical-livepatch-gets-even-better-now-supporting-hardware-enablement-kernels). Kernels for desktop users are the "generic" flavour, while kernels for public clouds have their own unique flavours, supporting cloud specific functionality. Livepatch is now supported on interim HWE kernels for various public cloud flavours. Check your kernel flavour with `uname -r`.
 
 As above, a full list of GA and HWE kernels supported is available [here](/client/reference/platform/supported-kernels.md)
 
