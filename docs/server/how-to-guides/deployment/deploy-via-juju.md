@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How to deploy via juju with Livepatch on-prem."
+    description: "How to deploy via Juju with Livepatch on-prem."
 ---
 
 (server-how-to-guides-how-to-deploy-livepatch-on-prem)=
@@ -16,7 +16,7 @@ This guide has been deprecated. Refer to our [tutorials](/server/tutorial/index.
 If you have an existing deployment using this document, see our [migration guide](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-operator-charm.md) to update your deployment.
 ```
 
-We will deploy and configure the livepatch on-prem server using Juju and Charmed Operators. Juju is an Open Source Charmed Operator Framework that controls the whole lifecycle of an application - including machine applications. Please follow the [installation instructions](https://documentation.ubuntu.com/juju/latest/howto/manage-juju/#install-juju) for your system.
+This guide explains how to deploy and configure the livepatch on-prem server using Juju and Charmed Operators. Juju is an Open Source Charmed Operator Framework that controls the whole lifecycle of an application - including machine applications. Please follow the [installation instructions](https://documentation.ubuntu.com/juju/latest/howto/manage-juju/#install-juju) for your system.
 
 The livepatch on-prem bundle needs to be deployed on machines running Ubuntu focal.
 
@@ -31,7 +31,7 @@ To get your Ubuntu Pro subscription token, please go to https://ubuntu.com/pro.
 
 ## Deployment Steps
 
-## 1. Initialize juju
+## 1. Initialize Juju
 
 Once you have Juju CLI installed, you will need to bootstrap a Juju controller to your cloud. The [Juju documentation](https://documentation.ubuntu.com/juju/latest/howto/manage-controllers/) has detailed instructions on how to do that for several clouds and machine types.
 
@@ -43,7 +43,7 @@ The bundle and charmed operators necessary to deploy livepatch server are availa
 
 https://charmhub.io/canonical-livepatch-onprem
 
-To start the deployment on a created juju model, run:
+To start the deployment on a created Juju model, run:
 
 ```
 juju deploy ch:canonical-livepatch-onprem
@@ -84,7 +84,7 @@ The url_template specifies the url where patch files can be downloaded by livepa
 
 ### Deploying with a config overlay (Optional)
 
-These settings can be configured at deploy-time by using a juju bundle overlay:
+These settings can be configured at deploy-time by using a Juju bundle overlay:
 
 ```
 juju deploy ch:canonical-livepatch-onprem --overlay config.yaml
@@ -155,7 +155,7 @@ The information sent back about each machine includes:
 - Obfuscated machine id
 - Status of the patch currently applied to the machine's kernel
 
-To enable this reporting, run the following juju command:
+To enable this reporting, run the following Juju command:
 
 ```
 juju config livepatch sync_send_machine_reports=true

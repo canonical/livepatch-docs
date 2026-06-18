@@ -38,7 +38,7 @@ applications:
 ```
 
 2. Rename the certificate and key files to `cert.pem` and `key.pem` and place them in the same directory as the downloaded overlay file.
-3. Run the following juju command
+3. Run the following Juju command
 
 ```
 juju deploy ch:canonical-livepatch-onprem --overlay ./tls-overlay.yaml

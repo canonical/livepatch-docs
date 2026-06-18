@@ -11,7 +11,7 @@ myst:
 
 The Juju framework offered a way to write charms using the [Reactive](https://charmsreactive.readthedocs.io/en/latest/) framework and these were called [reactive charms](https://documentation.ubuntu.com/juju/3.6/reference/charm/#reactive-charm). Reactive charms have been deprecated and the Livepatch server reactive charm that allowed users to run an On-prem deployment of the Livepatch server is no longer actively maintained. The recommended way of deploying the Livepatch server currently, is to use the [Kubernetes charm](https://charmhub.io/canonical-livepatch-server-k8s) or the [Livepatch server snap package](https://snapcraft.io/canonical-livepatch-server). This document describes how to migrate a Livepatch server instance deployed with a reactive charm, to an instance deployed with the Livepatch server snap package.
 
-Validate the details of your charmed Livepatch server deployment by connecting to your Juju controller via SSH, and running `juju status`. Confirm the charm name is "canonical-livepatch-server" and the channel the Livepatch server was installed from. The output will look like this:
+Validate the details of your charmed Livepatch server deployment by connecting to the Juju controller via SSH, and running `juju status`. Confirm the charm name is "canonical-livepatch-server" and the channel the Livepatch server was installed from. The output will look like this:
 
 |App|Status|Scale|Charm|Channel|Rev|
 |------|----------|--------|----------|-------------|------|
@@ -24,7 +24,7 @@ View the table below to understand the charm type deployed and the status for th
 | **Machine Charm - Operator** | [canonical-livepatch-server](https://charmhub.io/canonical-livepatch-server) | `ops1.x/*` | Operator charm (deprecated) |
 | **Kubernetes Charm - Operator** | [canonical-livepatch-server-k8s](https://charmhub.io/canonical-livepatch-server-k8s) | `latest/*` | Operator charm (recommended for new deployments) |
 
-This guide specifically describes how to migrate from the Reactive charm (in channel `latest/*`) to the Livepatch server snap package. For simplicity, this guide uses the same host instance as the juju deployment, to deploy the Livepatch server snap.
+This guide specifically describes how to migrate from the Reactive charm (in channel `latest/*`) to the Livepatch server snap package. For simplicity, this guide uses the same host instance as the Juju deployment, to deploy the Livepatch server snap.
 
 ## Migrate Configuration
 

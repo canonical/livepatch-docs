@@ -1,12 +1,12 @@
 ---
 myst:
   html_meta:
-    description: "Tutorial: Livepatch and Microk8s - hands-on introduction to Livepatch on-prem."
+    description: "Tutorial: Livepatch and MicroK8s - hands-on introduction to Livepatch on-prem."
 ---
 
 (server-tutorial-getting-started-with-livepatch-on-prem-and-microk8s)=
 
-# Getting started with Livepatch On-Prem and Microk8s
+# Getting started with Livepatch On-Prem and MicroK8s
 
 ## Introduction
 
@@ -14,7 +14,7 @@ Livepatch on-prem is a self-hosted version of the Livepatch server, enabling the
 
 This tutorial will deploy the Livepatch On-prem server as a Kubernetes application. We will deploy and configure the livepatch on-prem server using Juju and Charmed Operators. Juju is an Open Source Charmed Operator Framework that controls the whole lifecycle of an application. While this is one option for deploying the on-prem server, another is to deploy to virtual machines as described [here](/server/how-to-guides/deployment/deploy-via-juju.md).
 
-For this tutorial we will use Microk8s, a lightweight tool for creating a local Kubernetes cluster.
+For this tutorial we will use MicroK8s, a lightweight tool for creating a local Kubernetes cluster.
 
 You don’t need to have previous or advanced knowledge of Juju or Charmed Operators to follow this guide and deploy livepatch.
 
@@ -38,16 +38,16 @@ multipass launch jammy --name livepatch-deploy [-m 12g -c 4 -d 40G]
 multipass shell livepatch-deploy
 ```
 
-### 2. Initialize Juju and microk8s
+### 2. Initialize Juju and MicroK8s
 
-Now we can install our dependencies, note that Juju 3.1 only works with a strictly confined microk8s Snap.
+Now we can install our dependencies, note that Juju 3.1 only works with a strictly confined MicroK8s Snap.
 
 ```
  sudo snap install microk8s --channel=1.25-strict/stable
  sudo snap install juju --channel=3.1/stable
 ```
 
-Once you have the Juju CLI installed, you will need to bootstrap a Juju controller to your cloud (microk8s in this case). The [Juju documentation](https://documentation.ubuntu.com/juju/latest/tutorial/) has detailed instructions on how to do that for several clouds and machine types.
+Once you have the Juju CLI installed, you will need to bootstrap a Juju controller to your cloud (MicroK8s in this case). The [Juju documentation](https://documentation.ubuntu.com/juju/latest/tutorial/) has detailed instructions on how to do that for several clouds and machine types.
 
 To begin,
 
@@ -121,14 +121,14 @@ After that, provide the url_template setting as follows:
 juju config livepatch server.url-template="http://10.1.236.9:8080/v1/patches/{filename}"
 ```
 
-The url_template specifies the url where patch files can be downloaded by livepatch clients. The url template should be of the form 'http(s)://{HOSTNAME}/v1/patches/{filename}'. The hostname is the only part that needs to be changed. When using microk8s, all pods and services are exposed by default to the host so the hostname simplifies to the ip address of the livepatch-server unit (this is the pod’s IP address). This is useful for testing but not helpful in a production setup. You should now be able to curl the Livepatch pod with
+The url_template specifies the url where patch files can be downloaded by livepatch clients. The url template should be of the form 'http(s)://{HOSTNAME}/v1/patches/{filename}'. The hostname is the only part that needs to be changed. When using MicroK8s, all pods and services are exposed by default to the host so the hostname simplifies to the ip address of the livepatch-server unit (this is the pod's IP address). This is useful for testing but not helpful in a production setup. You should now be able to curl the Livepatch pod with
 
 ```
 curl 10.1.236.9:8080
 Canonical Livepatch Health service, version v1.13.1
 ```
 
-To take this a step further we can configure the `service-hostname` config option of the nginx-ingress-integrator charm which will then set up an ingress in the microk8s cluster. That can be tested as follows,
+To take this a step further we can configure the `service-hostname` config option of the nginx-ingress-integrator charm which will then set up an ingress in the MicroK8s cluster. That can be tested as follows,
 
 ```
 juju config ingress service-hostname=livepatch.test.com
@@ -147,7 +147,7 @@ Follow up on this by changing the url-template to match the ingress with
 juju config livepatch server.url-template="http://livepatch.test.com/v1/patches/{filename}"
 ```
 
-To run this in a production environment, you will need to expose this microk8s cluster publicly.
+To run this in a production environment, you will need to expose this MicroK8s cluster publicly.
 
 #### Deploying with a config overlay (Optional)
 

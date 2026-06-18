@@ -19,7 +19,7 @@ While a livepatch *might* successfully apply to a kernel acquired from other sou
 - kernels acquired from the kernel team's build PPA
 - test kernels acquired from the kernel team's development PPAs
 - personally-rebuilt kernels using the source debian package
-- personally-rebuilt kernels using snapcraft
+- personally-rebuilt kernels using Snapcraft
 - kernels acquired from a Ubuntu-derived distribution
 
 Please be aware that while it may be possible to build a kernel with the same version markings as an officially-supported kernel, and to attempt to load a Canonical-generated livepatch into that kernel, it will likely not work, and can potentially crash your system or corrupt your data.
@@ -38,7 +38,7 @@ While Livepatch supports the GA kernel and the HWE that you eventually settle on
 
 It is possible to switch from an HWE kernel to the GA if desired by following the instructions [here](https://wiki.ubuntu.com/Kernel/LTSEnablementStack). One should take care to backup data and other important information before making such system level changes.
 
-Finally, while prior to Ubuntu 22.04, Livepatch offered no support for interim kernel versions, recently Livepatch has grown support for some flavours of interim HWE kernels as described in our [blog post](https://ubuntu.com/blog/canonical-livepatch-gets-even-better-now-supporting-hardware-enablement-kernels). Kernels for desktop users are the "generic" flavour, while kernels for public clouds have their own unique flavours, supporting cloud specific functionality. Livepatch is now supported on interim HWE kernels for various public cloud flavours. Check your kernel flavour with `uname -r`.
+Finally, while prior to Ubuntu 22.04 LTS, Livepatch offered no support for interim kernel versions, recently Livepatch has grown support for some flavours of interim HWE kernels as described in our [blog post](https://ubuntu.com/blog/canonical-livepatch-gets-even-better-now-supporting-hardware-enablement-kernels). Kernels for desktop users are the "generic" flavour, while kernels for public clouds have their own unique flavours, supporting cloud specific functionality. Livepatch is now supported on interim HWE kernels for various public cloud flavours. Check your kernel flavour with `uname -r`.
 
 As above, a full list of GA and HWE kernels supported is available [here](/client/reference/platform/supported-kernels.md)
 

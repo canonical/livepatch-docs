@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How to migrate from reactive charm to k8s operator charm with Livepatch on-prem."
+    description: "How to migrate from reactive charm to K8s operator charm with Livepatch on-prem."
 ---
 
 
@@ -13,7 +13,7 @@ The Juju framework offered a way to write what were called [reactive charms](htt
 
 The recommended way of deploying the Livepatch server is to use the [Kubernetes charm](https://charmhub.io/canonical-livepatch-server-k8s) or the [Livepatch server snap package](https://snapcraft.io/canonical-livepatch-server). This document describes how to migrate a Livepatch server instance deployed with a reactive charm to an instance deployed with the Livepatch server k8s operator.
 
-To determine what charm is deployed in your environment, connect to your Juju controller via SSH, and run \`juju status\`. Confirm the charm name is "canonical-livepatch-server" and the channel the Livepatch server was installed from. The output will look like this
+To determine what charm is deployed in your environment, connect to the Juju controller via SSH, and run `juju status`. Confirm the charm name is "canonical-livepatch-server" and the channel the Livepatch server was installed from. The output will look like this
 ![|602x33](/_static/images/wKsSL6h98yOCxXan9YjZ81Dqg.png)
 
 View the table below from the reactive charm to snap migration guide to understand the charm type deployed and the status for that type.
@@ -28,12 +28,12 @@ View the table below from the reactive charm to snap migration guide to understa
 
 This guide assumes you have the following:
 
-- A K8s JuJu model.
+- A K8s Juju model.
 - Access to the machine charm model.
 - The charmed livepatch k8s operator deployed in a Juju Model.
 - A charmed k8s PostgreSQL deployment.
 - The IP of the leader PostgreSQL unit for the old livepatch deployment.
-  - To acquire the IP, run **juju status** and look for the public IP under the **Public address** column.
+  - To acquire the IP, run `juju status` and look for the public IP under the **Public address** column.
 - The jq and yq utility.
 - The canonical-livepatch-server-admin snap.
 

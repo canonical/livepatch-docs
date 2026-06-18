@@ -26,7 +26,7 @@ juju refresh ubuntu-advantage
 juju refresh livepatch
 ```
 
-After upgrading the livepatch application, a schema upgrade may be required. This will be indicated in the application's status in juju status. In such a case, run the command:
+After upgrading the livepatch application, a schema upgrade may be required. This will be indicated in the application's status when running `juju status`. In such a case, run the command:
 
 ```
 juju run-action livepatch/leader schema-upgrade --wait

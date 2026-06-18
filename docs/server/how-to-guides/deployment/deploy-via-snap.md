@@ -10,12 +10,12 @@ myst:
 
 Canonical Livepatch Server enables the delivery of Livepatch's to Livepatch clients, allowing reboots of critical infrastructure to be scheduled at a convenient time.
 
-In this tutorial we will setup the Livepatch Server snap.
+This guide shows how to set up the Livepatch Server snap.
 
-> Please note, the server snap is not designed for high-availability setups!
+> Please note, the server snap is not designed for high-availability setups.
 
 **Requirements**
-At minimum, the server requires a PostgreSQL (*At least version 12*) instance to persist data. For the sake of simplicity, we will use docker to illustrate this server setup. However, feel free to use an existing instance if you have one available to you!
+At minimum, the server requires a PostgreSQL (*At least version 12*) instance to persist data. For the sake of simplicity, this guide uses Docker to illustrate the server setup. However, feel free to use an existing instance if you have one available.
 
 > **Note**: For a production environment take a look at this [tutorial](https://ubuntu.com/server/docs/databases-postgresql) to install PostgreSQL with persistent storage.
 
@@ -77,7 +77,7 @@ As previously stated, we can update the servers configuration through the snap d
 ```
 
 **Managing the server**
-To manage Livepatch, we have an administrator tool, also available as a snap. Install the administrator tool from:
+To manage Livepatch, an administrator tool is available as a snap. Install it from:
 
 ```
  sudo snap install canonical-livepatch-server-admin
@@ -89,7 +89,7 @@ The administrator tool needs to know where your Livepatch server is hosted, in a
  export LIVEPATCH_URL=http://localhost:8080
 ```
 
-Next, for the administrator tool to be able to login to the server, we will require some form of basic authentication, also set in the snap daemon. For the purpose of this tutorial, we have provided you one with the username as `admin` and password as `admin123`:
+Next, for the administrator tool to be able to login to the server, basic authentication must be set up in the snap daemon. For the purpose of this guide, the username is `admin` and password is `admin123`:
 
 > Please note, special characters are escaped using single quotes and the password is/must be bcrypt hashed
 

@@ -25,7 +25,7 @@ Where `<component>` is `haproxy`, `postgresql` or `livepatch` and `<number of un
 
 ## Scaling out haproxy
 
-To deploy more than one ingress haproxy unit, run the following juju command:
+To deploy more than one ingress haproxy unit, run the following Juju command:
 
 ```
 juju add-unit haproxy -n 1
@@ -37,7 +37,7 @@ If more than one haproxy unit is being used, the DNS entry pointing to the livep
 
 Scaling out postgresql will deploy additional follower units that can take over in case the leader fails.
 
-To deploy additional postgresql units, run the following juju command:
+To deploy additional postgresql units, run the following Juju command:
 
 ```
 juju add-unit postgrseql -n 1
@@ -47,7 +47,7 @@ juju add-unit postgrseql -n 1
 
 Deploying additional livepatch units will let them share the load of handling machine requests. The filesystem patch storage type is not compatible with a scaled out livepatch setup.
 
-To deploy additional livepatch units, run the following juju commands:
+To deploy additional livepatch units, run the following Juju commands:
 
 ```
 juju add-unit livepatch -n 1

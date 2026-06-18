@@ -14,7 +14,7 @@ Livepatch on-prem is a self-hosted version of the Livepatch server, enabling the
 
 This tutorial will deploy the Livepatch on-prem server as a Kubernetes application in an airgapped environment. We will deploy and configure the Livepatch on-prem server using Juju and Charmed Operators. Juju is an Open Source Charmed Operator Framework that controls the whole lifecycle of an application.
 
-For this tutorial, we will use Microk8s, a lightweight tool for creating a local Kubernetes cluster. You don’t need previous knowledge of Juju or Charmed Operators to follow this guide and deploy Livepatch.
+For this tutorial, we will use MicroK8s, a lightweight tool for creating a local Kubernetes cluster. You don’t need previous knowledge of Juju or Charmed Operators to follow this guide and deploy Livepatch.
 
 ### How does Livepatch on-prem work in an airgapped environment?
 
@@ -111,7 +111,7 @@ To bootstrap a controller on LXD, we need to run:
 juju bootstrap localhost pro-demo-controller
 ```
 
-This might take a while to complete. After it is done, we can use a similar command to bootstrap a Juju controller on Microk8s:
+This might take a while to complete. After it is done, we can use a similar command to bootstrap a Juju controller on MicroK8s:
 
 ```sh
 juju bootstrap microk8s livepatch-demo-controller

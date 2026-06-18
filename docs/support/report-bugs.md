@@ -9,7 +9,7 @@ myst:
 
 # Reporting bugs
 
-Please file bugs at [the canonical-livepatch launchpad project](https://bugs.launchpad.net/canonical-livepatch-client/+filebug). When you open a bug, please provide the output from the following commands, so that we can troubleshoot your issue:
+Please file bugs at [the canonical-livepatch Launchpad project](https://bugs.launchpad.net/canonical-livepatch-client/+filebug). When you open a bug, please provide the output from the following commands, so that we can troubleshoot your issue:
 
 - `snap info canonical-livepatch`
 - `canonical-livepatch status`

@@ -13,9 +13,9 @@ Monitoring of the Livepatch server can be most easily done by setting up monitor
 
 The on-prem server also exposes Prometheus text-based formatted metrics available from a /metrics endpoint which can be used to monitor the system.
 
-When deploying with Juju, debug logs from all deployed applications can be obtained with the command `juju debug-logs`. Increasing the server’s log level can be configured with `juju config livepatch log_level=<level>` A full list of log levels are available on the Configure logging and monitoring [page](/server/how-to-guides/operations/configure-logging-and-monitoring.md#configure-the-log-level).
+When deploying with Juju, debug logs from all deployed applications are available through the `juju debug-logs` command. The server's log level can be configured via the `log_level` configuration option. A full list of log levels are available on the Configure logging and monitoring [page](/server/how-to-guides/operations/configure-logging-and-monitoring.md#configure-the-log-level).
 
-Further information on the use of juju for logging can be obtained from Juju’s [documentation](https://documentation.ubuntu.com/juju/latest/reference/juju-cli/list-of-juju-cli-commands/debug-log/).
+Further information on the use of Juju for logging can be obtained from the Juju [documentation](https://documentation.ubuntu.com/juju/latest/reference/juju-cli/list-of-juju-cli-commands/debug-log/).
 
 ## Security logging
 

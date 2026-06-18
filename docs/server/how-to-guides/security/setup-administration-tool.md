@@ -65,7 +65,7 @@ livepatch-admin login --auth <username>:<password>
 
 ## Ubuntu SSO authentication
 
-Ubuntu SSO authentication utilizes membership in public launchpad groups to gate access. The launchpad groups that will have administrator privileges are specified using charmed operator configuration:
+Ubuntu SSO authentication utilizes membership in public Launchpad groups to gate access. The Launchpad groups that will have administrator privileges are specified using charmed operator configuration:
 
 ```
 juju config livepatch auth_lp_teams='https://launchpad.net/~<team>'
