@@ -1,23 +1,17 @@
 ---
 myst:
   html_meta:
-    description: "Release notes for Livepatch client and server."
+    description: "Release notes for Canonical Livepatch, covering client and server components. Find new features, bug fixes, and changes across all releases."
 ---
 
 (release-notes)=
-
 # Release notes
 
-Find release notes for both Livepatch components:
-
-- [Client release notes](/release-notes/client/index.md)
-- [Server release notes](/release-notes/server/index.md)
+Release notes documenting new features, bug fixes, and changes across all Livepatch client and server releases.
 
 ```{toctree}
 :titlesonly:
-:maxdepth: 2
-:glob:
-:hidden:
+:maxdepth: 1
 
 Client <client/index.md>
 Server <server/index.md>
