@@ -1,24 +1,21 @@
 ---
 myst:
   html_meta:
-    description: "Logging and monitoring concepts."
+    description: "Understand the observability concepts for the Livepatch on-premises server including logging and monitoring capabilities."
 ---
 
-
 (server-explanation-observability)=
-
 # Observability
 
-Logging and monitoring concepts.
+The Livepatch on-premises server provides logging and monitoring capabilities to help operators maintain visibility into the health and security of their deployment.
 
-## In this section
+## Observability concepts
 
-- [Logging and monitoring](/server/explanation/observability/logging-and-monitoring.md)
+Learn about the logging and monitoring features available for the server.
 
 ```{toctree}
 :titlesonly:
 :maxdepth: 1
-:hidden:
 
-Logging and monitoring <logging-and-monitoring.md>
+Logging and monitoring <logging-and-monitoring>
 ```

@@ -1,28 +1,23 @@
 ---
 myst:
   html_meta:
-    description: "Security model, lifecycle, and access control of the server."
+    description: "Understand the Livepatch on-premises server architecture including its security model, lifecycle, and access control system."
 ---
 
-
 (server-explanation-architecture)=
-
 # Architecture
 
-Security model, lifecycle, and access control of the server.
+The Livepatch on-premises server is designed around a clear security model with defined trust boundaries, an update lifecycle for distributing security patches, and a token-based access control system. This section explains each of these concepts.
 
-## In this section
+## Architecture concepts
 
-- [Security Overview](/server/explanation/architecture/security-overview.md)
-- [Security Lifecycle](/server/explanation/architecture/security-lifecycle.md)
-- [Access Control](/server/explanation/architecture/access-control.md)
+Learn about the security architecture, how updates are delivered, and how access is governed.
 
 ```{toctree}
 :titlesonly:
 :maxdepth: 1
-:hidden:
 
-Security overview <security-overview.md>
-Security lifecycle <security-lifecycle.md>
-Access control <access-control.md>
+Security overview <security-overview>
+Security lifecycle <security-lifecycle>
+Access control <access-control>
 ```

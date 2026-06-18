@@ -1,26 +1,32 @@
 ---
 myst:
   html_meta:
-    description: "Explanation - learn about this topic in Livepatch on-prem."
+    description: "Explore explanatory and conceptual guides for the Livepatch on-premises server including architecture, security, access control, and observability."
 ---
 
-
 (server-explanation)=
-
 # Explanation
 
-Discussion and clarification of key topics related to Livepatch on-prem server.
+These explanatory and conceptual guides provide a deeper understanding of how the Livepatch on-premises server works and the security principles underpinning its design.
 
-## In this section
+## Architecture
 
-- [Architecture](/server/explanation/architecture/index.md) — Security model, lifecycle, and access control of the server.
-- [Observability](/server/explanation/observability/index.md) — Logging and monitoring concepts.
+Understand the security model, lifecycle, access control, and cryptographic technologies that govern the Livepatch on-premises server.
 
 ```{toctree}
 :titlesonly:
 :maxdepth: 2
-:hidden:
 
-Architecture <architecture/index.md>
-Observability <observability/index.md>
+Architecture <architecture/index>
+```
+
+## Observability
+
+Learn about the logging and monitoring concepts available for the Livepatch on-premises server.
+
+```{toctree}
+:titlesonly:
+:maxdepth: 2
+
+Observability <observability/index>
 ```

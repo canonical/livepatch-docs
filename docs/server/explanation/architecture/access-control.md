@@ -1,16 +1,16 @@
 ---
 myst:
   html_meta:
-    description: "Access Control - learn about this topic in Livepatch on-prem."
+    description: "Understand access control in the Livepatch on-premises server including token-based authentication, machine tiers, and rollout management."
 ---
 
-
 (server-explanation-access-control)=
+# Access control
 
-# Access Control
+> See also: {ref}`Authentication and authorization <server-reference-livepatch-server-authentication>`, {ref}`Use the Livepatch Client with the on-premises server <server-how-to-guides-how-to-use-livepatch-client-with-an-on-prem-server>`
 
-Access to a Livepatch on-prem instance is gated such that clients are authenticated before they can download patches. Access control is managed by means of generated tokens. These tokens act as a way of both authenticating client machines and assigning a tier to each machine, i.e. determining how and when patches get rolled out.
+Access to a Livepatch on-premises instance is gated so that clients are authenticated before they can download patches. Access control is managed through generated tokens. These tokens authenticate client machines and assign a tier to each machine, determining how and when patches are rolled out.
 
-See this [how-to](/server/how-to-guides/operations/use-livepatch-client-with-on-prem-server.md) to understand how to generate tokens.
+See {ref}`Use the Livepatch Client with the on-premises server <server-how-to-guides-how-to-use-livepatch-client-with-an-on-prem-server>` to learn how to generate tokens.
 
-For a technical reference of all authentication mechanisms (Basic Auth, Macaroons, resource tokens, sync tokens) and the cryptographic technologies they use, see [Authentication and authorization](/server/reference/authentication/authentication.md).
+For a technical reference of all authentication mechanisms -- Basic Auth, macaroons, resource tokens, and sync tokens -- and the cryptographic technologies they use, see {ref}`Authentication and authorization <server-reference-livepatch-server-authentication>`.
