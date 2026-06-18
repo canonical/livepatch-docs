@@ -13,9 +13,9 @@ Operate and decommission the client securely, and report vulnerabilities.
 
 ## In this section
 
-- [Securely configure and operate the client](/client/how-to-guides/security/securely-configure-and-operate-the-client.md)
-- [Securely Decommission the client](/client/how-to-guides/security/securely-decommission-the-client.md)
-- [Report Client Vulnerability](/client/how-to-guides/security/report-client-vulnerability.md)
+* [Securely configure and operate the client](/client/how-to-guides/security/securely-configure-and-operate-the-client.md)
+* [Securely decommission the client](/client/how-to-guides/security/securely-decommission-the-client.md)
+* [Report a client vulnerability](/client/how-to-guides/security/report-client-vulnerability.md)
 
 ```{toctree}
 :titlesonly:

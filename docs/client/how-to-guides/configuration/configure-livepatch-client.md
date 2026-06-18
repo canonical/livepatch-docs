@@ -9,9 +9,9 @@ myst:
 
 # How to configure the Livepatch client
 
-Livepatch client can be configured using the CLI or its configuration file at `/var/snap/canonical-livepatch/common/config`.
+The Livepatch client can be configured using the CLI or its configuration file at `/var/snap/canonical-livepatch/common/config`.
 
-## CLI Configuration
+## CLI configuration
 
 Show the current configuration:
 
@@ -38,9 +38,9 @@ Change settings, reading a long, multi-line value from stdin:
 canonical-livepatch config remote-server=https://2.3.4.5 ca-certs=@stdin < chain.pem
 ```
 
-## YAML Configuration
+## YAML configuration
 
-Livepatch client can also be configured by editing `/var/snap/canonical-livepatch/common/config`. The file is YAML-formatted. In order for changes to the file to take affect you must restart the daemon:
+The Livepatch client can also be configured by editing `/var/snap/canonical-livepatch/common/config`. The file is YAML-formatted. For changes to the file to take effect, restart the daemon:
 
 ```
 sudo snap restart canonical-livepatch

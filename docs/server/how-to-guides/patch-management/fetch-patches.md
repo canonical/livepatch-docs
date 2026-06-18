@@ -6,7 +6,7 @@ myst:
 
 (server-how-to-guides-how-to-fetch-patches-to-livepatch-on-prem-server)=
 
-# How to fetch patches to Livepatch on-prem server
+# Fetch patches to the Livepatch on-premises server
 
 The Livepatch application is configured to fetch patch updates every 24 hours. This setting is [configurable](/server/reference/platform/configuration.md).
 
@@ -18,9 +18,9 @@ livepatch-admin sync trigger --wait
 
 It is recommended to trigger a patch snapshot download once the server is successfully set up.
 
-## Verifying that server is up to date
+## Verify that the server is up to date
 
-To verify that the server is receiving the latest patches from the Livepatch server hosted by Canonical use the following command.
+To verify that the server is receiving the latest patches from the Livepatch server hosted by Canonical, use the following command.
 
 ```
 livepatch-admin sync reports

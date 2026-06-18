@@ -1,44 +1,57 @@
 ---
 myst:
   html_meta:
-    description: "How to deploying on azure on public clouds with Livepatch server."
+    description: "How to deploy the Livepatch server snap on Azure."
 ---
 
 
 (server-how-to-guides-deploying-the-livepatch-server-snap-on-azure)=
 
-# Deploying the Livepatch Server snap on Azure
+# How to deploy on Azure
 
 This section details how to deploy the Livepatch Server snap in auto-scaling configuration on Azure.
 
-## Required Resources
+## Required resources
 
-To set up Livepatch server on Azure using an Filesystem or PostgreSQL (Azure Blob Store is not yet supported) for patch storage, you will need:
+To set up the Livepatch server on Azure using a filesystem or PostgreSQL (Azure Blob Storage is not yet supported) for patch storage, the following are required:
 
-- A VNet with subnets for VMSS, Application Gateway and PostgreSQL DB.
-- An Azure Key Vault with access enabled for the VMSS subnet of the VNet.
-- An Azure-managed PostgreSQL instance with PostgreSQL 14 or above using password authentication.
-  - Username and password stored in Azure Key Vault as a JSON object.
-- A Virtual Machine ScaleSet (VMSS) with an instance type with at least 2 vCPUs, 4 GB RAM with cloud-init config file as custom data.
-- An Ubuntu Pro token stored as a secret in Azure Key Vault.
-- Livepatch server admin credentials stored in Azure Key Vault Secrets in `<username>:<hashedpassword>` format.
-- A Managed Identity with the `Key Vault Secrets User` role in Azure Key Vault.
-- An Application Gateway with a public IP address as an entry point for accessing Livepatch server.
-- A VMSS as backend pool with the corresponding Managed Identity attached to it.
+* A VNet with subnets for VMSS, Application Gateway, and PostgreSQL DB.
+* An Azure Key Vault with access enabled for the VMSS subnet of the VNet.
+* An Azure-managed PostgreSQL instance with PostgreSQL 14 or above using password authentication. The username and password stored in Azure Key Vault as a JSON object.
+* A Virtual Machine Scale Set (VMSS) with an instance type with at least two vCPUs and 4 GB RAM, with a cloud-init configuration file as custom data.
+* An Ubuntu Pro token stored as a secret in Azure Key Vault.
+* Livepatch server admin credentials stored in Azure Key Vault Secrets in `<username>:<hashedpassword>` format.
+* A Managed Identity with the `Key Vault Secrets User` role in Azure Key Vault.
+* An Application Gateway with a public IP address as an entry point for accessing the Livepatch server.
+* A VMSS as a backend pool with the corresponding Managed Identity attached.
 
-## Creating The Deployment
+## Create the deployment
 
-In Azure, Livepatch can be deployed on VMSS behind an Application Gateway with autoscaling configured on VMSS instances. The VMSS instances can be configured to auto-install Livepatch server snap at startup using cloud-init configuration file in a Standard Ubuntu Server image. This guide uses PostgreSQL server as patch storage.
+In Azure, Livepatch can be deployed on VMSS behind an Application Gateway with autoscaling configured on VMSS instances. The VMSS instances can be configured to auto-install the Livepatch server snap at startup using a cloud-init configuration file in a Standard Ubuntu Server image. This guide uses a PostgreSQL server for patch storage.
 
-Configure a VNet with 3 different subnets, one for each: Application Gateway, VMSS, DB. The Application Gateway subnet should have at least 256 addresses.
+### Configure the VNet
 
-Create an Azure-managed PostgreSQL DB with PostgreSQL password authentication. Disable public access and use the DB subnet from the VNet to provision the DB. Create a database in this PostgreSQL server for Livepatch Server to use (this can be done from Azure UI).
+Configure a VNet with three different subnets, one for each: Application Gateway, VMSS, and DB. The Application Gateway subnet should have at least 256 addresses.
+
+### Create the PostgreSQL database
+
+Create an Azure-managed PostgreSQL DB with PostgreSQL password authentication. Disable public access and use the DB subnet from the VNet to provision the database. Create a database in this PostgreSQL server for the Livepatch server to use. This can be performed from the Azure UI.
+
+### Create the Managed Identity
 
 Create a Managed Identity. This will be assigned to the VMSS to allow access to Azure Key Vault.
 
-Create an Azure Key Vault with Public Access disabled. Allow access from the VMSS subnet of the VNet. Store the DB credentials (JSON format), admin credentials (`<username>:<hashedpassword>` format) and pro token (raw string) in the Key vault. Assign “Key Vault Secrets User” role for this Vault to the Managed Identity.
+### Create the Azure Key Vault
 
-For VMSS, Select an instance type that has sufficient CPU and memory capacity. The minimum resources required for Livepatch server to run efficiently are 2 vCPU and 4 GB memory. Avoid using B-series instances. For the storage options, the default volume size of 30GB will be sufficient. Assign the Managed Identity to the VMSS to allow access to Azure Key Vault. Configure the VMSS NSG to allow traffic on port 80 from within the VNet. It is recommended to not have public IP addresses assigned to the VMSS VMs. This will ensure that VMs can be accessed only via Application Gateway. Provision a jumpbox in the same VNet with public IP to access VMs, if and when required. Add the following cloud-init config file to the CustomData field:
+Create an Azure Key Vault with public access disabled. Allow access from the VMSS subnet of the VNet. Store the DB credentials (JSON format), admin credentials (`<username>:<hashedpassword>` format), and Pro token (raw string) in the Key Vault. Assign the `Key Vault Secrets User` role for this Vault to the Managed Identity.
+
+### Configure the VMSS
+
+For VMSS, select an instance type with sufficient CPU and memory capacity. The minimum resources required for the Livepatch server to run efficiently are two vCPUs and 4 GB memory. Avoid using B-series instances. For storage options, the default volume size of 30 GB is sufficient. Assign the Managed Identity to the VMSS to allow access to Azure Key Vault.
+
+Configure the VMSS NSG to allow traffic on port 80 from within the VNet. It is recommended not to have public IP addresses assigned to the VMSS VMs. This ensures that VMs can be accessed only through the Application Gateway. Provision a jumpbox in the same VNet with a public IP to access VMs when required.
+
+Add the following cloud-init configuration file to the Custom Data field:
 
 ```yaml
 #cloud-config
@@ -157,24 +170,26 @@ runcmd:
 final_message: The system is up, up to date, and Livepatch server is active after $UPTIME second
 ```
 
-Ensure that correct ENV var values are filled in the `write-files` section of the config.
+Ensure the correct environment variable values are filled in the `write_files` section of the configuration.
 
-Provision a Standard V2 (or WAF V2) Application Gateway in the subnet created in the VNet with autoscaling enabled. The minimum instance count for the same should be set according to the expected traffic. Add the VMSS to the backend pool of the Application Gateway and route all traffic to this pool. Use port 80 with `GET /` as the health check endpoint for the VMSS.
+### Provision the Application Gateway
+
+Provision a Standard V2 (or WAF V2) Application Gateway in the subnet created in the VNet with autoscaling enabled. The minimum instance count should be set according to the expected traffic. Add the VMSS to the backend pool of the Application Gateway and route all traffic to this pool. Use port 80 with `GET /` as the health check endpoint for the VMSS.
 
 Autoscaling on VMSS should be configured based on both CPU and RAM metrics.
 
 ## Troubleshooting
 
-You can ssh into VMSS instances to check livepatch server status. You can check if Livepatch server snap logs by running:
+SSH into VMSS instances to check the Livepatch server status. Check the Livepatch server snap logs by running:
 
 ```shell
 sudo snap logs canonical-livepatch-server
 ```
 
-If there are no error logs, then the server has successfully initialized. If there are errors, check the status of
+If there are no error logs, the server has initialized successfully. If there are errors, check the status of `cloud-init`:
 
 ```shell
 cloud-init status --long
 ```
 
-If the status shows: **error**, then something went wrong during the cloud-init procedure. You can view the command output logs at `/var/log/cloud-init-output.log`.
+If the status shows **error**, something went wrong during the cloud-init procedure. The command output logs can be viewed at `/var/log/cloud-init-output.log`.

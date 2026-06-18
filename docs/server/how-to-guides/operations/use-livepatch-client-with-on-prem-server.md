@@ -6,44 +6,44 @@ myst:
 
 (server-how-to-guides-how-to-use-livepatch-client-with-an-on-prem-server)=
 
-# How to use Livepatch client with an on-prem server
+# Use a Livepatch client with an on-premises server
 
 ## Network access
 
-Machines running livepatch-client will need network access to the on-prem server. HTTPS (:443) or HTTP (:80) is used, depending on how the Livepatch on-prem haproxy and the Livepatch application's url_template setting are configured.
+Machines running the Livepatch client require network access to the on-premises server. HTTPS (:443) or HTTP (:80) is used, depending on how the Livepatch on-premises haproxy and the Livepatch application's `url_template` setting are configured.
 
-In addition to that, machines will require access to the Canonical snap store to install the Livepatch client snap:
+In addition, machines require access to the Canonical snap store to install the Livepatch client snap:
 
-- Snap Store: `api.snapcraft.io:443`
-- Snap Store CDN: `*.snapcraftcontent.com:443`
+* Snap Store: `api.snapcraft.io:443`
+* Snap Store CDN: `*.snapcraftcontent.com:443`
 
-## Generating the authorization token
+## Generate the authorization token
 
-To configure this livepatch client to start pulling patches from the on-prem livepatch server, an authorization token is necessary. To issue it, run:
+To configure the Livepatch client to pull patches from the on-premises Livepatch server, an authorization token is required. To issue one, run:
 
 ```
 livepatch-admin auth-token <id> <tier>
 ```
 
-The tier parameter is one of the tiers available on the server. The client will download patches as they become available in that tier. See [this page](/server/reference/patch-management/patch-management.md) on how to manage tiers and patches in your on-prem server.
+The tier parameter is one of the tiers available on the server. The client downloads patches as they become available in that tier. See [Patch management](/server/reference/patch-management/patch-management.md) for details on managing tiers and patches in the on-premises server.
 
-The id parameter bears no significance in an on-prem deployment. It can be set to a value identifying the group of livepatch clients that will be enabled using the same token (a single authorization token can be used to enable multiple client instances).
+The id parameter bears no significance in an on-premises deployment. It can be set to a value identifying the group of Livepatch clients that will be enabled using the same token. A single authorization token can be used to enable multiple client instances.
 
-## Configuring livepatch client
+## Configure the Livepatch client
 
-To start applying live kernel patches to a machine, it is necessary to install the Livepatch client on it. Livepatch client is currently distributed as a snap. On the machine run:
+To start applying live kernel patches to a machine, install the Livepatch client on it. The Livepatch client is distributed as a snap. On the machine, run:
 
 ```
 sudo snap install canonical-livepatch
 ```
 
-Once the client is installed, it needs to be configured to pull patches from the on-prem server:
+After the client is installed, configure it to pull patches from the on-premises server:
 
 ```
 canonical-livepatch config remote-server="http(s)://<hostname>"
 ```
 
-The authorization token returned can be then used to attach any number of machines to the on-prem livepatch server:
+The authorization token can then be used to attach any number of machines to the on-premises Livepatch server:
 
 ```
 canonical-livepatch enable <token>

@@ -6,7 +6,7 @@ myst:
 
 (server-how-to-guides-how-to-generate-livepatch-on-prem-patch-health-report)=
 
-# How to generate Livepatch on-prem patch health report
+# Generate a Livepatch on-premises patch health report
 
 To generate a report of how many machines applied (or failed to apply) a specific patch, run:
 

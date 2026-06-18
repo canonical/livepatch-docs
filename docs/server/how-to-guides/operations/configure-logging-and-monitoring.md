@@ -7,9 +7,9 @@ myst:
 
 (server-how-to-guides-configure-logging-and-monitoring-for-livepatch-server)=
 
-# Configure logging and monitoring for Livepatch server
+# Configure logging and monitoring for the Livepatch server
 
-The Livepatch Server provides structured security event logging and Prometheus metrics for monitoring. This document describes how to configure and consume these security-relevant features. For general monitoring concepts and debug endpoints, see the existing [Logging and Monitoring explanation](/server/explanation/observability/logging-and-monitoring.md).
+The Livepatch Server provides structured security event logging and Prometheus metrics for monitoring. The following sections describe how to configure and consume these security-relevant features. For general monitoring concepts and debug endpoints, see the [Logging and Monitoring explanation](/server/explanation/observability/logging-and-monitoring.md).
 
 (server-how-to-guides-configure-the-log-level)=
 
@@ -39,11 +39,11 @@ juju config canonical-livepatch-server-k8s server.log-level=info
 
 All security events are emitted to the standard logger output as structured JSON. Each event includes a `type: "security"` field for filtering. The following categories of security events are logged:
 
-- **Authentication successes and failures** for all authentication methods (Basic Auth, Macaroons, machine tokens, resource tokens, sync tokens, webhook tokens)
-- **Authorization failures** (tier mismatches, invalid affordances, unauthorized access attempts)
-- **Token lifecycle events** (creation, deletion, and updates of authentication tokens)
-- **Administrative activity** (all admin API requests with identity and endpoint information)
-- **System events** (startup, shutdown, crash, and OS signal handling)
+* **Authentication successes and failures** for all authentication methods (Basic Auth, Macaroons, machine tokens, resource tokens, sync tokens, webhook tokens)
+* **Authorization failures** (tier mismatches, invalid affordances, unauthorized access attempts)
+* **Token lifecycle events** (creation, deletion, and updates of authentication tokens)
+* **Administrative activity** (all admin API requests with identity and endpoint information)
+* **System events** (startup, shutdown, crash, and OS signal handling)
 
 ## Configure Prometheus monitoring
 
@@ -112,21 +112,21 @@ Container logs are available through standard Kubernetes log collection:
 kubectl logs -n <model-name> <livepatch-pod> | grep '"type":"security"'
 ```
 
-The server also writes logs to `/var/log/livepatch` inside the container, with logrotate configured for daily rotation (3 files retained, 10MB size trigger, compression enabled).
+The server also writes logs to `/var/log/livepatch` inside the container, with logrotate configured for daily rotation (three files retained, 10MB size trigger, compression enabled).
 
 When integrated with Loki via the `logging` or `log-proxy` relations, logs are forwarded automatically and can be queried through Grafana.
 
 ## Charm log redaction
 
-The charm itself (not the server binary) includes a log redaction module that scrubs sensitive data from charm operator logs. The following patterns are redacted before logs reach any handler:
+The charm (not the server binary) includes a log redaction module that scrubs sensitive data from charm operator logs. The following patterns are redacted before logs reach any handler:
 
-- Database connection URIs with embedded credentials (e.g., `postgresql://user:password@host/db`)
-- HTTP Authorization headers (`Bearer` and `Basic` tokens)
-- Key-value pairs where the key implies a secret (e.g., `password=`, `token=`, `api-key=`, `credentials=`)
-- Specific environment variables: `LP_CONTRACTS_PASSWORD`, `LP_PATCH_SYNC_TOKEN`, `LP_PATCH_STORAGE_S3_SECRET_KEY`, `LP_PATCH_STORAGE_S3_ACCESS_KEY`, `LP_PATCH_STORAGE_SWIFT_API_KEY`, `LP_AUTH_BASIC_USERS`, `LP_AUTH_SSO_PUBLIC_KEY`, `LP_DATABASE_CONNECTION_STRING`, and others
+* Database connection URIs with embedded credentials (e.g., `postgresql://user:password@host/db`)
+* HTTP Authorization headers (`Bearer` and `Basic` tokens)
+* Key-value pairs where the key implies a secret (e.g., `password=`, `token=`, `api-key=`, `credentials=`)
+* Specific environment variables: `LP_CONTRACTS_PASSWORD`, `LP_PATCH_SYNC_TOKEN`, `LP_PATCH_STORAGE_S3_SECRET_KEY`, `LP_PATCH_STORAGE_S3_ACCESS_KEY`, `LP_PATCH_STORAGE_SWIFT_API_KEY`, `LP_AUTH_BASIC_USERS`, `LP_AUTH_SSO_PUBLIC_KEY`, `LP_DATABASE_CONNECTION_STRING`, and others
 
 All redacted values are replaced with `***REDACTED***` in log output.
 
 ## Risks of disabling logging
 
-Reducing the log level to `error` or `fatal` will suppress security event logs at the `info` and `warn` levels, which includes authentication successes, token lifecycle events, and administrative activity. This significantly reduces visibility into security-relevant operations and is not recommended for production deployments.
+Reducing the log level to `error` or `fatal` suppresses security event logs at the `info` and `warn` levels, which includes authentication successes, token lifecycle events, and administrative activity. This significantly reduces visibility into security-relevant operations and is not recommended for production deployments.

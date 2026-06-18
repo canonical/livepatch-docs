@@ -13,10 +13,10 @@ Secure the server with TLS, hardening, admin tooling, and vulnerability reportin
 
 ## In this section
 
-- [Setup TLS](/server/how-to-guides/security/setup-tls.md)
-- [Harden your deployment](/server/how-to-guides/security/harden-your-deployment.md)
-- [Setup administration tool](/server/how-to-guides/security/setup-administration-tool.md)
-- [Report server vulnerabilities](/server/how-to-guides/security/report-server-vulnerabilities.md)
+* [Set up TLS](/server/how-to-guides/security/setup-tls.md)
+* [Harden the deployment](/server/how-to-guides/security/harden-your-deployment.md)
+* [Set up the administration tool](/server/how-to-guides/security/setup-administration-tool.md)
+* [Report server vulnerabilities](/server/how-to-guides/security/report-server-vulnerabilities.md)
 
 ```{toctree}
 :titlesonly:

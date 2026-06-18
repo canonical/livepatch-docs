@@ -1,44 +1,45 @@
 ---
 myst:
   html_meta:
-    description: "How to deploying on aws on public clouds with Livepatch server."
+    description: "How to deploy the Livepatch server snap on AWS."
 ---
 
 
 (server-how-to-guides-deploying-the-livepatch-server-snap-on-aws)=
 
-# Deploying the Livepatch Server Snap on AWS
+# How to deploy on AWS
 
 This section details how to deploy the Livepatch Server snap in auto-scaling configuration on AWS.
 
-## Required Resources
+## Required resources
 
-To set up Livepatch server on AWS using an S3 bucket for patch storage, you will need:
+To set up the Livepatch server on AWS using an S3 bucket for patch storage, the following are required:
 
-- An RDS instance with PostgreSQL 12 or 14 using password authentication.
-  - DSN string with User and password should be stored in the AWS secrets vault.
-- A Launch template with an instance type of at least T3.Medium (2 vCPU, 4 GB RAM)
-- An Ubuntu Pro token stored in the AWS secrets vault.
-- S3 bucket with the `s3:GetObject` policy (bucket must be public for clients to download patches, but you can restrict the policy to a range of ip addresses).
-- An IAM role with the `AWSSecretsManagerClientReadOnlyAccess` role and `AmazonS3ReadOnlyAccess` role.
-- An IAM user with Allow effects for the actions `s3:PutObject`, `s3:ListBucket`, and `s3:GetObject` roles for the S3 bucket.
-- A secret entry for the IAM user with Key value pairs `S3AccessKey` (for the S3 access key), and `SecretAccessKey` (for the S3 secret key).
-- A Load balancer set to internet-facing.
-- An auto-scaling group using the launch template.
-- A security group to allow all internet access for HTTP and HTTPS.
-- A security group to allow access to only traffic from within AWS (for the server instances and PostgreSQL).
+* An RDS instance with PostgreSQL 12 or 14 using password authentication. The DSN string with username and password should be stored in the AWS Secrets Vault.
+* A launch template with an instance type of at least T3.Medium (two vCPUs, 4 GB RAM).
+* An Ubuntu Pro token stored in the AWS Secrets Vault.
+* An S3 bucket with the `s3:GetObject` policy. The bucket must be public for clients to download patches, but the policy can be restricted to a range of IP addresses.
+* An IAM role with the `AWSSecretsManagerClientReadOnlyAccess` role and `AmazonS3ReadOnlyAccess` role.
+* An IAM user with Allow effects for the actions `s3:PutObject`, `s3:ListBucket`, and `s3:GetObject` roles for the S3 bucket.
+* A secret entry for the IAM user with key-value pairs `S3AccessKey` (for the S3 access key) and `SecretAccessKey` (for the S3 secret key).
+* A load balancer set to internet-facing.
+* An auto-scaling group using the launch template.
+* A security group to allow all internet access for HTTP and HTTPS.
+* A security group to allow access only from traffic within AWS (for the server instances and PostgreSQL).
 
-## Creating The Deployment
+## Create the deployment
 
-With AWS, you can set up an auto-scaling group and a load balancer with an EC2 launch template configured to install and set up a Livepatch server instance.
+With AWS, an auto-scaling group and a load balancer can be set up with an EC2 launch template configured to install and set up a Livepatch server instance.
+
+### Create the launch template
 
 To create a launch template, log in to the AWS console and navigate to the Launch Templates section in the EC2 overview page.
 
-You want to select an instance type that has sufficient CPU and memory capacity. The minimum instance type for Livepatch server to run efficiently is the t3.medium instance type, with 2 vCPU and 4 GB memory. For the storage options, the default volume size of 8 GB will be sufficient.
+Select an instance type with sufficient CPU and memory capacity. The minimum instance type for the Livepatch server to run efficiently is `t3.medium`, with two vCPUs and 4 GB memory. For storage options, the default volume size of 8 GB is sufficient.
 
-For the network settings, select a security group that only allows network traffic from within AWS. Set up a load balancer with internet access and redirect to the server instances later. For debugging purposes, you can create an SSH Key Pair to connect to the instance.
+For network settings, select a security group that only allows network traffic from within AWS. Set up a load balancer with internet access later to redirect traffic to the server instances. For debugging purposes, create an SSH key pair to connect to the instance.
 
-In the advanced details section, set the IAM instance profile to the profile with the `AWSSecretsManagerClientReadOnlyAccess` role and `AmazonS3ReadOnlyAccess` role. Also in the Advanced Details section, scroll down to the user data field. This is where you can upload or copy and paste the cloud-init module. The following example shows the cloud-init template from earlier configured to run on AWS using S3 buckets as patch storage.
+In the Advanced Details section, set the IAM instance profile to the profile with the `AWSSecretsManagerClientReadOnlyAccess` role and `AmazonS3ReadOnlyAccess` role. Also in the Advanced Details section, scroll down to the User Data field to upload or paste the cloud-init module. The following example shows the cloud-init template configured to run on AWS using S3 buckets as patch storage:
 
 ```yaml
 #cloud-config
@@ -150,28 +151,32 @@ runcmd:
 final_message: The system is up, up to date, and Livepatch server is active after $UPTIME second
 ```
 
-Where the blanked out values will be where you put your relevant resource information. For this template, the S3 and database secrets are assumed to be stored in a JSON object, while the Ubuntu Pro token and admin user string are plaintext.
+Replace the blanked-out values with the relevant resource information. For this template, the S3 and database secrets are assumed to be stored in a JSON object, while the Ubuntu Pro token and admin user string are plaintext.
 
-Once you have a launch template created, test the deployment by going to **Launch Instances** and then to **Launch Instance from Template**. On the launch page, make sure to set the template version to the correct version if you have multiple versions. The instance will take a few minutes to create and configure Livepatch server. Once the instance is ready, you can check if the deployment is complete by running:
+### Test the deployment
+
+Once a launch template is created, test the deployment by going to **Launch Instances** and then to **Launch Instance from Template**. On the launch page, ensure the template version is set to the correct version if multiple versions exist. The instance takes a few minutes to create and configure the Livepatch server. Once the instance is ready, check if the deployment is complete by running:
 
 ```bash
 sudo snap logs canonical-livepatch-server
 ```
 
-If there are no error logs, then the server has successfully initialized. If there are errors, check the status of `cloud-init` with:
+If there are no error logs, the server has initialized successfully. If there are errors, check the status of `cloud-init` with:
 
 ```bash
 cloud-init status --long
 ```
 
-If the status shows: **error**, then something went wrong during the cloud-init procedure. You can view the command output logs at `/var/log/cloud-init-output.log`.
+If the status shows **error**, something went wrong during the cloud-init procedure. The command output logs can be viewed at `/var/log/cloud-init-output.log`.
 
-With the server launch template ready, next navigate to the auto-scaling groups section and head to **Create Auto Scaling Group**. Give it a name and select the launch template created in the previous step. For optimal availability, set the number of instances to be between two and four.
+### Create the auto-scaling group
 
-Next, select the region and availability zones you want instances to be created in. Give the auto-scaling group a security group that has access to inside AWS (for the server instances), but allow all HTTP and HTTPS traffic so a load balancer can route incoming traffic. The default VPC will suffice for a multi-unit deployment.
+With the server launch template ready, navigate to the Auto Scaling Groups section and select **Create Auto Scaling Group**. Provide a name and select the launch template created in the previous step. For optimal availability, set the number of instances to between two and four.
 
-If you already have a load balancer set up, you can link the auto-scaling group to it. If not, select Attach to a new load balancer. Set the default routing (forward to) option to Create a target group, which will set the load balancer to forward traffic to all instances created by the auto scaling group.
+Next, select the region and availability zones where instances should be created. Assign a security group that has access to inside AWS (for the server instances), but allow all HTTP and HTTPS traffic so a load balancer can route incoming traffic. The default VPC is sufficient for a multi-unit deployment.
+
+If a load balancer is already set up, the auto-scaling group can be linked to it. If not, select **Attach to a new load balancer**. Set the default routing (forward to) option to **Create a target group**, which configures the load balancer to forward traffic to all instances created by the auto-scaling group.
 
 On the next page, configure the group size and scaling options, and optionally an automatic scaling policy and maintenance policy.
 
-Once the auto-scaling group is created, it will begin to provision Livepatch server instances based on the given launch template. You can then log in with the admin tool (assuming you defined an admin user in the cloud-init config) by setting the endpoint URL to the public URL of the load balancer. Make sure the security settings for the load balancer allow external traffic so you can login and run administrative duties with the admin tool.
+Once the auto-scaling group is created, it begins provisioning Livepatch server instances based on the given launch template. The admin tool can then be used to log in (assuming an admin user was defined in the cloud-init configuration) by setting the endpoint URL to the public URL of the load balancer. Ensure the security settings for the load balancer allow external traffic so administrative duties can be performed with the admin tool.

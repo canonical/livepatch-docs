@@ -9,7 +9,7 @@ myst:
 
 # How to enable the Livepatch client
 
-Livepatch is included in Ubuntu Pro (previously known as Ubuntu Advantage). The recommended way to install it is using the Ubuntu Pro client. The instructions below show how to enable live kernel patching and install the client. Instructions can also be found in [this tutorial](https://ubuntu.com/tutorials/enable-the-livepatch-service#1-overview).
+Livepatch is included in Ubuntu Pro (previously known as Ubuntu Advantage). The recommended way to install it is using the Ubuntu Pro client. The following commands enable live kernel patching and install the Livepatch client. See also [this tutorial](https://ubuntu.com/tutorials/enable-the-livepatch-service#1-overview).
 
 ```
 # Attach your personal or enterprise subscription from ubuntu.com/pro
@@ -19,4 +19,4 @@ sudo pro attach
 sudo pro enable livepatch
 ```
 
-This will install the Livepatch client, and enroll the system to the Ubuntu Livepatch service.
+This installs the Livepatch client and enrolls the system in the Ubuntu Livepatch service.

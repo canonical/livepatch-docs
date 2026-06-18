@@ -14,9 +14,9 @@ Fetch, download, proxy, and chain patches across servers.
 ## In this section
 
 - [Fetch patches](/server/how-to-guides/patch-management/fetch-patches.md)
-- [Use the Patch Downloader Tool](/server/how-to-guides/patch-management/use-the-patch-downloader-tool.md)
+- [Use the patch downloader tool](/server/how-to-guides/patch-management/use-the-patch-downloader-tool.md)
 - [Configure proxy for fetching patches](/server/how-to-guides/patch-management/configure-proxy-for-fetching-patches.md)
-- [Chain Livepatch Servers](/server/how-to-guides/patch-management/chain-livepatch-servers.md)
+- [Chain Livepatch servers](/server/how-to-guides/patch-management/chain-livepatch-servers.md)
 
 ```{toctree}
 :titlesonly:

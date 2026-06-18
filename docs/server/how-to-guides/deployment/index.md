@@ -7,20 +7,20 @@ myst:
 
 (server-how-to-guides-deployment)=
 
-# Deployment
+# How to deploy Livepatch server
 
-Deploy, upgrade, and migrate a Livepatch Server installation.
+Deploy, upgrade, and migrate a Livepatch server installation.
 
-## In this section
+## Available guides
 
-- [Deploy via Juju](/server/how-to-guides/deployment/deploy-via-juju.md)
-- [Deploy via Snap](/server/how-to-guides/deployment/deploy-via-snap.md)
-- [Deploy CVE Service via Snap](/server/how-to-guides/deployment/deploy-cve-service-via-snap.md)
-- [Upgrade a deployment](/server/how-to-guides/deployment/upgrade-a-deployment.md)
-- [Migrate from Reactive charm to snap](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-snap.md)
-- [Migrate from Reactive charm to Operator charm](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-operator-charm.md)
-- [Migrate from Reactive Charm to K8s Operator charm](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-k8s-operator-charm.md)
-- [Deploying on public clouds](/server/how-to-guides/deployment/public-clouds/index.md)
+* [Deploy via Juju](/server/how-to-guides/deployment/deploy-via-juju.md)
+* [Deploy via Snap](/server/how-to-guides/deployment/deploy-via-snap.md)
+* [Deploy CVE service via Snap](/server/how-to-guides/deployment/deploy-cve-service-via-snap.md)
+* [Upgrade a deployment](/server/how-to-guides/deployment/upgrade-a-deployment.md)
+* [Migrate from Reactive charm to snap](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-snap.md)
+* [Migrate from Reactive charm to Operator charm](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-operator-charm.md)
+* [Migrate from Reactive Charm to K8s Operator charm](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-k8s-operator-charm.md)
+* [Deploy on public clouds](/server/how-to-guides/deployment/public-clouds/index.md)
 
 ```{toctree}
 :titlesonly:

@@ -7,9 +7,9 @@ myst:
 
 (server-how-to-guides-harden-your-livepatch-server-deployment)=
 
-# Harden your Livepatch server deployment
+# Harden a Livepatch server deployment
 
-The Livepatch Server is available as a Kubernetes charm and a strict-confinement snap for on-premises deployment. This document provides guidance on securing the server in production deployments.
+The Livepatch Server is available as a Kubernetes charm and a strict-confinement snap for on-premises deployment. The following sections provide guidance on securing the server in production deployments.
 
 ## Enable TLS termination
 
@@ -17,8 +17,8 @@ The Livepatch Server does not natively terminate TLS. In on-premises deployments
 
 For **charm deployments**, TLS termination is configured through an ingress integration. The charm supports two ingress interfaces:
 
-- **`nginx-route`** (legacy): Integration with the [Nginx Ingress Integrator charm](https://charmhub.io/nginx-ingress-integrator). Set `ingress-interface=legacy-nginx-route` (default).
-- **`ingress`** (modern): Integration with the [Traefik K8s charm](https://charmhub.io/traefik-k8s) or [Gateway API Integrator charm](https://charmhub.io/gateway-api-integrator). Set `ingress-interface=ingress`.
+* **`nginx-route`** (legacy): Integration with the [Nginx Ingress Integrator charm](https://charmhub.io/nginx-ingress-integrator). Set `ingress-interface=legacy-nginx-route` (default).
+* **`ingress`** (modern): Integration with the [Traefik K8s charm](https://charmhub.io/traefik-k8s) or [Gateway API Integrator charm](https://charmhub.io/gateway-api-integrator). Set `ingress-interface=ingress`.
 
 Example using the modern ingress integration:
 
@@ -29,25 +29,25 @@ juju integrate canonical-livepatch-server-k8s traefik-k8s
 
 For **snap deployments**, a reverse proxy (for example, Nginx or HAProxy) can be configured with TLS certificates to terminate HTTPS before forwarding traffic to the server.
 
-Without TLS termination, all communication — including authentication credentials — is transmitted in plaintext. This is acceptable on a fully trusted internal network, but not recommended when any network segment is untrusted.
+Without TLS termination, all communication -- including authentication credentials -- is transmitted in plaintext. This is acceptable on a fully trusted internal network, but not recommended when any network segment is untrusted.
 
 For step-by-step TLS setup instructions, see the [TLS configuration guide](/server/how-to-guides/security/setup-tls.md).
 
 ### Federation (chained servers)
 
-In [federated deployments](/server/how-to-guides/patch-management/chain-livepatch-servers.md) where multiple on-premises servers are chained, TLS should also be enabled between them to protect the exchange of tier and patch data. Configure TLS termination on the upstream server just as you would for client-facing traffic.
+In [federated deployments](/server/how-to-guides/patch-management/chain-livepatch-servers.md) where multiple on-premises servers are chained, TLS should also be enabled between them to protect the exchange of tier and patch data. Configure TLS termination on the upstream server just as for client-facing traffic.
 
 ## Encrypt database connections
 
 TLS for PostgreSQL connections is supported through the connection string. Include `sslmode=verify-full` (or at minimum `sslmode=require`) in the database connection string to encrypt traffic between the server and PostgreSQL.
 
-For charm deployments, database credentials are obtained through Juju relations (`database` interface with the [PostgreSQL K8s Charm](https://charmhub.io/postgresql-k8s)). TLS for the database connection is managed by the PostgreSQL charm's [TLS integration](https://canonical-charmed-postgresql-k8s.readthedocs-hosted.com/14/tutorial/index.html#enable-encryption-with-tls). The Livepatch charm does not expose separate database credential configuration — all credentials are exchanged through the Juju relation protocol.
+For charm deployments, database credentials are obtained through Juju relations (`database` interface with the [PostgreSQL K8s Charm](https://charmhub.io/postgresql-k8s)). TLS for the database connection is managed by the PostgreSQL charm's [TLS integration](https://canonical-charmed-postgresql-k8s.readthedocs-hosted.com/14/tutorial/index.html#enable-encryption-with-tls). The Livepatch charm does not expose separate database credential configuration -- all credentials are exchanged through the Juju relation protocol.
 
 ## Encrypt patch storage connections
 
-- **S3**: Set `patch-storage.s3-secure` to `true` to enforce HTTPS for all S3 communication.
-- **Swift**: Configure `patch-storage.swift-auth-url` to use an HTTPS endpoint.
-- **Filesystem/PostgreSQL**: No additional configuration needed as storage is local to the server or database.
+* **S3**: Set `patch-storage.s3-secure` to `true` to enforce HTTPS for all S3 communication.
+* **Swift**: Configure `patch-storage.swift-auth-url` to use an HTTPS endpoint.
+* **Filesystem/PostgreSQL**: No additional configuration needed as storage is local to the server or database.
 
 ## Configure a custom CA certificate for the contracts service
 
@@ -119,8 +119,8 @@ For snap deployments, ensure that the configuration file (typically at `$SNAP_CO
 
 The HTTP governor protects the server from overload. Configure appropriate limits for the deployment:
 
-- `server.concurrency-limit` (default: 1000): Maximum number of requests processed simultaneously.
-- `server.burst-limit` (default: 500): Maximum number of concurrently incoming requests. Requests exceeding this are queued up to `concurrency-limit - burst-limit` (default: 500), and rejected beyond that.
+* `server.concurrency-limit` (default: 1000): Maximum number of requests processed simultaneously.
+* `server.burst-limit` (default: 500): Maximum number of concurrently incoming requests. Requests exceeding this are queued up to `concurrency-limit - burst-limit` (default: 500), and rejected beyond that.
 
 For charm deployments:
 
@@ -135,15 +135,15 @@ These values should be tuned based on the expected load and available resources.
 
 In production deployments:
 
-- Admin API endpoints should only be accessible from trusted networks.
-- The `/metrics` endpoint (Prometheus) should be restricted to monitoring infrastructure.
-- Database ports should not be exposed to the public network.
+* Admin API endpoints should only be accessible from trusted networks.
+* The `/metrics` endpoint (Prometheus) should be restricted to monitoring infrastructure.
+* Database ports should not be exposed to the public network.
 
 ## Maintain strict privileged access
 
 ### Snap
 
-The snap uses `strict` confinement, restricting the server to only the `network` and \`network-bind\` interfaces.
+The snap uses `strict` confinement, restricting the server to only the `network` and `network-bind` interfaces.
 
 All server data is stored under the `$SNAP_COMMON` and `$SNAP_DATA` directories. Maintain strict privileged access controls on the host machine to prevent unauthorized access to this data.
 
@@ -155,8 +155,8 @@ When a Livepatch Client is registered with the on-premises server, an authentica
 
 The charm deploys the server as a container. The server listens on port 8080 internally. Apply Kubernetes security best practices:
 
-- Use `NetworkPolicy` resources to restrict pod-to-pod communication.
-- Use Kubernetes RBAC to limit access to the server's namespace and secrets.
+* Use `NetworkPolicy` resources to restrict pod-to-pod communication.
+* Use Kubernetes RBAC to limit access to the server's namespace and secrets.
 
 The charm stores its internal state (including the database connection string) in the Juju peer relation data. Access to the Juju controller and model should be restricted to authorized operators.
 
@@ -170,7 +170,7 @@ To reset the snap configuration to its default state:
 sudo snap set canonical-livepatch-server key=
 ```
 
-Alternatively, remove and reinstall the snap (see [decommissioning](/server/how-to-guides/operations/decommission.md)).
+Alternatively, remove and reinstall the snap. See [Decommission](/server/how-to-guides/operations/decommission.md) for details.
 
 ### Charm
 

@@ -1,163 +1,173 @@
 ---
 myst:
   html_meta:
-    description: "How to deploy via snap with Livepatch on-prem."
+    description: "How to deploy via snap with Livepatch on-premises."
 ---
+
 
 (server-how-to-guides-getting-started-with-the-livepatch-server-snap)=
 
-# Getting started with the Livepatch Server Snap
+# How to deploy via Snap
 
-Canonical Livepatch Server enables the delivery of live kernel patches to Livepatch clients, allowing reboots of critical infrastructure to be scheduled at a convenient time.
+The Canonical Livepatch Server enables the delivery of live kernel patches to Livepatch clients, allowing reboots of critical infrastructure to be scheduled at a convenient time.
 
-This guide shows how to set up the Livepatch Server snap.
+This guide covers setting up the Livepatch Server snap.
 
-> Please note, the server snap is not designed for high-availability setups.
+> The server snap is not designed for high-availability setups.
 
-**Requirements**
-At minimum, the server requires a PostgreSQL (*At least version 12*) instance to persist data. For the sake of simplicity, this guide uses Docker to illustrate the server setup. However, feel free to use an existing instance if you have one available.
+## Prerequisites
 
-> **Note**: For a production environment take a look at this [tutorial](https://ubuntu.com/server/docs/databases-postgresql) to install PostgreSQL with persistent storage.
+At minimum, the server requires a PostgreSQL instance (at least version 12) to persist data. For simplicity, this guide uses Docker to illustrate the server setup. An existing PostgreSQL instance can also be used if one is available.
 
-Run the following to start a PostgreSQL instance in Docker:
+> For a production environment, follow the [PostgreSQL installation tutorial](https://ubuntu.com/server/docs/databases-postgresql) to install PostgreSQL with persistent storage.
 
-```
- docker run \
- --name postgresql \
- -e POSTGRES_USER=livepatch \
- -e POSTGRES_PASSWORD=testing \
- -p 5432:5432 \
- -d postgres:12.11
-```
-
-**Installing the snap**
-To install the server snap, simply run:
+To start a PostgreSQL instance in Docker, run:
 
 ```
- sudo snap install canonical-livepatch-server
+docker run \
+  --name postgresql \
+  -e POSTGRES_USER=livepatch \
+  -e POSTGRES_PASSWORD=testing \
+  -p 5432:5432 \
+  -d postgres:12.11
 ```
 
-**Migrating the database**
-Within the snap is an internal tool used to migrate a PostgreSQL database with the Livepatch Server schema, to migrate your database run:
+## Install the snap
+
+To install the server snap, run:
 
 ```
- canonical-livepatch-server.schema-tool \
- postgresql://livepatch:testing@localhost:5432/livepatch
+sudo snap install canonical-livepatch-server
 ```
 
-**Pointing Livepatch at your database**
-All of the configuration for the Livepatch Server snap is handled within the snap daemon, to update Livepatch to target the DSN of your PostgreSQL instance, run:
+## Migrate the database
+
+The snap includes an internal tool for migrating a PostgreSQL database with the Livepatch server schema. To migrate the database, run:
 
 ```
- sudo snap \
- set canonical-livepatch-server \
- lp.database.connection-string=postgresql://livepatch:testing@localhost:5432/livepatch
+canonical-livepatch-server.schema-tool \
+  postgresql://livepatch:testing@localhost:5432/livepatch
 ```
 
-**Validate the server is available**
-To check the server is running successfully, you may run the following:
+## Configure the database connection
+
+All configuration for the Livepatch server snap is handled within the snap daemon. To update Livepatch to target the DSN of the PostgreSQL instance, run:
 
 ```
- sudo snap logs \
- canonical-livepatch-server.livepatch -n 100
+sudo snap set canonical-livepatch-server \
+  lp.database.connection-string=postgresql://livepatch:testing@localhost:5432/livepatch
 ```
 
-If you're a customer of Ubuntu Pro and have access to Livepatch on-premise, you can enable on-premise within the snap the same as you would for the charm.
+## Verify the server is running
 
-**Obtain a Ubuntu Pro token**
-Given you are a customer of Ubuntu Pro, you will have Livepatch On-Premise available to you.
-
-You can obtain your token from: https://ubuntu.com/pro/dashboard
-
-**Updating Livepatch to use your Ubuntu Pro token**
-As previously stated, the server's configuration can be updated through the snap daemon, so update the server to use this token and enable Livepatch On-Premise:
+To check the server is running successfully, run:
 
 ```
- sudo snap set canonical-livepatch-server token=<Ubuntu Pro token>
+sudo snap logs canonical-livepatch-server.livepatch -n 100
 ```
 
-**Managing the server**
-To manage Livepatch, an administrator tool is available as a snap. Install it from:
+## Obtain an Ubuntu Pro token
+
+Customers of Ubuntu Pro with access to Livepatch on-premises can enable on-premises mode within the snap, in the same way as for the charm.
+
+The Ubuntu Pro token is available from: https://ubuntu.com/pro/dashboard
+
+## Set the Ubuntu Pro token
+
+The server configuration can be updated through the snap daemon. To update the server to use the token and enable Livepatch on-premises, run:
 
 ```
- sudo snap install canonical-livepatch-server-admin
+sudo snap set canonical-livepatch-server token=<Ubuntu Pro token>
 ```
 
-The administrator tool needs to know where your Livepatch server is hosted, in an all-in-one setup within a single machine, this is simply `http://localhost:8080`. Export an environment variable like so:
+## Install the administration tool
+
+To manage Livepatch, an administrator tool is available as a snap. Install it with:
 
 ```
- export LIVEPATCH_URL=http://localhost:8080
+sudo snap install canonical-livepatch-server-admin
 ```
 
-Next, for the administrator tool to be able to login to the server, basic authentication must be set up in the snap daemon. For the purpose of this guide, the username is `admin` and password is `admin123`:
-
-> Please note, special characters are escaped using single quotes and the password is/must be bcrypt hashed
+The administrator tool needs to know where the Livepatch server is hosted. In an all-in-one setup on a single machine, this is `http://localhost:8080`. Export an environment variable as follows:
 
 ```
- sudo snap set canonical-livepatch-server\
- lp.auth.basic.users='admin:$2y$10$c25NVkdeIMqWdbgR4883YuE/s2CT1mCmGPm5Ma1XbUqGqM26ClTGe'
+export LIVEPATCH_URL=http://localhost:8080
 ```
 
-If you would like to generate your own, you can do so as follows:
+## Set up authentication
+
+For the administrator tool to log in to the server, basic authentication must be set up in the snap daemon. For the purpose of this guide, the username is `admin` and the password is `admin123`.
+
+> Special characters are escaped using single quotes. The password must be bcrypt hashed.
 
 ```
- sudo apt-get install apache2-utils
- htpasswd -bnBC 10 <username> <password>
+sudo snap set canonical-livepatch-server \
+  lp.auth.basic.users='admin:$2y$10$c25NVkdeIMqWdbgR4883YuE/s2CT1mCmGPm5Ma1XbUqGqM26ClTGe'
 ```
 
-Next, manually enable basic authentication:
+To generate a custom password hash, run:
 
 ```
- sudo snap set canonical-livepatch-server lp.auth.basic.enabled=true
+sudo apt-get install apache2-utils
+htpasswd -bnBC 10 <username> <password>
 ```
 
-Finally, login with the administrator tool as follows, assuming the example username and password have been used:
+Next, enable basic authentication:
 
 ```
- canonical-livepatch-server-admin.livepatch-admin login -a admin:admin123
+sudo snap set canonical-livepatch-server lp.auth.basic.enabled=true
 ```
 
-**Synchronizing with hosted Livepatch**
-Now you have a running, fully configured On-Premise Livepatch server, synchronise patches from hosted Livepatch into the server. Run the following within your administrator tool:
+Finally, log in with the administrator tool, assuming the example username and password have been used:
 
 ```
- canonical-livepatch-server-admin.livepatch-admin sync trigger 
+canonical-livepatch-server-admin.livepatch-admin login -a admin:admin123
 ```
 
-To set the server to automatically sync patches from Canonical's servers every 12 hours, you can run the following commands,
+## Synchronize with hosted Livepatch
+
+Once the on-premises Livepatch server is running and fully configured, synchronize patches from hosted Livepatch into the server. Run the following within the administrator tool:
 
 ```
- sudo snap set canonical-livepatch-server lp.patch-sync.enabled=true
- sudo snap set canonical-livepatch-server lp.patch-sync.interval=12h
+canonical-livepatch-server-admin.livepatch-admin sync trigger
 ```
 
-The default configuration is set to store the patches on the local filesystem of the server, you can also view the patches on the filesystem here:
+To set the server to automatically sync patches from Canonical's servers every 12 hours, run:
 
 ```
- ls /var/snap/canonical-livepatch-server/common/patches/
+sudo snap set canonical-livepatch-server lp.patch-sync.enabled=true
+sudo snap set canonical-livepatch-server lp.patch-sync.interval=12h
 ```
 
-**Exposing the server**
-By default the Snap listens on localhost:8080 and so is not accessible to requests from external networks. To see this, run the following command:
+The default configuration stores patches on the local filesystem of the server. The patches can be viewed at:
+
+```
+ls /var/snap/canonical-livepatch-server/common/patches/
+```
+
+## Expose the server
+
+By default the snap listens on `localhost:8080` and is not accessible to requests from external networks. To check the current setting, run:
 
 ```
 sudo snap get canonical-livepatch-server lp.server.server-address
 localhost:8080
 ```
 
-This can be changed to listen for all incoming connections on any port:
+To listen for all incoming connections on a different port, run:
 
 ```
 sudo snap set canonical-livepatch-server lp.server.server-address=0.0.0.0:<port>
 ```
 
-Follow this up with the following change to ensure your admin tool can still access the server. If you would like to access the server from a remote machine, change `localhost` to the IP address of the machine running Livepatch-server On-prem:
+Update the `LIVEPATCH_URL` environment variable to ensure the admin tool can still access the server. To access the server from a remote machine, replace `localhost` with the IP address of the machine running the Livepatch server:
 
 ```
 export LIVEPATCH_URL=http://localhost:<port>
 ```
 
-**Final words**
-And now you have an On-Premise Livepatch server configured to synchronise with hosted Livepatch!
+## Next steps
 
-For further reading please consult the *how-to* guides!
+The on-premises Livepatch server is now configured to synchronize with hosted Livepatch.
+
+For further reading, consult the how-to guides.

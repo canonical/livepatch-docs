@@ -4,11 +4,12 @@ myst:
     description: "How to configure proxy with Livepatch client."
 ---
 
+
 (client-how-to-guides-how-to-configure-a-proxy-in-the-livepatch-client)=
 
 # How to configure a proxy in the Livepatch client
 
-Livepatch client users have the option to communicate with the Livepatch server through a proxy. Livepatch supports communicating through HTTP, HTTPS, or SOCKS5 proxies. To do so, there are a few configuration parameters that should be assigned.
+The Livepatch client supports communicating with the Livepatch server through HTTP, HTTPS, or SOCKS5 proxies. Several configuration parameters control this behaviour.
 
 ## Check proxy configuration
 
@@ -23,36 +24,36 @@ ca-certs: ""
 ...
 ```
 
-Note that an empty string value (“”) means the corresponding parameter is not set and system defaults will be used.
+An empty string value (`""`) means the corresponding parameter is not set and system defaults are used.
 
-## Using an HTTP/SOCKS5 proxy
+## Use an HTTP proxy or SOCKS5 proxy
 
-To enable the usage of an HTTP proxy, run the following commands:
+To enable an HTTP proxy, run the following commands:
 
 ```bash
 sudo canonical-livepatch config http-proxy=http://proxy.example.com
 sudo canonical-livepatch config https-proxy=http://proxy.example.com
 ```
 
-Users can also configure the Livepatch client to use a SOCKS5 proxy by running these commands:
+To configure a SOCKS5 proxy, run these commands:
 
 ```bash
 sudo canonical-livepatch config http-proxy=socks5://proxy.example.com:1080
 sudo canonical-livepatch config https-proxy=socks5://proxy.example.com:1080
 ```
 
-Although the client respects the standard Linux environment variables used for proxy setup (i.e., `HTTP_PROXY`, `HTTPS_PROXY` or `NO_PROXY`), please note that for them to take effect, they should be set in the Livepatch client daemon process environment. Therefore, it is more straightforward for users to use the above configuration parameters.
+The client respects the standard Linux environment variables for proxy setup (`HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`). However, these variables must be set in the Livepatch client daemon process environment to take effect. Using the configuration parameters above is the recommended approach.
 
-## Using an HTTPS proxy
+## Use an HTTPS proxy
 
-When using an HTTPS proxy (not to be confused with proxying HTTPS requests), users need to make sure they are including `https://` scheme when setting the above configuration parameters:
+When using an HTTPS proxy (not to be confused with proxying HTTPS requests), include the `https://` scheme when setting the configuration parameters:
 
 ```bash
 sudo canonical-livepatch config http-proxy=https://proxy.example.com
 sudo canonical-livepatch config https-proxy=https://proxy.example.com
 ```
 
-If a self-signed CA certificate is included in the HTTPS proxy’s TLS certificate chain, the user should add the CA certificate to the trusted certificates on the host machine by running the following commands (assuming `ca.crt` is the CA certificate file):
+If a self-signed CA certificate is included in the HTTPS proxy's TLS certificate chain, add the CA certificate to the trusted certificates on the host machine. Run the following commands (assuming `ca.crt` is the CA certificate file):
 
 ```bash
 sudo apt-get install ca-certificates
@@ -60,15 +61,15 @@ sudo cp ca.crt /usr/share/ca-certificates
 sudo dpkg-reconfigure ca-certificates
 ```
 
-However, if a user does not want to install a self-signed CA certificate as a system-wide trusted one, they can explicitly instruct Livepatch client to trust the CA certificate:
+To trust a self-signed CA certificate without installing it system-wide, explicitly instruct the Livepatch client to trust the CA certificate:
 
 ```bash
 sudo canonical-livepatch config ca-certs=@stdin < ca.crt
 ```
 
-## Routing directly to the Livepatch server
+## Route directly to the Livepatch server
 
-If there is already a system-wide proxy set up (e.g., by `HTTP_PROXY` environment variable), the users can escape it for communication with the Livepatch server by using the following configuration:
+If a system-wide proxy is already configured (for example, through the `HTTP_PROXY` environment variable), bypass it for communication with the Livepatch server using the following configuration:
 
 ```bash
 sudo canonical-livepatch config no-proxy=canonical.com

@@ -13,7 +13,7 @@ Day-to-day operation of the Livepatch client.
 
 ## In this section
 
-- [Check client status](/client/how-to-guides/operations/check-client-status.md)
+* [Check client status](/client/how-to-guides/operations/check-client-status.md)
 
 ```{toctree}
 :titlesonly:

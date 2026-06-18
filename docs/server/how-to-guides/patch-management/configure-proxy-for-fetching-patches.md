@@ -8,13 +8,13 @@ myst:
 
 # Use a proxy when fetching patches
 
-Livepatch on-prem server can fetch patches through an HTTP proxy. The configuration steps vary depending on the deployment platform.
+The Livepatch on-premises server can fetch patches through an HTTP proxy. The configuration steps vary depending on the deployment platform.
 
 See the [patch-sync config](/server/reference/platform/configuration.md) for more details.
 
 ## Juju deployments (latest charms)
 
-If Livepatch on-prem has been deployed using Juju, run the following Juju configuration command:
+If Livepatch on-premises has been deployed using Juju, run the following Juju configuration command:
 
 ```bash
 juju config livepatch \
@@ -25,7 +25,7 @@ juju config livepatch \
 
 ## Juju deployments (deprecated charm)
 
-If Livepatch on-prem has been deployed using Juju with the older reactive charm (see the migration guide [here](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-operator-charm.md)), run the following Juju configuration command:
+If Livepatch on-premises has been deployed using Juju with the older reactive charm (see the [migration guide](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-operator-charm.md)), run the following Juju configuration command:
 
 ```bash
 juju config livepatch \
@@ -35,7 +35,7 @@ juju config livepatch \
 
 ## Snap deployments
 
-If Livepatch on-prem has been deployed using Snap, users can run the following commands to configure a proxy:
+If Livepatch on-premises has been deployed using Snap, run the following commands to configure a proxy:
 
 ```bash
 sudo snap set canonical-livepatch-server lp.patch-sync.proxy.enabled=true
@@ -43,7 +43,7 @@ sudo snap set canonical-livepatch-server lp.patch-sync.proxy.http=http://proxy.e
 sudo snap set canonical-livepatch-server lp.patch-sync.proxy.https=http://proxy.example.com
 ```
 
-You can see the applied configuration by running the following:
+The applied configuration can be viewed by running the following:
 
 ```bash
 sudo snap get canonical-livepatch-server lp.patch-sync.proxy

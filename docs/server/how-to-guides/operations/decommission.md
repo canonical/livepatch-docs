@@ -7,9 +7,9 @@ myst:
 
 (server-how-to-guides-decommission-livepatch-server-securely)=
 
-# Decommission Livepatch server securely
+# Decommission a Livepatch server securely
 
-This document provides guidance on securely removing the Livepatch Server and all associated data from the environment.
+The following procedures describe how to securely remove the Livepatch Server and all associated data from the environment.
 
 ## Decommission a snap deployment
 
@@ -50,16 +50,16 @@ DROP USER livepatch;
 
 ### Remove application logs
 
-Snap application logs are captured by systemd-journald and cannot be removed independently without impacting other system logs. These logs will be automatically removed when the journal rotates according to the system's journald configuration. See the [journald configuration manpage](https://man7.org/linux/man-pages/man5/journald.conf.5.html) for details on configuring rotation and retention.
+Snap application logs are captured by systemd-journald and cannot be removed independently without impacting other system logs. These logs are automatically removed when the journal rotates according to the system's journald configuration. See the [journald configuration manpage](https://man7.org/linux/man-pages/man5/journald.conf.5.html) for details on configuring rotation and retention.
 
 ### Remove patch storage data
 
 Remove patch files from the configured storage backend:
 
-- **Filesystem**: Delete the patches directory (default: `/var/lib/livepatch/patches`).
-- **S3**: Delete the configured S3 bucket or its contents.
-- **Swift**: Delete the configured Swift container or its contents.
-- **PostgreSQL**: Patch data is removed when the database is dropped.
+* **Filesystem**: Delete the patches directory (default: `/var/lib/livepatch/patches`).
+* **S3**: Delete the configured S3 bucket or its contents.
+* **Swift**: Delete the configured Swift container or its contents.
+* **PostgreSQL**: Patch data is removed when the database is dropped.
 
 ## Decommission a charm deployment
 
@@ -83,7 +83,7 @@ juju destroy-model <model-name> --destroy-storage --force
 
 After decommissioning, ensure that any secrets stored outside the deployment are also removed:
 
-- Juju secrets created for the application
-- Environment variable files or shell history containing credentials
-- Backup copies of configuration files containing admin passwords or database connection strings
-- Admin tool token files stored at `~/snap/canonical-livepatch-server-admin/common/tokens` on any machine where the admin tool was used
+* Juju secrets created for the application
+* Environment variable files or shell history containing credentials
+* Backup copies of configuration files containing admin passwords or database connection strings
+* Admin tool token files stored at `~/snap/canonical-livepatch-server-admin/common/tokens` on any machine where the admin tool was used

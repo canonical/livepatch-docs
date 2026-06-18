@@ -13,12 +13,12 @@ Run, scale, monitor, and decommission a deployment.
 
 ## In this section
 
-- [Manage fleet of machines](/server/how-to-guides/operations/manage-fleet-of-machines.md)
-- [Generate patch health report](/server/how-to-guides/operations/generate-patch-health-report.md)
-- [Scale out](/server/how-to-guides/operations/scale-out.md)
-- [Configure logging and monitoring](/server/how-to-guides/operations/configure-logging-and-monitoring.md)
-- [Decommission](/server/how-to-guides/operations/decommission.md)
-- [Use Livepatch client with on-prem server](/server/how-to-guides/operations/use-livepatch-client-with-on-prem-server.md)
+* [Manage a fleet of machines](/server/how-to-guides/operations/manage-fleet-of-machines.md)
+* [Generate a patch health report](/server/how-to-guides/operations/generate-patch-health-report.md)
+* [Scale out](/server/how-to-guides/operations/scale-out.md)
+* [Configure logging and monitoring](/server/how-to-guides/operations/configure-logging-and-monitoring.md)
+* [Decommission](/server/how-to-guides/operations/decommission.md)
+* [Use a Livepatch client with an on-premises server](/server/how-to-guides/operations/use-livepatch-client-with-on-prem-server.md)
 
 ```{toctree}
 :titlesonly:

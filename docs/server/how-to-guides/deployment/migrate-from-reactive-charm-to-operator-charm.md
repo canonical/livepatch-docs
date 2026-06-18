@@ -6,7 +6,7 @@ myst:
 
 (server-how-to-guides-migrating-from-the-old-livepatch-charm)=
 
-# Migrating from the old Livepatch charm
+# Migrate from the old Livepatch charm
 
 The Juju framework offered a, now deprecated, way to write charms called [reactive charms](https://documentation.ubuntu.com/juju/3.6/reference/charm/#reactive-charm). The modern framework is known as the [operator framework](https://documentation.ubuntu.com/juju/latest/reference/charm/#ops-charm).
 Below, the process to identify which type of charm is running is explained.
@@ -14,13 +14,13 @@ Below, the process to identify which type of charm is running is explained.
 Run `juju status` and observe the charm name and channel. The output will resemble the following.
 ![livepatch-status|800x31](/_static/images/2uNc2yggCQnxXj7gfkmcBVE0j2H.png)
 
-**Machine Charm:**
+**Machine Charm**
 
 - Charm name = [canonical-livepatch-server](https://charmhub.io/canonical-livepatch-server)
   - Channel = `latest/*` - Reactive charm (deprecated)
   - Channel = `ops1.x/*` - Operator charm (recommended for new deployments)
 
-**Kubernetes Charm:**
+**Kubernetes Charm**
 
 - Charm name = [canonical-livepatch-server-k8s](https://charmhub.io/canonical-livepatch-server-k8s)
   - Channel = `latest/*` - Operator charm (recommended for new deployments)
@@ -30,11 +30,11 @@ Run `juju status` and observe the charm name and channel. The output will resemb
 
 Currently there is no way to migrate existing data to a new deployment. Existing deployments will continue to function but will no longer receive new features. It is recommended that new deployments use the operator charms.
 
-To migrate an existing reactive charm deployment, it is suggested that you setup a new deployment and follow the steps below to migrate your configuration.
+To migrate an existing reactive charm deployment, set up a new deployment and follow the steps below to migrate the configuration.
 
-## Migrate Configuration
+## Migrate configuration
 
-The new Livepatch charms have different configuration keys. Additionally, some options were removed in favour of a simpler structure. To migrate your old config to the new one, you can use this [script](https://github.com/canonical/livepatch-machine-charm/blob/main/scripts/migrate_config.py).
+The new Livepatch charms have different configuration keys. Additionally, some options were removed in favour of a simpler structure. To migrate the old configuration to the new one, use this [script](https://github.com/canonical/livepatch-machine-charm/blob/main/scripts/migrate_config.py).
 
 To run the script:
 
@@ -42,19 +42,19 @@ To run the script:
 python3 ./converter.py -i input.yaml -o converted.yaml
 ```
 
-Where the `input.yaml` is the old configuration that you want to convert. To extract it from your deployment, you can use this command:
+Where the `input.yaml` is the old configuration to convert. To extract it from the deployment, use this command:
 
 ```
 juju config livepatch-server > input.yaml
 ```
 
-The script would create/overwrite the output file specified by the `-o` parameter.
+The script creates or overwrites the output file specified by the `-o` parameter.
 
 | | | |
 | :---------------------------------: | :----------------------------------------: | :------------------------------------------------------------------------------------------------------------: |
 | **Old config** | **New config** | **Notes** |
-| log_level | server.log-level | Possible values:'debug', 'info', 'warn', 'error'.Default is ‘info’ |
-| url_template | server.url-template | Must be in the form:“http(s)://\<hostname>:\<port>/v1/patches/{filename}" |
+| log_level | server.log-level | Possible values:'debug', 'info', 'warn', 'error'.Default is 'info' |
+| url_template | server.url-template | Must be in the form:"http(s)://\<hostname>:\<port>/v1/patches/{filename}" |
 | psql_dbname | **NA** | |
 | psql_roles | **NA** | |
 | blocklist_cache_refresh | patch-blocklist.refresh-interval | Make sure that patch-blocklist.enabled is set to true |
