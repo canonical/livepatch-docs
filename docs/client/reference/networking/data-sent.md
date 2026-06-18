@@ -16,7 +16,7 @@ Livepatch client instances ping servers hosted by Canonical at a configurable sc
 - kernel version
 - boot time and uptime
 - unique machine identifier, based on `/etc/machine-id`
-- version of the currently applied livepatch (if any)
-- current state of the system (whether a livepatch has been applied or not)
+- version of the currently applied live kernel patch (if any)
+- current state of the system (whether a live kernel patch has been applied or not)
 - time of the last server request
 - version of the client

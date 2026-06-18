@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How Livepatching works and what kind of updates it provides."
+    description: "How live kernel patching works and what kind of updates it provides."
 ---
 
 
@@ -9,11 +9,11 @@ myst:
 
 # Architecture
 
-How Livepatching works and what kind of updates it provides.
+How live kernel patching works and what kind of updates it provides.
 
 ## In this section
 
-- [How Livepatching works?](/client/explanation/architecture/how-livepatching-works.md)
+- [How live kernel patching works](/client/explanation/architecture/how-live-patching-works.md)
 - [What kind of updates are provided by Livepatch?](/client/explanation/architecture/what-kind-of-updates-are-provided-by-livepatch.md)
 - [What kind of updates are not provided by Livepatch?](/client/explanation/architecture/what-kind-of-updates-are-not-provided-by-livepatch.md)
 - [What are Livepatch tiers?](/client/explanation/architecture/what-are-livepatch-tiers.md)
@@ -25,7 +25,7 @@ How Livepatching works and what kind of updates it provides.
 :maxdepth: 1
 :hidden:
 
-How livepatching works <how-livepatching-works.md>
+How live kernel patching works <how-live-patching-works.md>
 What kind of updates are provided by livepatch <what-kind-of-updates-are-provided-by-livepatch.md>
 What kind of updates are not provided by livepatch <what-kind-of-updates-are-not-provided-by-livepatch.md>
 What are livepatch tiers <what-are-livepatch-tiers.md>

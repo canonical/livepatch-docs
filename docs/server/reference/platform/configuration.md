@@ -63,7 +63,7 @@ The following sections describes what configuration values are available.
 | `server.concurrency-limit` | Maximum number of API requests to serve concurrently. | `integer` |
 | `server.burst-limit` | The queue limit, roughly equals `concurrency-burst-limit`. | `integer` |
 | `server.is-leader` | In multi-server deployments, determine if this is a leader unit. Not available for charmed deployments. | `bool`. |
-| `server.is-hosted` | Enable configuration blocks specific to Canonical's hosted configuration for livepatch. | `bool` |
+| `server.is-hosted` | Enable configuration blocks specific to Canonical's hosted configuration for Livepatch. | `bool` |
 
 ### Admin Authentication
 

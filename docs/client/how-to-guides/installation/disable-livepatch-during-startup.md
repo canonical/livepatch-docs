@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How to disable livepatch during startup with Livepatch client."
+    description: "How to disable Livepatch during startup with Livepatch client."
 ---
 
 

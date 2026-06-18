@@ -30,18 +30,18 @@ This guide assumes you have the following:
 
 - A K8s Juju model.
 - Access to the machine charm model.
-- The charmed livepatch k8s operator deployed in a Juju Model.
+- The charmed Livepatch K8s operator deployed in a Juju Model.
 - A charmed k8s PostgreSQL deployment.
-- The IP of the leader PostgreSQL unit for the old livepatch deployment.
+- The IP of the leader PostgreSQL unit for the old Livepatch deployment.
   - To acquire the IP, run `juju status` and look for the public IP under the **Public address** column.
 - The jq and yq utility.
 - The canonical-livepatch-server-admin snap.
 
-To ensure a clean database migration, do not relate the k8s livepatch operator to the Postgresql charm.
+To ensure a clean database migration, do not relate the K8s Livepatch operator to the Postgresql charm.
 
 ## Migrate configuration
 
-The livepatch server operator charms use a simplified and better organized configuration schema. The configuration schema change means the reactive charm configuration is incompatible with the operator charms and needs to be converted.
+The Livepatch server operator charms use a simplified and better organized configuration schema. The configuration schema change means the reactive charm configuration is incompatible with the operator charms and needs to be converted.
 
 The K8s operator charms provide an action to convert from the legacy config format to the new format. First, acquire the reactive charm configuration with:
 
@@ -49,7 +49,7 @@ The K8s operator charms provide an action to convert from the legacy config form
 juju config canonical-livepatch-server > old-config.yaml
 ```
 
-Next, switch to the livepatch server K8s deployment and generate the migrated configuration:
+Next, switch to the Livepatch server K8s deployment and generate the migrated configuration:
 
 ```bash
 juju run canonical-livepatch-server-k8s/0 emit-updated-config config-file="$(jq -Rs . old-config.yaml)"
@@ -122,7 +122,7 @@ canonical-livepatch-server-k8s:
   server.url-template: <your url template>
 ```
 
-Now you can configure the livepatch K8s operator with your converted reactive charm configuration values:
+Now you can configure the Livepatch K8s operator with your converted reactive charm configuration values:
 
 ```bash
 juju config canonical-livepatch-server-k8s --file new-config.yaml
@@ -132,7 +132,7 @@ This only updates configuration values set in the file; any configuration not sp
 
 ## Database migration
 
-> NOTE: This guide assumes the PostgreSQL database was deployed using the machine charm to interact with the livepatch server charm. For the livepatch K8s charm, deploy a K8s PostgreSQL charm in a Juju model (the same model as the livepatch K8s charm or a different model). In this section, the PostgreSQL 14 charm is deployed on the same model as the livepatch K8s charm.
+> NOTE: This guide assumes the PostgreSQL database was deployed using the machine charm to interact with the Livepatch server charm. For the Livepatch K8s charm, deploy a K8s PostgreSQL charm in a Juju model (the same model as the Livepatch K8s charm or a different model). In this section, the PostgreSQL 14 charm is deployed on the same model as the Livepatch K8s charm.
 
 ### Dump the machine charm database
 
@@ -184,14 +184,14 @@ Finally, restore the database from the dump file:
 pg_restore -h localhost -U operator -d postgres --no-owner --clean --if-exists /tmp/dump-file
 ```
 
-Once the database has been restored, relate the database to the canonical livepatch server K8s operator and apply the database migrations:
+Once the database has been restored, relate the database to the Canonical Livepatch server K8s operator and apply the database migrations:
 
 ```bash
 juju integrate canonical-livepatch-server-k8s:database postgresql-k8s:database
 juju run canonical-livepatch-server-k8s/leader schema-upgrade
 ```
 
-After the restore, the roles need to be updated as the names differ from charm deployments. Specifically, the role that has access to the livepatch database needs to be given access to each table, since the restore sets all ownership to the `operator` role.
+After the restore, the roles need to be updated as the names differ from charm deployments. Specifically, the role that has access to the Livepatch database needs to be given access to each table, since the restore sets all ownership to the `operator` role.
 
 SSH back into the leader unit and log in to `psql`:
 
@@ -225,13 +225,13 @@ SELECT format('ALTER TABLE %I OWNER TO "relation_id_22";', tablename) FROM pg_ta
 
 This SQL switches the owner of all tables in the public schema from `operator` to `relation_id_22`.
 
-You have now successfully migrated the database from the machine charm PostgreSQL to the K8s charm PostgreSQL, and can now use it with the livepatch server K8s charm.
+You have now successfully migrated the database from the machine charm PostgreSQL to the K8s charm PostgreSQL, and can now use it with the Livepatch server K8s charm.
 
 ## Patch migration
 
 The procedure for migrating patches depends on the patch storage configuration set for the machine charm.
 
-> Note: The filesystem storage option is not recommended as it prevents running multiple livepatch server pods, the filesystem cannot be shared across pods, and will be lost on pod restart. Instead, use PostgreSQL or swift/s3 buckets and resync the patch storage.
+> Note: The filesystem storage option is not recommended as it prevents running multiple Livepatch server pods, the filesystem cannot be shared across pods, and will be lost on pod restart. Instead, use PostgreSQL or swift/s3 buckets and resync the patch storage.
 
 ### PostgreSQL
 
@@ -244,7 +244,7 @@ juju config canonical-livepatch-k8s patch-storage.type=postgres
 juju config canonical-livepatch-k8s patch-storage.postgres-connection-string=<postgres-connection-string>
 ```
 
-If you are using the same database for patch storage as you are for the main livepatch server database, you only need to set the `patch-storage.type` key; Juju handles the connection string via the `livepatch-postgres` integration.
+If you are using the same database for patch storage as you are for the main Livepatch server database, you only need to set the `patch-storage.type` key; Juju handles the connection string via the `livepatch-postgres` integration.
 
 After migrating the database, ensure you have access to your patches by querying for available patches via the admin tool:
 
@@ -256,7 +256,7 @@ If the migration was successful, you will see a list of patch payloads for each 
 
 ### Object storage
 
-The `swift` and `s3` patch storage types imply that the patches are stored in a remote AWS S3 or Swift bucket. This means that the migration of the configuration values and database migration from the reactive charm to the K8s charm is sufficient. Only the network connectivity between the livepatch K8s charm units and the remote bucket should be verified. This might require modification of firewall rules depending on the setup.
+The `swift` and `s3` patch storage types imply that the patches are stored in a remote AWS S3 or Swift bucket. This means that the migration of the configuration values and database migration from the reactive charm to the K8s charm is sufficient. Only the network connectivity between the Livepatch K8s charm units and the remote bucket should be verified. This might require modification of firewall rules depending on the setup.
 
 When using object storage, such as AWS S3 or a Swift bucket, relevant connection parameters have been copied over with the configuration migration. The only required action is to refresh the patch storage:
 
@@ -264,4 +264,4 @@ When using object storage, such as AWS S3 or a Swift bucket, relevant connection
 canonical-livepatch-server-admin.livepatch-admin storage refresh
 ```
 
-This adds patches found in storage to the distribution records in the livepatch database.
+This adds patches found in storage to the distribution records in the Livepatch database.

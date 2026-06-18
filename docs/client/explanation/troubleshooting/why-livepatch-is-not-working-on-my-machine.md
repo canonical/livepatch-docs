@@ -13,7 +13,7 @@ myst:
 
 Livepatch supports only kernels that have been released by the kernel team to the updates pocket, i.e. officially-released kernels acquired through APT using Canonical's repository for system updates, or Snap-based kernels released by Canonical to stable Snap channels.
 
-While a livepatch *might* successfully apply to a kernel acquired from other sources, only certain kernels released by Canonical are supported. Kernels from other sources are not supported, including but not limited to:
+While a live kernel patch *might* successfully apply to a kernel acquired from other sources, only certain kernels released by Canonical are supported. Kernels from other sources are not supported, including but not limited to:
 
 - kernels acquired from the development (proposed) kernel PPA
 - kernels acquired from the kernel team's build PPA
@@ -24,7 +24,7 @@ While a livepatch *might* successfully apply to a kernel acquired from other sou
 
 Please be aware that while it may be possible to build a kernel with the same version markings as an officially-supported kernel, and to attempt to load a Canonical-generated livepatch into that kernel, it will likely not work, and can potentially crash your system or corrupt your data.
 
-Also note that a kernel running unsigned, out-of-tree drivers will be tainted, and the kernel will refuse to apply livepatches in this state.
+Also note that a kernel running unsigned, out-of-tree drivers will be tainted, and the kernel will refuse to apply live kernel patches in this state.
 
 A full list of supported kernels is available [here](/client/reference/platform/supported-kernels.md).
 
@@ -44,9 +44,9 @@ As above, a full list of GA and HWE kernels supported is available [here](/clien
 
 ## SECUREBOOT
 
-If you are using secure boot with a kernel older than April 1 2021, you will also need to import the livepatch public keys into your keyring. If your kernel is newer, there is no need to import keys as the key is included in the kernel, but doing so will not cause any harm.
+If you are using secure boot with a kernel older than April 1 2021, you will also need to import the Livepatch public keys into your keyring. If your kernel is newer, there is no need to import keys as the key is included in the kernel, but doing so will not cause any harm.
 
-Use the following command to import the livepatch key:
+Use the following command to import the Livepatch key:
 
 ```
 

@@ -8,12 +8,12 @@ myst:
 
 # How to scale out a Livepatch on-prem deployment
 
-There are several possible scenarios where scaling out a livepatch deployment could be necessary:
+There are several possible scenarios where scaling out a Livepatch deployment could be necessary:
 
 1. High traffic due to large amount of machines being serviced
 2. High availability setups
 
-The livepatch on-prem deployment consists of 3 main components: the `haproxy` reverse-proxying requests, `postgresql` storing livepatch data and `livepatch server` itself. Any one (or all) of these components can be scaled out with additional units by running the `juju` command with the following syntax:
+The Livepatch on-prem deployment consists of 3 main components: the `haproxy` reverse-proxying requests, `postgresql` storing Livepatch data and `Livepatch server` itself. Any one (or all) of these components can be scaled out with additional units by running the `juju` command with the following syntax:
 
 ```
 juju add-unit <component> -n <number of units>
@@ -31,7 +31,7 @@ To deploy more than one ingress haproxy unit, run the following Juju command:
 juju add-unit haproxy -n 1
 ```
 
-If more than one haproxy unit is being used, the DNS entry pointing to the livepatch server should contain links to all the haproxy units.
+If more than one haproxy unit is being used, the DNS entry pointing to the Livepatch server should contain links to all the haproxy units.
 
 ## Scaling out postgresql
 
@@ -43,11 +43,11 @@ To deploy additional postgresql units, run the following Juju command:
 juju add-unit postgrseql -n 1
 ```
 
-## Scaling out livepatch
+## Scaling out Livepatch
 
-Deploying additional livepatch units will let them share the load of handling machine requests. The filesystem patch storage type is not compatible with a scaled out livepatch setup.
+Deploying additional Livepatch units will let them share the load of handling machine requests. The filesystem patch storage type is not compatible with a scaled out Livepatch setup.
 
-To deploy additional livepatch units, run the following Juju commands:
+To deploy additional Livepatch units, run the following Juju commands:
 
 ```
 juju add-unit livepatch -n 1
@@ -61,4 +61,4 @@ Once the units have been added, an additional command will have to be run for ea
 juju run-action livepatch/{i} get-resource-token
 ```
 
-Replace `{i}` with the number of each new livepatch unit in the `juju status` output.
+Replace `{i}` with the number of each new Livepatch unit in the `juju status` output.

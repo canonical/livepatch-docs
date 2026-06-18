@@ -12,7 +12,7 @@ myst:
 
 Livepatch on-prem is a self-hosted version of the Livepatch server, enabling the delivery of patches to machines within network restricted environments.
 
-This tutorial will deploy the Livepatch On-prem server as a Kubernetes application. We will deploy and configure the livepatch on-prem server using Juju and Charmed Operators. Juju is an Open Source Charmed Operator Framework that controls the whole lifecycle of an application. While this is one option for deploying the on-prem server, another is to deploy to virtual machines as described [here](/server/how-to-guides/deployment/deploy-via-juju.md).
+This tutorial will deploy the Livepatch On-prem server as a Kubernetes application. We will deploy and configure the Livepatch on-prem server using Juju and Charmed Operators. Juju is an Open Source Charmed Operator Framework that controls the whole lifecycle of an application. While this is one option for deploying the on-prem server, another is to deploy to virtual machines as described [here](/server/how-to-guides/deployment/deploy-via-juju.md).
 
 For this tutorial we will use MicroK8s, a lightweight tool for creating a local Kubernetes cluster.
 
@@ -20,7 +20,7 @@ You don’t need to have previous or advanced knowledge of Juju or Charmed Opera
 
 ### Livepatch authorization token
 
-Since on-prem livepatch servers act as caching proxies for the livepatch service hosted by Canonical, a subscription token is required to authorise the on-prem instance to pull patch information.
+Since on-prem livepatch servers act as caching proxies for the Livepatch service hosted by Canonical, a subscription token is required to authorise the on-prem instance to pull patch information.
 
 To get your Ubuntu Pro subscription token, please go to https://ubuntu.com/pro/dashboard, login to your Ubuntu SSO account and use your free personal token for the remainder of this guide.
 
@@ -81,7 +81,7 @@ https://charmhub.io/canonical-livepatch-onprem
 
 Livepatch On-Prem needs a place to store patches that it syncs from the upstream. By default the above "k8s" bundle will store patches in PostgreSQL directly. Other options including S3 storage are available and can be configured as described [here](/server/reference/patch-storage/index.md).
 
-In order to ensure PostgreSQL has enough space, see our [resources topic](/server/reference/platform/resource-requirements.md) for requirements on virtual machines running livepatch on-prem. Although this information relates to the deployment of Livepatch on virtual machines, the storage requirements remain similar.
+In order to ensure PostgreSQL has enough space, see our [resources topic](/server/reference/platform/resource-requirements.md) for requirements on virtual machines running Livepatch on-prem. Although this information relates to the deployment of Livepatch on virtual machines, the storage requirements remain similar.
 
 To start the deployment within the previously created Juju model, run:
 
@@ -101,7 +101,7 @@ The output should look like the following while the applications are initialisin
 
 ![|624x116](/_static/images/ym7r1pLvMBXCDSGgcVARsFDG3w9Po4z.png)
 
-After initialisation, the livepatch unit is expected to be in a blocked state with the message:
+After initialisation, the Livepatch unit is expected to be in a blocked state with the message:
 
 `"✘ patch-sync token not set, run get-resource-token action"`
 
@@ -121,7 +121,7 @@ After that, provide the url_template setting as follows:
 juju config livepatch server.url-template="http://10.1.236.9:8080/v1/patches/{filename}"
 ```
 
-The url_template specifies the url where patch files can be downloaded by livepatch clients. The url template should be of the form 'http(s)://{HOSTNAME}/v1/patches/{filename}'. The hostname is the only part that needs to be changed. When using MicroK8s, all pods and services are exposed by default to the host so the hostname simplifies to the ip address of the livepatch-server unit (this is the pod's IP address). This is useful for testing but not helpful in a production setup. You should now be able to curl the Livepatch pod with
+The url_template specifies the url where patch files can be downloaded by Livepatch clients. The url template should be of the form 'http(s)://{HOSTNAME}/v1/patches/{filename}'. The hostname is the only part that needs to be changed. When using MicroK8s, all pods and services are exposed by default to the host so the hostname simplifies to the ip address of the livepatch-server unit (this is the pod's IP address). This is useful for testing but not helpful in a production setup. You should now be able to curl the Livepatch pod with
 
 ```
 curl 10.1.236.9:8080
@@ -169,7 +169,7 @@ applications:
 
 ### 5. Setting up authentication
 
-To enable admin tool access to the livepatch server, authentication needs to be configured. This is done with username/password authentication.
+To enable admin tool access to the Livepatch server, authentication needs to be configured. This is done with username/password authentication.
 
 Generate the password hash using:
 
@@ -190,7 +190,7 @@ juju config livepatch auth.basic.users='username:$2y$10$74ZgHaxn...UH/Bbw6W2bmct
 
 See [Administration Tool](/server/how-to-guides/security/setup-administration-tool.md) topic for instructions on installing the administration tool and setting up authentication.
 
-Once this has been done, the livepatch admin tool can be used to authenticate:
+Once this has been done, the Livepatch admin tool can be used to authenticate:
 
 ```
 export LIVEPATCH_URL=http(s)://{pod or ingress url}
@@ -223,7 +223,7 @@ To limit which patches are downloaded see this [document](/server/reference/patc
 
 ## Enabling machine status reporting
 
-Each livepatch on-prem instance can optionally send information about the status of the machines it's serving back to Canonical. This functionality is opt-in.
+Each Livepatch on-prem instance can optionally send information about the status of the machines it's serving back to Canonical. This functionality is opt-in.
 
 The information sent back about each machine includes:
 

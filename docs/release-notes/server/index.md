@@ -9,7 +9,7 @@ myst:
 
 # Release Notes for the Canonical Livepatch Server (K8s charm)
 
-The [Livepatch Server K8s charm](https://charmhub.io/canonical-livepatch-server-k8s) is the easiest and the recommended way to deploy Livepatch Server on K8s. This charm configures and runs the Livepatch Server, which serves livepatches and associated metadata to clients. Use the latest/stable channel charm for production environments.
+The [Livepatch Server K8s charm](https://charmhub.io/canonical-livepatch-server-k8s) is the easiest and the recommended way to deploy Livepatch Server on K8s. This charm configures and runs the Livepatch Server, which serves live kernel patches and associated metadata to clients. Use the latest/stable channel charm for production environments.
 
 ## Releases
 

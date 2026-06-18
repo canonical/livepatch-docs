@@ -16,15 +16,15 @@ This guide has been deprecated. Refer to our [tutorials](/server/tutorial/index.
 If you have an existing deployment using this document, see our [migration guide](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-operator-charm.md) to update your deployment.
 ```
 
-This guide explains how to deploy and configure the livepatch on-prem server using Juju and Charmed Operators. Juju is an Open Source Charmed Operator Framework that controls the whole lifecycle of an application - including machine applications. Please follow the [installation instructions](https://documentation.ubuntu.com/juju/latest/howto/manage-juju/#install-juju) for your system.
+This guide explains how to deploy and configure the Livepatch on-prem server using Juju and Charmed Operators. Juju is an Open Source Charmed Operator Framework that controls the whole lifecycle of an application - including machine applications. Please follow the [installation instructions](https://documentation.ubuntu.com/juju/latest/howto/manage-juju/#install-juju) for your system.
 
-The livepatch on-prem bundle needs to be deployed on machines running Ubuntu focal.
+The Livepatch on-prem bundle needs to be deployed on machines running Ubuntu focal.
 
-You don’t need to have previous or advanced knowledge of Juju or Charmed Operators to follow this guide and deploy livepatch.
+You don't need to have previous or advanced knowledge of Juju or Charmed Operators to follow this guide and deploy Livepatch.
 
 ## Livepatch authorization token
 
-Since on-prem livepatch servers act as caching proxies for the livepatch service hosted by canonical, the subscription token is required to authorize the on-prem instance to pull patch information.
+Since on-prem Livepatch servers act as caching proxies for the Livepatch service hosted by Canonical, the subscription token is required to authorize the on-prem instance to pull patch information.
 
 To get your Ubuntu Pro subscription token, please go to https://ubuntu.com/pro.
 ![image1|690x373](/_static/images/9IhZmAFso5ufkbB8QyboWUoROad.png)
@@ -35,11 +35,11 @@ To get your Ubuntu Pro subscription token, please go to https://ubuntu.com/pro.
 
 Once you have Juju CLI installed, you will need to bootstrap a Juju controller to your cloud. The [Juju documentation](https://documentation.ubuntu.com/juju/latest/howto/manage-controllers/) has detailed instructions on how to do that for several clouds and machine types.
 
-See[ resources topic ](/server/reference/platform/resource-requirements.md) for requirements for the virtual machines running livepatch on-premises services.
+See[ resources topic ](/server/reference/platform/resource-requirements.md) for requirements for the virtual machines running Livepatch on-premises services.
 
 ## 2. Deploying the bundle
 
-The bundle and charmed operators necessary to deploy livepatch server are available in the charmstore at
+The bundle and charmed operators necessary to deploy the Livepatch server are available in the charmstore at
 
 https://charmhub.io/canonical-livepatch-onprem
 
@@ -49,7 +49,7 @@ To start the deployment on a created Juju model, run:
 juju deploy ch:canonical-livepatch-onprem
 ```
 
-## 3. Configuring livepatch
+## 3. Configuring Livepatch
 
 After the deployment completes, verify the status of the model by running:
 
@@ -60,7 +60,7 @@ juju status
 The output should look like:
 ![screenshot_20210601_164245|648x159](/_static/images/z8RLGfl4BdhI501OBguUgqlpaKY.png)
 
-At this point the livepatch unit is expected to be in a blocked state with the message:
+At this point the Livepatch unit is expected to be in a blocked state with the message:
 "✘ sync_token not set"
 
 Provide the token (acquired by following instructions in the Livepatch authorization token section) by running:
@@ -80,7 +80,7 @@ After that, provide the url_template setting as follows:
 juju config livepatch url_template="http://10.94.227.82/v1/patches/{filename}"
 ```
 
-The url_template specifies the url where patch files can be downloaded by livepatch client agents. The url template should be of the form 'http(s)://{HOSTNAME}/v1/patches/{filename}'. The hostname is the only part that needs to be changed. The hostname can be just the ip address of the haproxy unit. If a DNS hostname is configured for the haproxy IP address, that can be used too.
+The url_template specifies the url where patch files can be downloaded by Livepatch client agents. The url template should be of the form 'http(s)://{HOSTNAME}/v1/patches/{filename}'. The hostname is the only part that needs to be changed. The hostname can be just the ip address of the haproxy unit. If a DNS hostname is configured for the haproxy IP address, that can be used too.
 
 ### Deploying with a config overlay (Optional)
 
@@ -104,7 +104,7 @@ applications:
 
 ## 4. Setting up authentication
 
-To enable admin tool access to the livepatch server, authentication needs to be configured. The easiest way is to enable username/password authentication.
+To enable admin tool access to the Livepatch server, authentication needs to be configured. The easiest way is to enable username/password authentication.
 
 Generate the password hash using:
 
@@ -115,7 +115,7 @@ htpasswd -bnBC 10 <username> <password>
 username:$2y$10$74ZpDgHaxnUQo.AJZk1cMuSRfef5oK5xq5o/GLbUH/Bbw6W2bmctm
 ```
 
-Use the output of the previous command to configure livepatch:
+Use the output of the previous command to configure Livepatch:
 
 ```
 juju config livepatch auth_basic_users='username:$2y$10$74ZgHaxn...UH/Bbw6W2bmctm'
@@ -123,7 +123,7 @@ juju config livepatch auth_basic_users='username:$2y$10$74ZgHaxn...UH/Bbw6W2bmct
 
 See [Administration Tool](/server/how-to-guides/security/setup-administration-tool.md) topic for instructions on installing the administration tool and setting up authentication.
 
-Once this has been done, the livepatch admin tool can be used to authenticate:
+Once this has been done, the Livepatch admin tool can be used to authenticate:
 
 ```
 export LIVEPATCH_URL=http(s)://{haproxy url}
@@ -143,7 +143,7 @@ livepatch-admin sync trigger --wait
 
 ## Enabling machine status reporting
 
-Each livepatch on-prem instance can optionally send information about the status of the machines it's serving back to Canonical. This functionality is opt-in.
+Each Livepatch on-prem instance can optionally send information about the status of the machines it's serving back to Canonical. This functionality is opt-in.
 
 The information sent back about each machine includes:
 

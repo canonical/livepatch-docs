@@ -8,7 +8,7 @@ myst:
 
 # How to upgrade a Livepatch on-prem deployment
 
-To upgrade the livepatch on-prem deployment, each application needs to be upgraded separately:
+To upgrade the Livepatch on-prem deployment, each application needs to be upgraded separately:
 
 ```
 juju refresh haproxy
@@ -26,13 +26,13 @@ juju refresh ubuntu-advantage
 juju refresh livepatch
 ```
 
-After upgrading the livepatch application, a schema upgrade may be required. This will be indicated in the application's status when running `juju status`. In such a case, run the command:
+After upgrading the Livepatch application, a schema upgrade may be required. This will be indicated in the application's status when running `juju status`. In such a case, run the command:
 
 ```
 juju run-action livepatch/leader schema-upgrade --wait
 ```
 
-One can also restart the livepatch application with the following command:
+One can also restart the Livepatch application with the following command:
 
 ```
 juju run-action livepatch/<desired-unit> restart --wait

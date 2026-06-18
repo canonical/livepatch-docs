@@ -13,7 +13,7 @@ Discussion and clarification of key topics related to Livepatch.
 
 ## In this section
 
-- [Architecture](/client/explanation/architecture/index.md) — How Livepatching works and what kind of updates it provides.
+- [Architecture](/client/explanation/architecture/index.md) — How live kernel patching works and what kind of updates it provides.
 - [Security](/client/explanation/security/index.md) — How CVEs are rated and how Livepatch keeps systems secure.
 - [Patches](/client/explanation/patches/index.md) — How patches are installed and their lifecycle.
 - [Troubleshooting](/client/explanation/troubleshooting/index.md) — Diagnose and understand Livepatch client issues.

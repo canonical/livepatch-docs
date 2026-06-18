@@ -6,7 +6,7 @@ myst:
 
 (server-how-to-guides-migrating-from-the-old-livepatch-charm)=
 
-# Migrating from the old livepatch charm
+# Migrating from the old Livepatch charm
 
 The Juju framework offered a, now deprecated, way to write charms called [reactive charms](https://documentation.ubuntu.com/juju/3.6/reference/charm/#reactive-charm). The modern framework is known as the [operator framework](https://documentation.ubuntu.com/juju/latest/reference/charm/#ops-charm).
 Below, the process to identify which type of charm is running is explained.

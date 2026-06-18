@@ -78,7 +78,7 @@ juju add-model livepatch
 
 ### 2. Deploying the bundle
 
-Ensure you’re on the livepatch model:
+Ensure you're on the Livepatch model:
 
 ```
 juju switch livepatch
@@ -270,7 +270,7 @@ Additionally, see how-to [configure patch sync filters](/server/reference/patch-
 
 ## Enabling machine status reporting
 
-Each livepatch on-prem instance can optionally send information about the status of the machines it's serving back to Canonical. Full details on what information is sent is available [here](/client/reference/networking/data-sent.md)
+Each Livepatch on-prem instance can optionally send information about the status of the machines it's serving back to Canonical. Full details on what information is sent is available [here](/client/reference/networking/data-sent.md)
 
 ```
 juju config livepatch patch-sync.send-machine-reports=true

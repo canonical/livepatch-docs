@@ -66,7 +66,7 @@ However, if a user does not want to install a self-signed CA certificate as a sy
 sudo canonical-livepatch config ca-certs=@stdin < ca.crt
 ```
 
-## Routing directly to Livepatch server
+## Routing directly to the Livepatch server
 
 If there is already a system-wide proxy set up (e.g., by `HTTP_PROXY` environment variable), the users can escape it for communication with the Livepatch server by using the following configuration:
 

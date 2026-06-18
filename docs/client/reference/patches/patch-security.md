@@ -33,7 +33,7 @@ All kernel modules are signed by Canonical to verify their authenticity. This pr
 - Signature algorithm: SHA512 with RSA
 - Canonical’s [Public key](https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/jammy/plain/debian/certs/canonical-livepatch-all.pem)
 
-Kernel modules are authenticated before they are installed, ensuring that the patch was made by Canonical and securing the Livepatch client against installation of maliciously crafted patches. The public keys used for signature verification are baked into the livepatch client, and therefore, no external access is required to use them.
+Kernel modules are authenticated before they are installed, ensuring that the patch was made by Canonical and securing the Livepatch client against installation of maliciously crafted patches. The public keys used for signature verification are baked into the Livepatch client, and therefore, no external access is required to use them.
 
 Go packages used in the process of verifying kernel module signatures:
 

@@ -7,7 +7,7 @@ myst:
 
 (server-reference-managing-patches-in-an-on-prem-livepatch-deployment)=
 
-# Managing patches in an on-prem livepatch deployment
+# Managing patches in an on-prem Livepatch deployment
 
 Livepatch patches are managed using tiers. Tiers are basically containers that patches are put into. Each Livepatch client instance is associated with a specific tier (via the token). After deployment the server comes with a default tier list: edge, beta, candidate and stable. This list can be modified using the Livepatch administration tool.
 

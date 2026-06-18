@@ -8,9 +8,9 @@ myst:
 
 # How to setup TLS for Livepatch on-prem
 
-The security of livepatching depends not only on the signed kernel modules but also on the secure TLS channel between the livepatch client and the on-prem server. It is thus paramount to setup the necessary TLS keys and certificates for the on-prem service to provide the necessary security.
+The security of live kernel patching depends not only on the signed kernel modules but also on the secure TLS channel between the Livepatch client and the on-prem server. It is thus paramount to setup the necessary TLS keys and certificates for the on-prem service to provide the necessary security.
 
-There are several ways to set up TLS for livepatch on-prem. One way is to use a dedicated TLS terminating reverse proxy in front of the haproxy service. Another way is to configure the appropriate TLS certificate and key on the haproxy instance directly.
+There are several ways to set up TLS for Livepatch on-prem. One way is to use a dedicated TLS terminating reverse proxy in front of the haproxy service. Another way is to configure the appropriate TLS certificate and key on the haproxy instance directly.
 
 ## Configuring TLS for haproxy
 
@@ -49,15 +49,15 @@ juju deploy ch:canonical-livepatch-onprem --overlay ./tls-overlay.yaml
 
 (server-how-to-guides-configuring-livepatch-admin-tool-with-tls)=
 
-## Configuring livepatch admin tool with TLS
+## Configuring the Livepatch admin tool with TLS
 
-If the TLS certificate used for livepatch originates from a trusted CA, there should be no further configuration necessary - the livepatch admin tool will use the configured system certificates to verify the server's responses.
+If the TLS certificate used for Livepatch originates from a trusted CA, there should be no further configuration necessary - the Livepatch admin tool will use the configured system certificates to verify the server's responses.
 
 If, however, a self-signed certificate is used, the administration tool will need to be configured to use the certificate. There are several ways to do that.
 
 ### Command line option
 
-The command line option for the livepatch admin tool accepts either the path to a certificate chain PEM file, or the contents of the certificate chain:
+The command line option for the Livepatch admin tool accepts either the path to a certificate chain PEM file, or the contents of the certificate chain:
 
 ```
 livepatch-admin --ca ./cert.pem login -a (...)
@@ -79,9 +79,9 @@ export LIVEPATCH_CA_CRT='/temp/cert.pem'
 export LIVEPATCH_CA_CRT="$(cat ./cert.pem)"
 ```
 
-## Configuring livepatch client with TLS
+## Configuring the Livepatch client with TLS
 
-If a self-signed certificate is used for the livepatch on-prem service, livepatch client instances will also need to be configured with that certificate to be able to verify responses coming from the on-prem server:
+If a self-signed certificate is used for the Livepatch on-prem service, Livepatch client instances will also need to be configured with that certificate to be able to verify responses coming from the on-prem server:
 
 ```
 sudo canonical-livepatch config ca-certs=@stdin < ./cert.pem

@@ -8,7 +8,7 @@ myst:
 
 # How to check the Livepatch client status
 
-Once `canonical-livepatch`, the livepatch client, is running on a machine, it will periodically (every hour by default) check for new patches.
+Once `canonical-livepatch`, the Livepatch client, is running on a machine, it will periodically (every hour by default) check for new patches.
 
 To show the current state of the client, run:
 
@@ -23,7 +23,7 @@ last check: 52 seconds ago
 kernel: 5.4.0-216.236-generic
 server check-in: succeeded
 kernel state: ✓ kernel series 5.4 is covered by Livepatch
-patch state: ✓ all applicable livepatch kernel modules applied
+patch state: ✓ all applicable live kernel patch modules applied
 patch version: 113.1
 tier: updates (Free usage; This machine beta tests new patches.)
 machine id: {alpha-numeric-string}
@@ -33,7 +33,7 @@ The `kernel state` line indicates the current security coverage status for your 
 
 - **✓ kernel series {kernel-series} is covered by Livepatch**
 
-  The kernel series (e.g. `5.4`) is still security maintained by Canonical. Livepatches are available for this series until the security coverage window ends.
+  The kernel series (e.g. `5.4`) is still security maintained by Canonical. Live kernel patches are available for this series until the security coverage window ends.
 
 - **✓ kernel {kernel-version} is covered by Livepatch until {date}, please install available kernel updates and reboot before then**
 
@@ -45,7 +45,7 @@ The `kernel state` line indicates the current security coverage status for your 
 
 - **✗ kernel is no longer covered by Livepatch**
 
-  This kernel has reached end of life and no longer receives livepatches. Upgrade to a newer kernel.
+  This kernel has reached end of life and no longer receives live kernel patches. Upgrade to a newer kernel.
 
 - **✗ Livepatch coverage has ended; please upgrade the kernel and reboot**
 
@@ -61,7 +61,7 @@ The `kernel state` line indicates the current security coverage status for your 
 
 The `patch state` line can also have one of several values:
 
-- **⧗ livepatches are downloaded, but the kernel module is not yet inserted**
+- **⧗ live kernel patches are downloaded, but the kernel module is not yet inserted**
 
   A patch has been downloaded but the kernel module has not yet been inserted.
 
@@ -69,19 +69,19 @@ The `patch state` line can also have one of several values:
 
   A patch is currently being applied.
 
-- **✓ no livepatches available for kernel {kernel-version}**
+- **✓ no live kernel patches available for kernel {kernel-version}**
 
   No patches exist yet for the kernel with the specified version.
 
-- **✓ all applicable livepatch kernel modules applied**
+- **✓ all applicable live kernel patch modules applied**
 
-  All available livepatch kernel modules for this kernel have been inserted and applied.
+  All available live kernel patch modules for this kernel have been inserted and applied.
 
-- **✗ livepatch kernel module inserted but kernel bug detected**
+- **✗ Livepatch kernel module inserted but kernel bug detected**
 
-  The kernel reported an error after the livepatch kernel module was inserted.
+  The kernel reported an error after the Livepatch kernel module was inserted.
 
-- **✗ detected a crash last time the livepatch kernel module was applied, check system logs with** `journalctl -f -u snap.canonical-livepatch.canonical-livepatchd`
+- **✗ detected a crash last time the Livepatch kernel module was applied, check system logs with** `journalctl -f -u snap.canonical-livepatch.canonical-livepatchd`
 
   An earlier patch attempt caused a crash.
 
@@ -89,7 +89,7 @@ The `patch state` line can also have one of several values:
 
   An unexpected error occurred.
 
-- **✗ kernel {kernel-version} contains a vulnerability that cannot be livepatched, please upgrade and reboot**
+- **✗ kernel {kernel-version} contains a vulnerability that cannot be remediated with live kernel patching, please upgrade and reboot**
 
   This kernel has an unpatchable vulnerability. An upgrade is required.
 
@@ -97,23 +97,23 @@ The `patch state` line can also have one of several values:
 
   The kernel was recently upgraded and rebooted successfully.
 
-- **✗ failed to verify the signature of the livepatch kernel module**
+- **✗ failed to verify the signature of the Livepatch kernel module**
 
   Signature verification failed. The patch was not applied.
 
-- **✗ failed to extract information about the livepatch kernel module**
+- **✗ failed to extract information about the Livepatch kernel module**
 
   Patch metadata could not be read.
 
-- **✗ failed to load certificate used to verify the signature of the livepatch kernel module**
+- **✗ failed to load certificate used to verify the signature of the Livepatch kernel module**
 
   The required certificate could not be loaded.
 
-- **✗ failed to confirm that the livepatch kernel module was applied successfully**
+- **✗ failed to confirm that the Livepatch kernel module was applied successfully**
 
-  The client could not confirm that the livepatch kernel module was applied successfully.
+  The client could not confirm that the Livepatch kernel module was applied successfully.
 
-If livepatches have been applied, you will see a `patch version` field `patch version: 113.1` as in the status output above.
+If live kernel patches have been applied, you will see a `patch version` field `patch version: 113.1` as in the status output above.
 
 Patch versions map directly to [Ubuntu Livepatch Security Notices (LSN)](https://ubuntu.com/security/notices) published in the format `LSN-<version>`. The notices describe the vulnerabilities that were resolved in that version.
 

@@ -8,7 +8,7 @@ myst:
 
 # Getting started with the Livepatch Server Snap
 
-Canonical Livepatch Server enables the delivery of Livepatch's to Livepatch clients, allowing reboots of critical infrastructure to be scheduled at a convenient time.
+Canonical Livepatch Server enables the delivery of live kernel patches to Livepatch clients, allowing reboots of critical infrastructure to be scheduled at a convenient time.
 
 This guide shows how to set up the Livepatch Server snap.
 

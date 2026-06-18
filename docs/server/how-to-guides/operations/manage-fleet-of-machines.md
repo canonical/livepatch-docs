@@ -28,7 +28,7 @@ The output of this command will contain a list of machines, along with their mac
 - applied-with-bug
 - Kernel-upgrade-required
 
-Note that the machine IDs correspond to unique livepatch clients. To associate each client system with the machine ID you can run the command below on the client.
+Note that the machine IDs correspond to unique Livepatch clients. To associate each client system with the machine ID you can run the command below on the client.
 
 ```
 cat /etc/machine-id

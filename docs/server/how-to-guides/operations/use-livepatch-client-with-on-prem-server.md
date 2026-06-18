@@ -10,9 +10,9 @@ myst:
 
 ## Network access
 
-Machines running livepatch-client will need network access to the on-prem server. HTTPS (:443) or HTTP (:80) is used, depending on how the livepatch on-prem haproxy and the livepatch application's url_template setting are configured.
+Machines running livepatch-client will need network access to the on-prem server. HTTPS (:443) or HTTP (:80) is used, depending on how the Livepatch on-prem haproxy and the Livepatch application's url_template setting are configured.
 
-In addition to that, machines will require access to the Canonical snap store to install the livepatch client snap:
+In addition to that, machines will require access to the Canonical snap store to install the Livepatch client snap:
 
 - Snap Store: `api.snapcraft.io:443`
 - Snap Store CDN: `*.snapcraftcontent.com:443`
@@ -31,7 +31,7 @@ The id parameter bears no significance in an on-prem deployment. It can be set t
 
 ## Configuring livepatch client
 
-To start applying livepatches to a machine, it is necessary to install the livepatch client on it. Livepatch client is currently distributed as a snap. On the machine run:
+To start applying live kernel patches to a machine, it is necessary to install the Livepatch client on it. Livepatch client is currently distributed as a snap. On the machine run:
 
 ```
 sudo snap install canonical-livepatch

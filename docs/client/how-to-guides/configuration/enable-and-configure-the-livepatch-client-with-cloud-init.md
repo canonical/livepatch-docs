@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How to enable and configure the livepatch client with cloud-init with Livepatch client."
+    description: "How to enable and configure the Livepatch client with cloud-init with Livepatch client."
 ---
 
 

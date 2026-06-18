@@ -25,6 +25,6 @@ Configure the client, proxies, cloud-init, and patch cut-off behaviour.
 
 Configure livepatch client <configure-livepatch-client.md>
 Configure proxy <configure-proxy.md>
-Enable and configure the livepatch client with cloud init <enable-and-configure-the-livepatch-client-with-cloud-init.md>
+Enable and configure the Livepatch client with cloud init <enable-and-configure-the-livepatch-client-with-cloud-init.md>
 Use patch cut off date <use-patch-cut-off-date.md>
 ```
