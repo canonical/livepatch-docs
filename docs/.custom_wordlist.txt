@@ -135,11 +135,6 @@ filepath
 firewalled
 hostnames
 journald
-livepatched
-livepatches
-Livepatches
-livepatching
-Livepatching
 lockfile
 logrotate
 loopback
