@@ -1,258 +1,324 @@
 ---
 myst:
   html_meta:
-    description: "Tutorial: Livepatch and MicroK8s - hands-on introduction to Livepatch on-prem."
+    description: "Complete a hands-on tutorial for Livepatch on-prem on Kubernetes. Deploy Livepatch Server using MicroK8s and Juju, configure authentication, and sync patches in about 45 minutes."
 ---
 
 (server-tutorial-getting-started-with-livepatch-on-prem-and-microk8s)=
 
-# Getting started with Livepatch On-Prem and MicroK8s
+# Getting started with Livepatch on-prem and MicroK8s
 
-## Introduction
+> See also: {ref}`server`
 
-Livepatch on-prem is a self-hosted version of the Livepatch server, enabling the delivery of patches to machines within network restricted environments.
+This tutorial guides you through the process of deploying Livepatch on-prem as a Kubernetes application using MicroK8s and Juju. You'll bootstrap a Juju controller on MicroK8s, deploy the Livepatch Server bundle, configure the URL template and ingress, set up authentication, sync patches, and verify that the server is ready to serve clients.
 
-This tutorial will deploy the Livepatch On-prem server as a Kubernetes application. We will deploy and configure the Livepatch on-prem server using Juju and Charmed Operators. Juju is an Open Source Charmed Operator Framework that controls the whole lifecycle of an application. While this is one option for deploying the on-prem server, another is to deploy to virtual machines as described [here](/server/how-to-guides/deployment/deploy-via-juju.md).
+Completing this tutorial should take approximately 45 minutes.
 
-For this tutorial we will use MicroK8s, a lightweight tool for creating a local Kubernetes cluster.
+## Prerequisites
 
-You don’t need to have previous or advanced knowledge of Juju or Charmed Operators to follow this guide and deploy livepatch.
+Before starting this tutorial, you'll need the following tools and resources.
 
-### Livepatch authorization token
+### Ubuntu Pro token
 
-Since on-prem livepatch servers act as caching proxies for the Livepatch service hosted by Canonical, a subscription token is required to authorise the on-prem instance to pull patch information.
+Livepatch on-prem requires a subscription token to authorise the on-prem instance to pull patch information from the upstream Livepatch service hosted by Canonical.
 
-To get your Ubuntu Pro subscription token, please go to https://ubuntu.com/pro/dashboard, login to your Ubuntu SSO account and use your free personal token for the remainder of this guide.
+If you already have an Ubuntu Pro account, copy your token from the [Ubuntu Pro dashboard](https://ubuntu.com/pro/dashboard). If you don't have an account, sign up for a [free personal Ubuntu Pro account](https://ubuntu.com/pro), then copy your token.
 
-## Deployment Steps
+### Multipass (optional)
 
-### 1. (Optional) Setup Multipass environment
+Multipass is a CLI tool for launching Ubuntu VMs from Windows, Linux, and macOS. You can run the remainder of this tutorial from within a Multipass VM to avoid affecting your host machine.
 
-Multipass is a CLI tool to launch Ubuntu VMs from Windows, Linux and MacOS. The remainder of this guide can be run from within a multipass VM to avoid affecting the host machine.
+Install Multipass from the snap store:
 
-Start by running the following commands to install and start a Multipass VM, the optional section will define the VM’s memory/cpu/disk usage.
-
-```
+```bash
 sudo snap install multipass
-multipass launch jammy --name livepatch-deploy [-m 12g -c 4 -d 40G]
+```
+
+Launch a VM with sufficient resources:
+
+```bash
+multipass launch jammy --name livepatch-deploy --cpus 4 --memory 12G --disk 40G
+```
+
+Open an interactive shell into the VM:
+
+```bash
 multipass shell livepatch-deploy
 ```
 
-### 2. Initialize Juju and MicroK8s
+## Install and configure MicroK8s
 
-Now we can install our dependencies, note that Juju 3.1 only works with a strictly confined MicroK8s Snap.
+MicroK8s is a lightweight, CNCF-certified Kubernetes distribution. Install it from the snap store:
 
+```bash
+sudo snap install microk8s --channel=1.25-strict/stable
 ```
- sudo snap install microk8s --channel=1.25-strict/stable
- sudo snap install juju --channel=3.1/stable
-```
 
-Once you have the Juju CLI installed, you will need to bootstrap a Juju controller to your cloud (MicroK8s in this case). The [Juju documentation](https://documentation.ubuntu.com/juju/latest/tutorial/) has detailed instructions on how to do that for several clouds and machine types.
+Add your user to the MicroK8s group and configure permissions:
 
-To begin,
-
-```
-# Add the 'ubuntu' user to the MicroK8s group:
+```bash
 sudo usermod -a -G snap_microk8s ubuntu
-# Give the 'ubuntu' user permissions to read the ~/.kube directory:
 sudo chown -f -R ubuntu ~/.kube
-# Create the 'microk8s' group:
 newgrp snap_microk8s
-# Enable the necessary MicroK8s addons:
+```
+
+Enable the required MicroK8s addons:
+
+```bash
 sudo microk8s enable hostpath-storage dns ingress
-# Set up a short alias for the Kubernetes CLI:
+```
+
+Create a short alias for the Kubernetes CLI:
+
+```bash
 sudo snap alias microk8s.kubectl kubectl
 ```
 
-Next,
+## Install and bootstrap Juju
 
+Install Juju from the snap store:
+
+```bash
+sudo snap install juju --channel=3.1/stable
 ```
-# Since the Juju package is strictly confined, you also need to manually create a path:
+
+Create the local state directory and bootstrap a Juju controller on MicroK8s:
+
+```bash
 mkdir -p ~/.local/share
 juju bootstrap microk8s livepatch-demo-controller
+```
+
+Create a model to host the Livepatch deployment:
+
+```bash
 juju add-model livepatch
 ```
 
-### 3. Deploying the bundle
+## Deploy Livepatch on-prem
 
-The bundle and charmed operators necessary to deploy livepatch server are available in the charmstore using the “k8s” track at
+Deploy the Livepatch on-prem bundle from Charmhub. The bundle includes all the operators needed to run a working Livepatch on-prem server:
 
-https://charmhub.io/canonical-livepatch-onprem
-
-Livepatch On-Prem needs a place to store patches that it syncs from the upstream. By default the above "k8s" bundle will store patches in PostgreSQL directly. Other options including S3 storage are available and can be configured as described [here](/server/reference/patch-storage/index.md).
-
-In order to ensure PostgreSQL has enough space, see our [resources topic](/server/reference/platform/resource-requirements.md) for requirements on virtual machines running Livepatch on-prem. Although this information relates to the deployment of Livepatch on virtual machines, the storage requirements remain similar.
-
-To start the deployment within the previously created Juju model, run:
-
-```
+```bash
 juju deploy canonical-livepatch-onprem --channel=k8s/stable --trust
 ```
 
-### 4. Configuring livepatch
+Monitor the deployment progress:
 
-After the deployment completes, verify the status of the model by running:
-
-```
+```bash
 juju status
 ```
 
-The output should look like the following while the applications are initialising:
-
-![|624x116](/_static/images/ym7r1pLvMBXCDSGgcVARsFDG3w9Po4z.png)
-
-After initialisation, the Livepatch unit is expected to be in a blocked state with the message:
+After initialisation, the Livepatch unit will enter a blocked state with the message:
 
 `"✘ patch-sync token not set, run get-resource-token action"`
 
-Provide the token (acquired by following instructions in the Livepatch authorization token section) by running:
+### Provide the patch-sync token
 
-```
+Run the `get-resource-token` action with your Ubuntu Pro token to authorise the on-prem server. Replace `<token>` with your Ubuntu Pro token:
+
+```bash
 juju run livepatch/leader get-resource-token contract-token=<token> --wait 30s
 ```
 
-The output should indicate the token has successfully been acquired:
+A successful action returns output confirming that the token has been acquired.
 
-![|624x61](/_static/images/kdKRpt7Vxhsz1JKCNYoMEC9UjXj.png)
+### Configure the patch storage
 
-After that, provide the url_template setting as follows:
+Livepatch on-prem needs a place to store patches synced from the upstream Livepatch service. By default, the bundle stores patches in PostgreSQL. Other storage options -- including S3 -- are available and can be configured at deploy time. See the [patch storage reference](/server/reference/patch-storage/index) for more information.
 
+## Configure the Livepatch server
+
+### Set the URL template
+
+The `server.url-template` option specifies the URL where Livepatch clients download patch files. The template must include the `{filename}` placeholder, which Livepatch replaces with the actual file name at runtime.
+
+First, find the IP address of the Livepatch server pod. Run `juju status` and locate the IP address of the `livepatch` unit, or use the following command:
+
+```bash
+juju status --format json | jq -r '.applications.livepatch.units[]."address"'
 ```
-juju config livepatch server.url-template="http://10.1.236.9:8080/v1/patches/{filename}"
+
+Set the URL template using the pod's IP address. Replace `<ip-address>` with the value you retrieved:
+
+```bash
+juju config livepatch server.url-template="http://<ip-address>:8080/v1/patches/{filename}"
 ```
 
-The url_template specifies the url where patch files can be downloaded by Livepatch clients. The url template should be of the form 'http(s)://{HOSTNAME}/v1/patches/{filename}'. The hostname is the only part that needs to be changed. When using MicroK8s, all pods and services are exposed by default to the host so the hostname simplifies to the ip address of the livepatch-server unit (this is the pod's IP address). This is useful for testing but not helpful in a production setup. You should now be able to curl the Livepatch pod with
+Verify the server is running:
 
-```
-curl 10.1.236.9:8080
-Canonical Livepatch Health service, version v1.13.1
+```bash
+curl <ip-address>:8080
+# Canonical Livepatch Health service, version v1.13.1
 ```
 
-To take this a step further we can configure the `service-hostname` config option of the nginx-ingress-integrator charm which will then set up an ingress in the MicroK8s cluster. That can be tested as follows,
+### Configure the ingress
 
-```
+For production deployments, referencing pods by IP address is unreliable. Use a Kubernetes ingress to expose the Livepatch server through a stable domain name.
+
+Configure the `service-hostname` on the nginx ingress integrator charm:
+
+```bash
 juju config ingress service-hostname=livepatch.test.com
+```
+
+After a short delay, verify the ingress was created:
+
+```bash
 kubectl get ingress -n livepatch
-NAME CLASS HOSTS ADDRESS PORTS AGE
-livepatch-test-com-ingress public livepatch.test.com 127.0.0.1 80 2m14s
-# Next we will edit our hosts file to make this address reachable locally
+```
+
+The output shows the IP address where the ingress is accessible with the `livepatch.test.com` domain name. Add an entry to your `/etc/hosts` file to resolve this domain locally:
+
+```bash
 echo '127.0.0.1 livepatch.test.com' | sudo tee -a /etc/hosts
-curl livepatch.test.com
-Canonical Livepatch Health service, version v1.13.1
 ```
 
-Follow up on this by changing the url-template to match the ingress with
+Update the URL template to use the domain name:
 
-```
+```bash
 juju config livepatch server.url-template="http://livepatch.test.com/v1/patches/{filename}"
 ```
 
-To run this in a production environment, you will need to expose this MicroK8s cluster publicly.
+Verify the server is accessible through the ingress:
 
-#### Deploying with a config overlay (Optional)
-
-These settings can be configured at deploy-time by using a Juju bundle overlay:
-
-```
-juju deploy ch:canonical-livepatch-onprem –channel=k8s/stable --overlay config.yaml
+```bash
+curl livepatch.test.com
+# Canonical Livepatch Health service, version v1.13.1
 ```
 
-The overlay file should have the following content:
-
+```{note}
+To run this in a production environment, you must expose the MicroK8s cluster publicly.
 ```
+
+### Deploy with a bundle overlay (optional)
+
+You can apply these configuration options at deploy time using a Juju bundle overlay. Create an overlay file named `config.yaml`:
+
+```yaml
 applications:
   livepatch:
     options:
-      url_template: <patch url template>
+      url_template: <patch-url-template>
       external_hostname: <your-desired-hostname>
 ```
 
-### 5. Setting up authentication
+Deploy the bundle with the overlay:
 
-To enable admin tool access to the Livepatch server, authentication needs to be configured. This is done with username/password authentication.
-
-Generate the password hash using:
-
+```bash
+juju deploy canonical-livepatch-onprem --channel=k8s/stable --overlay config.yaml
 ```
+
+## Set up administrator authentication
+
+Administrator access to the Livepatch on-prem deployment requires setting up basic authentication.
+
+Install the `apache2-utils` package for `htpasswd`, which generates bcrypt password hashes:
+
+```bash
 sudo apt-get install apache2-utils
+```
+
+Generate a username and password hash pair. Replace `<username>` and `<password>` with your chosen credentials:
+
+```bash
 htpasswd -bnBC 10 <username> <password>
-username:$2y$10$74ZpDgHaxnUQo.AJZk1cMuSRfef5oK5xq5o/GLbUH/Bbw6W2bmctm
 ```
 
-The above is a `username:<hashed-password>` pair that was generated from the pair “username:password” exactly. This should be changed for a production workload.
+The output is a `username:hashed-password` pair. Use the output to configure Livepatch:
 
-Use the output of the previous command to configure livepatch:
-
-```
+```bash
 juju config livepatch auth.basic.enabled=true
 juju config livepatch auth.basic.users='username:$2y$10$74ZgHaxn...UH/Bbw6W2bmctm'
 ```
 
-See [Administration Tool](/server/how-to-guides/security/setup-administration-tool.md) topic for instructions on installing the administration tool and setting up authentication.
+See the [administration tool setup guide](/server/how-to-guides/security/setup-administration-tool) for instructions on installing the admin tool and setting up authentication.
 
-Once this has been done, the Livepatch admin tool can be used to authenticate:
+### Log in with the admin tool
 
+Install the administration tool from the snap store and create an alias:
+
+```bash
+sudo snap install canonical-livepatch-server-admin
+sudo snap alias canonical-livepatch-server-admin.livepatch-admin livepatch-admin
 ```
-export LIVEPATCH_URL=http(s)://{pod or ingress url}
+
+Export the Livepatch server URL and log in:
+
+```bash
+export LIVEPATCH_URL="http://livepatch.test.com"
 livepatch-admin login -a username:password
 ```
 
-### 6. Downloading patches
+## Sync patches
 
-The final step before attaching client machines to the server is to download patches from Canonical servers. This can be done using the admin tool. See [How to setup administration tool](/server/how-to-guides/security/setup-administration-tool.md) for installation steps.
+Download patches from Canonical's hosted Livepatch server to your on-prem instance:
 
-To download patches, run:
-
-```
- livepatch-admin sync trigger --wait
+```bash
+livepatch-admin sync trigger --wait
 ```
 
-To check for synced patches run:
+To verify synced patches:
 
-```
+```bash
 livepatch-admin storage patches
 ```
 
-And to check for any sync failures run:
+To check for sync failures:
 
-```
+```bash
 livepatch-admin sync report
 ```
 
-To limit which patches are downloaded see this [document](/server/reference/patch-management/patch-sync-filters.md).
+To limit which patches are downloaded, see the [patch sync filters reference](/server/reference/patch-management/patch-sync-filters).
 
-## Enabling machine status reporting
+## Enable machine status reporting (optional)
 
-Each Livepatch on-prem instance can optionally send information about the status of the machines it's serving back to Canonical. This functionality is opt-in.
+Each Livepatch on-prem instance can optionally send information about the status of the machines it serves back to Canonical. This functionality is opt-in.
 
-The information sent back about each machine includes:
+The information sent includes:
 
 - Kernel version
 - CPU model
 - Architecture
 - Boot time and uptime
 - Livepatch client version
-- Obfuscated machine id
+- Obfuscated machine ID
 - Status of the patch currently applied to the machine's kernel
 
-To enable this reporting, run the following Juju command:
+Enable machine status reporting:
 
-```
+```bash
 juju config livepatch patch-sync.send-machine-reports=true
 ```
 
-This can be disabled at any time by setting the flag to `false`.
+Disable reporting at any time by setting the value to `false`:
 
-### 7. Cleaning up
-
-To clean up your Juju model you can run the following:
-
+```bash
+juju config livepatch patch-sync.send-machine-reports=false
 ```
+
+## Cleanup
+
+To clean up your Juju model and all associated storage:
+
+```bash
 juju destroy-model --no-prompt livepatch --destroy-storage
 ```
 
-And to cleanup the Multipass VM:
+If you used Multipass, delete the VM:
 
-```
+```bash
 multipass delete --purge livepatch-deploy
 ```
+
+## Summary
+
+In this tutorial, you deployed Livepatch on-prem on MicroK8s using Juju, configured an ingress for stable access, set up administrator authentication, and synchronised patches from the upstream Livepatch service. Your Livepatch on-prem server is now ready to serve clients.
+
+From here, you have several options:
+
+- **Set up Livepatch clients**: Install and configure the Livepatch client on machines in your infrastructure. See the [Livepatch Client documentation](/client/index).
+- **Configure patch sync filters**: Limit which patches are downloaded to your on-prem server. See the [patch sync filters reference](/server/reference/patch-management/patch-sync-filters).
+- **Explore alternative deployment options**: Deploy Livepatch on-prem on LXD. See the [Livepatch and LXD tutorial](/server/tutorial/livepatch-and-lxd).
+- **Get support**: Canonical customers can receive support through the [Canonical support portal](https://portal.support.canonical.com/).

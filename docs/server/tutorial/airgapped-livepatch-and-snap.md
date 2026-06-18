@@ -1,70 +1,79 @@
 ---
 myst:
   html_meta:
-    description: "Tutorial: Air-gapped Livepatch and Snap - hands-on introduction to Livepatch on-prem."
+    description: "Complete a hands-on tutorial for airgapped Livepatch on-prem using Snaps. Deploy Livepatch and an airgapped Ubuntu Pro server in about 45 minutes."
 ---
 
 (server-tutorial-airgapped-livepatch-and-snap)=
 
-# Airgapped Livepatch and Snap
+# Getting started with airgapped Livepatch on-prem and Snaps
 
-## Introduction
+> See also: {ref}`server`
 
-Livepatch on-prem is a self-hosted version of the Livepatch server, enabling the delivery of patches to machines within network restricted environments. For security reasons, administrators may prefer to deploy Livepatch on-prem server in an airgapped environment with restricted Internet access.
+This tutorial guides you through the process of deploying Livepatch on-prem in an airgapped environment using Snap packages. Livepatch on-prem enables the delivery of kernel patches to machines within network-restricted environments. For organisations with strict security requirements, deploying Livepatch on-prem in an airgapped setup ensures that the server operates without direct communication to the upstream Livepatch service.
 
-This tutorial will deploy the Livepatch on-prem server as a Snap package in an airgapped environment.
+In an airgapped environment, two additional tools replace the server's direct connection to Canonical's hosted Livepatch service:
 
-### How does Livepatch on-prem work in an airgapped environment?
-
-Generally, in order to perform authentication/authorisation of machines and to fetch patches, the Livepatch on-prem server needs to communicate with the main Livepatch server hosted by Canonical. In an airgapped environment, where such communication is not available, these functions are handled using the following tools:
-
-- [**Airgapped Ubuntu Pro Server**](https://discourse.charmhub.io/t/15278) provides services related to Ubuntu Pro subscriptions in airgapped environments. Livepatch on-prem can be integrated with this service to perform authentication/authorisation of machines and handle subscription-related functionality.
-- [**Patch Downloader**](https://snapcraft.io/canonical-livepatch-downloader) is a CLI tool that can be used to download the latest patch files from the Livepatch server. In an airgapped setup, the administrators of Livepatch on-prem should use this tool to fetch the latest patches and then upload them to the configured patch storage. You can check out [this](/server/reference/patch-storage/index) topic on how to configure various types of storage for Livepatch on-prem. [This](/server/how-to-guides/patch-management/use-the-patch-downloader-tool) topic explains how to use the Patch Downloader tool to fetch patches.
+- The **airgapped Ubuntu Pro server** provides Ubuntu Pro subscription services, including machine authentication and authorisation, without requiring Internet access.
+- The **Patch Downloader** is a CLI tool for downloading the latest patch files from the upstream Livepatch server. Administrators use this tool on an Internet-connected machine, then transfer the downloaded patches to the airgapped patch storage.
 
 ```{note}
-When deploying airgapped Livepatch on-prem using Snap, it is best to configure the patch storage to something independently accessible within your infrastructure, like the filesystem or an S3/Swift bucket, instead of PostgreSQL. This way, Livepatch administrators can independently download the latest patches via the Patch Downloader CLI tool and transfer them to the patch storage.
+When deploying airgapped Livepatch on-prem using Snaps, configure the patch storage to use an independently accessible option such as the filesystem or an S3/Swift bucket instead of PostgreSQL. This allows administrators to download patches with the Patch Downloader tool and transfer them independently to the patch storage.
 ```
 
-## Deployment steps
+Completing this tutorial should take approximately 45 minutes.
 
-In this tutorial, we use [Multipass](https://multipass.run) to create Ubuntu virtual machines (VM) to deploy Livepatch and its dependencies on it.
+## Prerequisites
 
-If not already installed, we can use the command below to install Multipass:
+Before starting this tutorial, you'll need the following tools and resources.
 
-```sh
+### Ubuntu Pro token
+
+You'll need an [Ubuntu Pro token](https://ubuntu.com/pro). Ubuntu Pro is free for up to five machines.
+
+If you already have an Ubuntu Pro account, copy your token from the [Ubuntu Pro dashboard](https://ubuntu.com/pro/dashboard). If you don't have an account, sign up for a [free personal Ubuntu Pro account](https://ubuntu.com/pro), then copy your token.
+
+### Multipass
+
+Multipass is a CLI tool for launching Ubuntu VMs from Windows, Linux, and macOS.
+
+Install Multipass from the snap store:
+
+```bash
 sudo snap install multipass
 ```
 
-Also, we will need two Multipass virtual machines; one as the airgapped environment where the Livepatch on-prem server is going to be deployed, and the other to simulate a normal environment (i.e., with access to the Internet) to finalize the configurations for the airgapped Ubuntu Pro server.
+## Create the Multipass instances
 
-### Step 1: Create Multipass instances
+This tutorial uses two Multipass VMs:
 
-You can create the Multipass instances needed in this tutorial by running the command below. This will create two instances, named `pro-configuration` and `livepatch-deploy`.
+- `pro-configuration` -- an Internet-connected VM used to generate the airgapped Ubuntu Pro server configuration.
+- `livepatch-deploy` -- the isolated VM representing your airgapped environment where the Livepatch on-prem server is deployed.
 
-```sh
+```bash
 multipass launch jammy --name pro-configuration
 multipass launch jammy --name livepatch-deploy -d 10G
 ```
 
-### Step 2: Create configurations for the airgapped Ubuntu Pro server
+## Generate the airgapped Ubuntu Pro server configuration
 
-We first need an interactive shell in the `pro-configuration` instance:
+Open an interactive shell on the `pro-configuration` instance:
 
-```sh
+```bash
 multipass shell pro-configuration
 ```
 
-Once getting into the instance, we need to install the `pro-airgapped` configuration tool:
+Install the `pro-airgapped` configuration tool:
 
-```sh
+```bash
 sudo add-apt-repository ppa:yellow/ua-airgapped
 sudo apt update
 sudo apt install pro-airgapped
 ```
 
-To create the configuration file, you will need your Ubuntu Pro subscription token. You should copy your token from the Ubuntu Pro [dashboard](https://ubuntu.com/pro/dashboard), replace the `<TOKEN>` placeholder in the following command, and then run the command:
+Create a configuration override file with your Ubuntu Pro token. Replace `<TOKEN>` with your token. Set the `remoteServer` value to the hostname you intend to use for your Livepatch on-prem server:
 
-```sh
+```bash
 cat <<EOF > override.yml
 <TOKEN>:
   livepatch:
@@ -77,70 +86,68 @@ EOF
 ```
 
 ```{note}
-Here we have set the Livepatch on-prem server hostname to `livepatch.test.com`. You can set it to any other value, but remember to replace it in the next steps.
+The hostname `livepatch.test.com` is used throughout this tutorial. You can substitute a different hostname, but remember to use it consistently in all subsequent steps.
 ```
 
-This will create a file named `override.yml`. Now, we should use the `pro-airgapped` tool to make the final configuration file, which we will use to set up the airgapped environment. Note that the `pro-airgapped` tool needs Internet access to communicate with upstream Canonical services to fetch your subscription details. By running the following command the final configuration file will be created as `server-ready.yml`:
+The `pro-airgapped` tool requires Internet access to communicate with upstream Canonical services and fetch your subscription details. Run the following to generate the final configuration file (`server-ready.yml`):
 
-```sh
+```bash
 cat override.yml | pro-airgapped > server-ready.yml
 ```
 
-Now, we are done with this Multipass instance, and we should exit the interactive shell:
+Exit the `pro-configuration` instance:
 
-```sh
+```bash
 exit
 ```
 
-### Step 3: Transfer configuration to airgapped environment
+## Transfer the configuration to the airgapped environment
 
-Now, we need to transfer the airgapped Ubuntu Pro configuration file, `server-ready.yml`, to the isolated Multipass instance. To do this, we have to transfer the file to the host machine and then to the isolated instance.
+Transfer the `server-ready.yml` file from `pro-configuration` to your host machine, then to the isolated `livepatch-deploy` instance:
 
-```sh
-mulitpass transfer pro-configuration:server-ready.yml /tmp/server-ready.yml
+```bash
+multipass transfer pro-configuration:server-ready.yml /tmp/server-ready.yml
 multipass transfer /tmp/server-ready.yml livepatch-deploy:server-ready.yml
 rm /tmp/server-ready.yml
 ```
 
-### Step 4: Deploy airgapped Ubuntu Pro server
+## Deploy the airgapped Ubuntu Pro server
 
-Now it is time to deploy the airgapped Ubuntu Pro server in the airgapped environment. To begin, we need an interactive shell in the isolated Multipass instance:
+Open an interactive shell on the `livepatch-deploy` instance:
 
-```sh
+```bash
 multipass shell livepatch-deploy
 ```
 
-Next step is installing `contracts-airgapped` tool.
+Install the `contracts-airgapped` tool:
 
-```sh
+```bash
 sudo add-apt-repository ppa:yellow/ua-airgapped
 sudo apt update
 sudo apt install contracts-airgapped
 ```
 
 ```{note}
-In a real airgapped environment there will be no Internet access. So, one should use other methods, like local mirrors/packages, to install the dependencies via `apt` or `snap`. Setting up a fully isolated airgapped environment is out of the scope of this tutorial. So, we simply install dependencies from the Internet.
+In a real airgapped environment there is no Internet access. In that case, you must use local mirrors or packages to install dependencies via `apt` or `snap`. Setting up a fully isolated airgapped environment is outside the scope of this tutorial, so dependencies are installed directly from the Internet for simplicity.
 ```
 
-Once the installation is done, we need to run the airgapped Ubuntu Pro server with the configuration file we transferred to the instance in the previous step:
+Run the airgapped Ubuntu Pro server with the configuration file you transferred:
 
-```sh
+```bash
 contracts-airgapped --input=./server-ready.yml
 ```
 
-The airgapped Ubuntu Pro server is now listening on TCP port `8484`.
+The server starts listening on TCP port `8484`. This command runs in the foreground. Open a second shell to the `livepatch-deploy` instance, or run it in the background by appending `&`:
 
-```{note}
-This command runs the airgapped Ubuntu Pro server in the foreground. We still need to work on this Multipass instance. So, you can either open a new shell to the instance or run it in the background by appending a `&` to the command.
+```bash
+contracts-airgapped --input=./server-ready.yml &
 ```
 
-### Step 5: Deploy Livepatch on-prem server
+## Deploy Livepatch on-prem
 
-We should now deploy Livepatch on-prem server in the airgapped environment. For simplicity, we will reuse the same Multipass instance we used for running the airgapped Ubuntu Pro server.
+Livepatch on-prem requires a PostgreSQL database. Install Docker Engine and create a PostgreSQL container. Follow the [Docker Engine installation instructions for Ubuntu](https://docs.docker.com/engine/install/ubuntu/), then run:
 
-Livepatch on-prem requires a PostgreSQL database to work. Here, we use Docker Engine to spin up a PostgreSQL instance. Since the Multipass instance we are in does not have Docker, you need to install it by following the official [instructions](https://docs.docker.com/engine/install/ubuntu/). Once Docker Engine is installed, you can create a PostgreSQL container by using this command:
-
-```sh
+```bash
 docker run \
   --name postgresql \
   -e POSTGRES_USER=livepatch \
@@ -150,108 +157,117 @@ docker run \
 ```
 
 ```{note}
-Livepatch on-prem server requires PostgreSQL 12 or above.
+Livepatch on-prem requires PostgreSQL 12 or above.
 ```
 
-Now, we are ready to install Livepatch on-prem server:
+Install the Livepatch on-prem server snap:
 
-```sh
+```bash
 sudo snap install canonical-livepatch-server
 ```
 
-Before configuring Livepatch on-prem to communicate with our PostgreSQL database, we need to prepare the database:
+Prepare the database schema:
 
-```sh
+```bash
 canonical-livepatch-server.schema-tool postgresql://livepatch:testing@localhost:5432/livepatch
 ```
 
-Once the database preparation is done, we can configure Livepatch on-prem database connection by the following command:
+Configure the database connection:
 
-```sh
+```bash
 sudo snap set canonical-livepatch-server lp.database.connection-string=postgresql://livepatch:testing@localhost:5432/livepatch
 ```
 
-Next, the Livepatch on-prem server should be configured to communicate with the airgapped Ubuntu Pro server:
+Configure Livepatch on-prem to communicate with the airgapped Ubuntu Pro server:
 
-```sh
+```bash
 sudo snap set canonical-livepatch-server \
   lp.contracts.enabled=true \
   lp.contracts.url=http://127.0.0.1:8484
 ```
 
-Now, the Livepatch on-prem server is running and listening on TCP port `8080`. To test it, you can use `curl` like this:
+The Livepatch on-prem server is now running and listening on TCP port `8080`. Verify it is operational:
 
-```sh
+```bash
 curl http://localhost:8080
 # Canonical Livepatch Health service, version v1.14.3
 ```
 
-```{note}
-By default, Livepatch on-prem server uses filesystem to stores the patches. The directory is located at `/var/snap/canonical-livepatch-server/common/patches`. So, in a real-world setup, you can download the latest patches by using the Patch Downloader tool, transfer them to the mentioned path, and use the Admin tool to refresh patch information. Check out [this](/server/how-to-guides/patch-management/use-the-patch-downloader-tool) topic on how to use the Patch Downloader tool.
-```
+## Set up the Livepatch client
 
-### Step 7: Set up Livepatch client
+In a real-world scenario, Livepatch clients run on separate machines. For this tutorial, you'll reuse the same VM.
 
-In a real-world scenario, Livepatch clients run on different machines than those serving the Livepatch on-prem server. Since network configuration is out of the scope of this tutorial, we reuse the VM we have used so far, to install and configure the Livepatch client.
+Configure the Ubuntu Pro client to communicate with the airgapped Ubuntu Pro server:
 
-Before proceeding with the Livepatch client, we should first instruct the Ubuntu Pro client on the machine to communicate with the airgapped Ubuntu Pro server:
-
-```sh
+```bash
 sudo sed -i -e 's|contract_url:.*|contract_url: http://127.0.0.1:8484|g' /etc/ubuntu-advantage/uaclient.conf
 ```
 
-You should also instruct the Ubuntu Pro client to refresh its internal state for changes to take effect:
+Refresh the Ubuntu Pro client's internal state:
 
-```sh
+```bash
 sudo pro refresh
 ```
 
-More than that, we still need to map `livepatch.test.com` to the loopback interface IP address (i.e., `127.0.0.1`):
+Map the Livepatch on-prem hostname to the loopback address:
 
-```sh
+```bash
 echo "127.0.0.1 livepatch.test.com" | sudo tee -a /etc/hosts
 ```
 
-With Ubuntu Pro client being configured, we are ready to install the Livepatch client:
+Install the Livepatch client:
 
-```sh
+```bash
 sudo snap install canonical-livepatch
 ```
 
-By default, the Livepatch client is configured to communicate with the upstream Livepatch server. We need to change it so that the client speaks to our Livepatch on-prem server:
+Configure the Livepatch client to communicate with your on-prem server instead of the upstream service:
 
-```sh
+```bash
 sudo canonical-livepatch config remote-server='http://livepatch.test.com'
 ```
 
-Next, is to call `pro attach` and provide it with your Ubuntu Pro subscription token. You have already used the same token in an earlier step. Replace the `<TOKEN>` placeholder below with the same token and run the command:
+Attach your Ubuntu Pro subscription. Replace `<TOKEN>` with your Ubuntu Pro token:
 
-```sh
+```bash
 sudo pro attach <TOKEN>
 ```
 
-This might fail because we did not fully set up the airgapped Ubuntu Pro server (e.g., apt repository mirrors). But for our purposes, it is okay and we can continue with enabling Livepatch:
+```{note}
+`pro attach` may fail if the airgapped Ubuntu Pro server is not fully configured (for example, without apt repository mirrors). This is expected for the purposes of this tutorial.
+```
 
-```sh
+Enable Livepatch:
+
+```bash
 sudo pro enable livepatch
 ```
 
-This should finish successfully. We can now check the status of the Livepatch client by running the following command:
+Verify the Livepatch client status:
 
-```sh
+```bash
 sudo canonical-livepatch status
+```
+
+The output confirms that the client is communicating with your airgapped Livepatch on-prem server:
+
+```text
 last check: 19 seconds ago
 kernel: 5.15.0-119.129-generic
 server check-in: succeeded
 ```
 
-At this point, our Livepatch client is talking to our airgapped Livepatch on-prem server.
+## Managing patches in an airgapped environment
 
-## Cleaning up
+By default, Livepatch on-prem stores patches on the filesystem at `/var/snap/canonical-livepatch-server/common/patches`. To provide patches to the airgapped server, use the Patch Downloader tool on an Internet-connected machine to download the latest patches, transfer them to the patch storage path, then use the admin tool to refresh the patch information.
 
-Since we used Multipass for this tutorial, we just need to delete the created instances:
+See the [Patch Downloader usage guide](/server/how-to-guides/patch-management/use-the-patch-downloader-tool) for instructions on downloading patches, and the [patch storage reference](/server/reference/patch-storage/index) for information on configuring alternative storage backends.
 
-```sh
+## Cleanup
+
+Delete the Multipass VMs:
+
+```bash
 multipass stop pro-configuration
 multipass delete --purge pro-configuration
 multipass stop livepatch-deploy
@@ -260,5 +276,11 @@ multipass delete --purge livepatch-deploy
 
 ## Summary
 
-In this tutorial, we deployed an airgapped Livepatch on-prem server, alongside an Ubuntu Pro server enabling airgapped operations. Then, we configured the Ubuntu Pro client and Livepatch client to communicate with our airgapped servers.
+In this tutorial, you deployed an airgapped Livepatch on-prem server alongside an airgapped Ubuntu Pro server using Snap packages and Docker, integrated the two services, and configured a Livepatch client to communicate with the airgapped servers. The on-prem server now operates without direct communication to the upstream Livepatch service.
 
+From here, you have several options:
+
+- **Download and transfer patches**: Use the Patch Downloader tool to provide patches to your airgapped server. See the [Patch Downloader usage guide](/server/how-to-guides/patch-management/use-the-patch-downloader-tool).
+- **Configure patch storage**: Set up an S3 or Swift bucket for patch storage in the airgapped environment. See the [patch storage reference](/server/reference/patch-storage/index).
+- **Explore the MicroK8s deployment**: Deploy airgapped Livepatch on-prem on MicroK8s instead. See the [airgapped Livepatch and MicroK8s tutorial](/server/tutorial/airgapped-livepatch-and-microk8s).
+- **Get support**: Canonical customers can receive support through the [Canonical support portal](https://portal.support.canonical.com/).

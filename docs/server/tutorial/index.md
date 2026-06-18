@@ -1,23 +1,22 @@
 ---
 myst:
   html_meta:
-    description: "Tutorial: Tutorial - hands-on introduction to Livepatch on-prem."
+    description: "Tutorials for Livepatch on-prem. Hands-on introduction to deploying Livepatch Server in various environments."
 ---
-
 
 (server-tutorial)=
 
 # Tutorial
 
-A hands-on introduction for Livepatch on-prem server for new users:
+A hands-on introduction to Livepatch on-prem for new users:
 
-- [Getting started with Livepatch On-Prem and LXD](/server/tutorial/livepatch-and-lxd.md)
-- [Getting started with Livepatch On-Prem and MicroK8s](/server/tutorial/livepatch-and-microk8s.md)
+- [Getting started with Livepatch on-prem and LXD](/server/tutorial/livepatch-and-lxd)
+- [Getting started with Livepatch on-prem and MicroK8s](/server/tutorial/livepatch-and-microk8s)
 
 Setting up Livepatch in an airgapped environment:
 
-- [Getting started with Airgapped Livepatch On-Prem on MicroK8s](/server/tutorial/airgapped-livepatch-and-microk8s.md)
-- [Getting started with airgapped Livepatch On-Prem using Snaps ](/server/tutorial/airgapped-livepatch-and-snap.md)
+- [Getting started with airgapped Livepatch on-prem on MicroK8s](/server/tutorial/airgapped-livepatch-and-microk8s)
+- [Getting started with airgapped Livepatch on-prem using Snaps](/server/tutorial/airgapped-livepatch-and-snap)
 
 ```{toctree}
 :titlesonly:
@@ -25,8 +24,8 @@ Setting up Livepatch in an airgapped environment:
 :glob:
 :hidden:
 
-Livepatch and lxd <livepatch-and-lxd.md>
-Livepatch and microk8s <livepatch-and-microk8s.md>
-Airgapped livepatch and microk8s <airgapped-livepatch-and-microk8s.md>
-Airgapped livepatch and snap <airgapped-livepatch-and-snap.md>
+Livepatch and LXD <livepatch-and-lxd.md>
+Livepatch and MicroK8s <livepatch-and-microk8s.md>
+Airgapped Livepatch and MicroK8s <airgapped-livepatch-and-microk8s.md>
+Airgapped Livepatch and Snap <airgapped-livepatch-and-snap.md>
 ```

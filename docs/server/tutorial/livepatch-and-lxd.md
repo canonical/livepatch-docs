@@ -1,287 +1,268 @@
 ---
 myst:
   html_meta:
-    description: "Tutorial: Livepatch and LXD - hands-on introduction to Livepatch on-prem."
+    description: "Complete a hands-on tutorial for Livepatch on-prem. Deploy Livepatch Server using LXD and Juju, configure authentication, and sync patches in about 30 minutes."
 ---
-
 
 (server-tutorial-livepatch-and-lxd)=
 
-# Livepatch and LXD
+# Getting started with Livepatch on-prem and LXD
 
-## Introduction
+> See also: {ref}`server`
 
-In this tutorial we will deploy and configure the Livepatch on-premise server using LXD as our cloud provider.
+This tutorial guides you through the process of deploying Livepatch on-prem using LXD as your cloud provider. You'll bootstrap a Juju controller, deploy the Livepatch Server bundle, enable Ubuntu Pro, configure authentication, sync patches, and verify that the server is ready to serve clients.
 
-We will be using LXD, Juju and the Livepatch server machine charm/bundle.
+Completing this tutorial should take approximately 30 minutes.
 
-For this how-to, you do not require any previous or advanced knowledge of [LXD](https://ubuntu.com/lxd/), [Juju](https://canonical.com/juju) or [Charmed Operators](https://documentation.ubuntu.com/juju/latest/reference/charm/) to proceed and deploy Livepatch on-premise.
+## Prerequisites
 
-If you’ve already deployed Livepatch before, and wish to keep your same configuration, we’ve rewritten our machine charm and the configuration has changed. Please see [here](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-operator-charm.md) for instructions on how to migrate.
-
-### JQ
-
-JQ is a JSON processor, and we’ll use it within this tutorial to extract some values for later use. Install it like so:
-
-```
-sudo apt update
-sudo apt install jq
-```
+Before starting this tutorial, you'll need the following tools installed on your host machine.
 
 ### LXD
 
-LXD provides a unified user experience for managing system containers and virtual machines. And in this how-to, Juju will utilise LXD to spawn containers for the Livepatch on-premise services.
+LXD provides a unified experience for managing system containers and virtual machines. Juju uses LXD to spawn containers for the Livepatch on-prem services.
 
-LXD can be installed locally via a [snap](https://snapcraft.io/lxd). To install LXD, run:
+Install LXD from the snap store:
 
-```
+```bash
 sudo snap install lxd --channel=5.0/stable
 ```
 
-Next, LXD must be initialised, run the following command and either accept the defaults or choose different options when prompted (you may also use the –auto flag):
+Initialise LXD using the `--auto` flag to accept the defaults:
 
-```
+```bash
 lxd init --auto
 ```
 
 ### Juju
 
-Juju is an open source orchestration engine for software operators that enables the deployment, integration and lifecycle management of applications at any scale, on any infrastructure using charms.
+Juju is an open source orchestration engine for software operators that enables the deployment, integration, and lifecycle management of applications at any scale, on any infrastructure.
 
-Juju can be installed locally via a [snap](https://snapcraft.io/juju). To install Juju, run:
+Install Juju from the snap store:
 
-```
+```bash
 sudo snap install juju
 ```
 
-### Ubuntu Pro
+### JQ
 
-Livepatch on-premise requires authorisation to the upstream hosted Livepatch by Canonical via the use of [Ubuntu Pro](https://ubuntu.com/pro) tokens. To retrieve your Ubuntu Pro token please go [here](https://ubuntu.com/pro/dashboard) and save your token for later use.
+JQ is a lightweight JSON processor. You'll use it to extract values from Juju's output during this tutorial.
 
-## Deployment Steps
-
-### 1. Initialise Juju
-
-Let us bootstrap a controller on LXD:
-
+```bash
+sudo apt update && sudo apt install jq
 ```
+
+### Ubuntu Pro token
+
+Livepatch on-prem requires authorisation to the upstream Livepatch service hosted by Canonical. You'll need an [Ubuntu Pro token](https://ubuntu.com/pro) to enable Livepatch. Ubuntu Pro is free for up to five machines.
+
+If you already have an Ubuntu Pro account, copy your token from the [Ubuntu Pro dashboard](https://ubuntu.com/pro/dashboard). If you don't have an account, sign up for a [free personal Ubuntu Pro account](https://ubuntu.com/pro), then copy your token.
+
+## Bootstrap Juju
+
+Create a Juju controller on LXD:
+
+```bash
 mkdir -p ~/.local/share
 juju bootstrap lxd livepatch-onprem
 ```
 
-After some time the controller should be ready.
-Next, we’ll create a model to deploy Livepatch.
+The bootstrap operation takes a few moments to complete. Once finished, create a model to host the Livepatch deployment:
 
-```
+```bash
 juju add-model livepatch
 ```
 
-### 2. Deploying the bundle
+Verify that you're working in the correct model:
 
-Ensure you're on the Livepatch model:
-
-```
+```bash
 juju switch livepatch
 ```
 
-And deploy the bundle:
+## Deploy Livepatch on-prem
 
-```
+Deploy the Livepatch on-prem bundle from Charmhub:
+
+```bash
 juju deploy canonical-livepatch-onprem --channel=machine
 ```
 
-You can watch the status of the deployment:
+Monitor the deployment progress with:
 
-```
+```bash
 juju status --watch 2s
 ```
 
-After some time, your model will resemble the following:
+After some time, the model status will show all applications initialising and eventually settling into a stable state.
 
-![image|800x247](/_static/images/171JtDxiYZSynZfd2wsTaa2j0IH.png)
+> See also: If you're migrating from the reactive charm to the operator charm, refer to the [migration guide](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-operator-charm).
 
-You’ve successfully deployed Livepatch! But it requires a few more steps to get up and running.
+## Enable Ubuntu Pro (optional)
 
-### 3. Enabling Ubuntu Pro (Optional)
+Enable Ubuntu Pro on the deployed machines for Expanded Security Maintenance (ESM). Replace `<token>` with your Ubuntu Pro token:
 
-We will enable Ubuntu Pro on the machines for ESM (Expanded Security Maintenance).
-Using your token from https://ubuntu.com/pro run:
-
-```
+```bash
 juju config ubuntu-advantage token='<token>'
 ```
 
-On a successful attach, you will see something similar to the follow in your status output:
+On a successful attach, the status output will reflect the change.
 
-![Screenshot from 2024-10-15 14-11-55|800x248](/_static/images/x3Tl6GdMdzkEh5Q8qyXnRosGsvN.png)
+If you're not using Ubuntu Pro, remove the `ubuntu-advantage` application:
 
-If you are not using Ubuntu Pro, you can remove the `ubuntu-advantage` charm.
-
-```
+```bash
 juju remove-application ubuntu-advantage
 ```
 
-### 4. Enabling Livepatch
+## Enable Livepatch
 
-Next, to enable Livepatch on-prem, we’ll run:
+Enable Livepatch by providing your Ubuntu Pro token to the Livepatch server unit:
 
-```
+```bash
 juju run livepatch/0 enable token='<token>'
 ```
 
-You will see the following action output if successful:
+A successful action returns an output confirming that Livepatch is enabled.
 
-![|581x200](/_static/images/LNe8mLyugCYQ9BU7qWfVfXTdqzDr.png)
+## Configure the Livepatch server
 
-Livepatch is now enabled! In the next segment, we’ll configure the Livepatch server.
+### Set the URL template
 
-### 5. Configuring Livepatch
-
-#### URL Template
-
-We’ll need to configure a charm config option called `server.url-template`.
-
-The URL template specifies the URL where patch files can be downloaded by Livepatch clients.
-
-In an on-premise environment, this could be the server itself or any file server you have with patches ready to be served.
-
-The URL template resembles the following:
+The `server.url-template` option specifies the URL where Livepatch clients download patch files. The template must include the `{filename}` placeholder, which Livepatch replaces with the actual file name at runtime:
 
 ```
 http(s)://domain/{filename}
 ```
 
-The {filename} segment is a special variable which Livepatch will insert file names as-is to.
-
-```{note}
-Using an AWS S3 bucket is one option for patch storage. 
-To redirect clients  for patch downloads your URL template may resemble 
-``https://s3-eu-west-2.amazonaws.com/livepatch/patches/{filename}``
-```
-
-For this tutorial, we’ll use the server itself to server patches. The Livepatch server has a special endpoint for serving patches at:
+For this tutorial, you'll use the Livepatch server itself to serve patches. The server exposes a dedicated endpoint at:
 
 ```
 /v1/patches/:patch_name
 ```
 
-To reach the server, we recommend going through HAProxy that is included in the bundle. HAProxy will act as a load-balancer, allowing you to scale the number of Livepatch server machines.
+The bundle includes HAProxy, which acts as a load balancer and reverse proxy. Use the HAProxy unit's address to construct the URL template. Run the following to set it automatically:
 
-You may use a DNS pointing to your HAProxy or as we will do here to test your deployment, you can use an address from one of your HAProxy units. Run:
-
-```
+```bash
 HAPROXY_ADDRESS=$(juju status --format json | jq -r '.applications.haproxy.units["haproxy/0"]["public-address"]') && echo $HAPROXY_ADDRESS
-juju config livepatch server.url-template="http:/$HAPROXY_ADDRESS/v1/patches/{filename}"
+juju config livepatch server.url-template="http://$HAPROXY_ADDRESS/v1/patches/{filename}"
 ```
 
-You can confirm this was successful by running:
+Confirm the configuration was applied:
 
-```
+```bash
 juju config livepatch server.url-template
 ```
 
-#### Database Migration
-
-For the final configuration step, we will trigger a database schema migration using a charm action:
-
+```{note}
+For production deployments, you may use an AWS S3 bucket or another file server for patch storage. In that case, your URL template might resemble `https://s3-eu-west-2.amazonaws.com/livepatch/patches/{filename}`.
 ```
+
+### Run the database schema migration
+
+Trigger a database schema migration on the Livepatch server unit:
+
+```bash
 juju run livepatch/0 schema-upgrade
 ```
 
-The output will look like:
+This operation only needs to be run once. Future upgrades will apply schema migrations automatically. Once completed, the Livepatch application will enter a running state.
 
-![|624x105](/_static/images/hrgPWFzMb6tCKLeLRhfvM5itvV.png)
+## Set up administrator authentication
 
-And Livepatch will enter a running state:
+Administrator access to the Livepatch on-prem deployment requires setting up basic authentication.
 
-![Screenshot from 2024-10-15 14-15-54|800x248](/_static/images/vZ0aOUtzlc1FqpDVVVN4CLs5527.png)
+Enable basic authentication on the Livepatch application:
 
-Note that the schema migration only needs to be run once. On future upgrades it will be run automatically.
-
-The server is now ready to serve patches!
-
-#### Authorisation and Authentication
-
-In order to manage this Livepatch on-premise deployment we need to setup admin authentication. This can be done with the following steps.
-
-Enable basic authentication:
-
-```
+```bash
 juju config livepatch auth.basic.enabled=true
 ```
 
-Install the following for bcrypt utilities:
+Install the `apache2-utils` package for `htpasswd`, which generates bcrypt password hashes:
 
-```
+```bash
 sudo apt-get install apache2-utils -y
 ```
 
-Next, create a user and password:
+Generate a username and password hash pair. Replace `admin` and `admin123` with your chosen credentials:
 
-```
+```bash
 htpasswd -bnBC 10 admin admin123
-admin:$2y$10$jEmTFsxm7dpqxptch8u3UuilVbzzmT6HGTeu6kKMta5Gdqnj9cOHG
 ```
 
-Using the output verbatim, run (note the single quotes to escape special characters):
+The output is a `username:hashed-password` pair. Use the output verbatim to configure Livepatch. Wrap the value in single quotes to escape special characters:
 
+```bash
+juju config livepatch auth.basic.users='admin:$2y$10$...'
 ```
-juju config livepatch auth.basic.users='admin:$2y$10$jEmTFsxm7dpqxptch8u3UuilVbzzmT6HGTeu6kKMta5Gdqnj9cOHG'
+
+To add additional administrators, provide a comma-separated list of `user:password` pairs.
+
+## Configure the admin tool
+
+The Livepatch administration tool allows you to manage the server from the command line. Install it from the snap store:
+
+```bash
+sudo snap install canonical-livepatch-server-admin
 ```
 
-If you wish to add more users, this is a comma-separated list of user:passwords.
+Create a convenient alias:
 
-Now an administrator can login using the admin tool.
-
-### 6. A brief introduction to the admin tool
-
-Livepatch can be managed via our administrator tool.
-
-You can download the admin tool via snap [here](https://snapcraft.io/canonical-livepatch-server-admin).
-
-To make things a little easier, we’ll create an alias to access the tool via `livepatch-admin`:
-
-```
+```bash
 sudo snap alias canonical-livepatch-server-admin.livepatch-admin livepatch-admin
 ```
 
-Next, we’ll export an environment variable called LIVEPATCH_URL. It must point at your DNS/HAProxy unit as discussed previously in this tutorial.
+Export the Livepatch server URL (pointing to the HAProxy address you retrieved earlier):
 
-```
-export LIVEPATCH_URL=http://$HAPROXY_ADDRESS
+```bash
+export LIVEPATCH_URL="http://$HAPROXY_ADDRESS"
 ```
 
-Now, with one of your administrators, you can login:
+Log in with one of your administrator credentials:
 
-```
+```bash
 livepatch-admin login -a admin:admin123
 ```
 
-The final step before attaching client machines to the server is to download patches from Canonical's hosted Livepatch server.
+## Sync patches
 
-Trigger a sync with:
+Download patches from Canonical's hosted Livepatch server to your on-prem instance:
 
-```
+```bash
 livepatch-admin sync trigger --wait
 ```
 
-For further information on the admin tool, see [How to setup administration tool](/server/how-to-guides/security/setup-administration-tool.md).
-Additionally, see how-to [configure patch sync filters](/server/reference/patch-management/patch-sync-filters.md) to limit what patches you download.
+For more information on the admin tool, see the [administration tool setup guide](/server/how-to-guides/security/setup-administration-tool). To limit which patches are downloaded, see the [patch sync filters reference](/server/reference/patch-management/patch-sync-filters).
 
-## Enabling machine status reporting
+## Enable machine status reporting (optional)
 
-Each Livepatch on-prem instance can optionally send information about the status of the machines it's serving back to Canonical. Full details on what information is sent is available [here](/client/reference/networking/data-sent.md)
+Each Livepatch on-prem instance can optionally send information about the status of the machines it serves back to Canonical. Full details on the data that is transmitted are available in the [data sent reference](/client/reference/networking/data-sent).
 
-```
+Enable machine status reporting:
+
+```bash
 juju config livepatch patch-sync.send-machine-reports=true
 ```
 
-This can be disabled at any time by setting the flag to `false`.
+Disable reporting at any time by setting the value to `false`:
 
-### 7. Cleaning up the deployment
-
-Should you wish to clean up your deployment, you can do so via:
-
+```bash
+juju config livepatch patch-sync.send-machine-reports=false
 ```
+
+## Cleanup
+
+When you're finished exploring Livepatch on-prem, destroy the Juju controller and all associated models:
+
+```bash
 juju destroy-controller livepatch-onprem --destroy-all-models
 ```
+
+## Summary
+
+In this tutorial, you deployed Livepatch on-prem using LXD and Juju, configured the server to serve patches, set up administrator authentication, and synchronised patches from the upstream Livepatch service. Your Livepatch on-prem server is now ready to serve clients.
+
+From here, you have several options:
+
+- **Set up Livepatch clients**: Install and configure the Livepatch client on machines in your infrastructure. See the [Livepatch Client documentation](/client/index).
+- **Configure patch sync filters**: Limit which patches are downloaded to your on-prem server. See the [patch sync filters reference](/server/reference/patch-management/patch-sync-filters).
+- **Explore other deployment options**: Deploy Livepatch on-prem on MicroK8s instead. See the [Livepatch and MicroK8s tutorial](/server/tutorial/livepatch-and-microk8s).
+- **Get support**: Canonical customers can receive support through the [Canonical support portal](https://portal.support.canonical.com/).

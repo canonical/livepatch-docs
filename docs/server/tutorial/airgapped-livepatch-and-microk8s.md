@@ -1,339 +1,320 @@
 ---
 myst:
   html_meta:
-    description: "Tutorial: Air-gapped Livepatch and MicroK8s - hands-on introduction to Livepatch on-prem."
+    description: "Complete a hands-on tutorial for airgapped Livepatch on-prem on MicroK8s. Deploy Livepatch and an airgapped Ubuntu Pro server using Juju in about 60 minutes."
 ---
 
 (server-tutorial-airgapped-livepatch-and-microk8s)=
 
-# Airgapped Livepatch and MicroK8s
+# Getting started with airgapped Livepatch on-prem and MicroK8s
 
-## Introduction
+> See also: {ref}`server`
 
-Livepatch on-prem is a self-hosted version of the Livepatch server, enabling the delivery of patches to machines within network restricted environments. For security reasons, administrators may prefer to deploy Livepatch on-prem server in an airgapped environment with restricted Internet access.
+This tutorial guides you through the process of deploying Livepatch on-prem in an airgapped environment using MicroK8s and Juju. Livepatch on-prem enables the delivery of kernel patches to machines within network-restricted environments. For organisations with strict security requirements, deploying Livepatch on-prem in an airgapped setup ensures that the server operates without direct communication to the upstream Livepatch service.
 
-This tutorial will deploy the Livepatch on-prem server as a Kubernetes application in an airgapped environment. We will deploy and configure the Livepatch on-prem server using Juju and Charmed Operators. Juju is an Open Source Charmed Operator Framework that controls the whole lifecycle of an application.
+In an airgapped environment, two additional tools replace the server's direct connection to Canonical's hosted Livepatch service:
 
-For this tutorial, we will use MicroK8s, a lightweight tool for creating a local Kubernetes cluster. You don’t need previous knowledge of Juju or Charmed Operators to follow this guide and deploy Livepatch.
-
-### How does Livepatch on-prem work in an airgapped environment?
-
-Generally, in order to perform authentication/authorisation of machines and also fetching latest patches, the Livepatch on-prem server needs to communicate with the main Livepatch server hosted by Canonical. In an airgapped environment, where such communication is not available, these functions have to be handled in an indirect way by using the following tools:
-
-- [**Airgapped Ubuntu Pro Server**](https://discourse.charmhub.io/t/15278) is an on-prem deployable service that provides services related to Ubuntu Pro subscriptions in airgapped environments. Livepatch on-prem can be integrated with this service to perform authentication/authorisation of machines and handle subscription-related functionalities.
-- [**Patch Downloader**](https://snapcraft.io/canonical-livepatch-downloader) is a CLI tool that can be used to download the latest patch files from the Livepatch server. In an airgapped setup, the administrators of Livepatch on-prem should use this tool to fetch the latest patches and then upload them to the configured patch storage. You can check out [this](/server/reference/patch-storage/index) topic on how to configure various types of storage for Livepatch on-prem. [This](/server/how-to-guides/patch-management/use-the-patch-downloader-tool) topic explains how to use the Patch Downloader tool to fetch patches.
+- The **airgapped Ubuntu Pro server** provides Ubuntu Pro subscription services, including machine authentication and authorisation, without requiring Internet access.
+- The **Patch Downloader** is a CLI tool for downloading the latest patch files from the upstream Livepatch server. Administrators use this tool on an Internet-connected machine, then transfer the downloaded patches to the airgapped patch storage.
 
 ```{note}
-When deploying airgapped Livepatch on-prem on MicroK8s, it is best to configure the patch storage to something independently accessible within your infrastructure, like an S3/Swift bucket, instead of PostgreSQL or filesystem. This way, Livepatch administrators can independently download the latest patches via the Patch Downloader CLI tool and transfer them to the patch storage.
+When deploying airgapped Livepatch on-prem on MicroK8s, configure the patch storage to use an independently accessible option such as an S3 or Swift bucket instead of PostgreSQL or the filesystem. This allows administrators to download patches with the Patch Downloader tool and transfer them to the storage independently.
 ```
 
-## Deployment steps
+Completing this tutorial should take approximately 60 minutes.
 
-In this tutorial, we use [Multipass](https://multipass.run) to create an Ubuntu virtual machine (VM) to deploy Livepatch and its dependencies on it. If not already installed, we can use the command below to install Multipass:
+## Prerequisites
 
-```sh
+Before starting this tutorial, you'll need the following tools and resources.
+
+### Ubuntu Pro token
+
+You'll need an [Ubuntu Pro token](https://ubuntu.com/pro). Ubuntu Pro is free for up to five machines.
+
+If you already have an Ubuntu Pro account, copy your token from the [Ubuntu Pro dashboard](https://ubuntu.com/pro/dashboard). If you don't have an account, sign up for a [free personal Ubuntu Pro account](https://ubuntu.com/pro), then copy your token.
+
+### Multipass
+
+Multipass is a CLI tool for launching Ubuntu VMs from Windows, Linux, and macOS.
+
+Install Multipass from the snap store:
+
+```bash
 sudo snap install multipass
 ```
 
-### Step 1: Create a VM
+Launch a VM with sufficient resources for the Livepatch deployment:
 
-Once Multipass is installed, you can create the VM for this tutorial by running the command below. This will create a VM, named `livepatch-deploy` with the sufficient resources.
-
-```sh
+```bash
 multipass launch jammy --name livepatch-deploy --cpus 6 --memory 12G --disk 40G
 ```
 
-Once the VM is created you need to open an interactive shell into it by running:
+Open an interactive shell into the VM:
 
-```sh
+```bash
 multipass shell livepatch-deploy
 ```
 
-### Step 2: Setup MicroK8s
+All subsequent commands in this tutorial are run from within this VM.
 
-To deploy Livepatch on-prem and the airgapped Ubuntu Pro server, we would need Juju, MicroK8s, and LXD. The latter is already installed in the VM, so we just need the other two. To install MicroK8s, you need to use the following command:
+## Install and configure MicroK8s
 
-```sh
+Install MicroK8s from the snap store:
+
+```bash
 sudo snap install microk8s --channel=1.30-strict/stable
 ```
 
-Once the installation is done, you need to apply the following configurations to make it easier to use MicroK8s with the current user and the `kubectl` CLI tool:
+Configure MicroK8s for the current user:
 
-```sh
+```bash
 sudo usermod -a -G snap_microk8s $USER
 mkdir -p ~/.kube
 chmod 0700 ~/.kube
 newgrp snap_microk8s
 ```
 
-The next step is to enable some required addons on your MicroK8s cluster. To do this, you need to run:
+Enable the required addons:
 
-```sh
+```bash
 sudo microk8s enable rbac
 sudo microk8s enable hostpath-storage
 sudo microk8s enable ingress
 ```
 
-Now, to make sure MicroK8s is up and running, try:
+Verify MicroK8s is running:
 
-```sh
+```bash
 microk8s status --wait-ready
 ```
 
-You should see an output like this, which means MicroK8s is ready to be used.
+## Install and bootstrap Juju
 
-```text
-microk8s is running
-...
-```
+Install Juju from the snap store:
 
-### Step 3: Setup Juju
-
-In this tutorial, we use Juju 3.5, which can be installed by running:
-
-```sh
+```bash
 sudo snap install juju --channel=3.5/stable
 ```
 
-After the installation is done, we need to modify the MicroK8s client configuration file so that the API address is accessible to the Juju controllers we are going to create in the next steps. To do this, we need to run the following:
+Modify the MicroK8s client configuration file so the API address is accessible to Juju controllers:
 
-```sh
+```bash
 microk8s.config > /tmp/microk8s.config
 sudo cp /tmp/microk8s.config /var/snap/microk8s/current/credentials/client.config
 sudo snap restart microk8s
 ```
 
-Now, we need to bootstrap two controllers; one on our MicroK8s cluster, and one one LXD. We will use the MicroK8s controller to deploy Livepatch on-prem, and the other to deploy the airgapped Ubuntu Pro server.
+Bootstrap two Juju controllers: one on MicroK8s for the Livepatch on-prem deployment, and one on LXD for the airgapped Ubuntu Pro server.
 
-To bootstrap a controller on LXD, we need to run:
-
-```sh
+```bash
 juju bootstrap localhost pro-demo-controller
-```
-
-This might take a while to complete. After it is done, we can use a similar command to bootstrap a Juju controller on MicroK8s:
-
-```sh
 juju bootstrap microk8s livepatch-demo-controller
 ```
 
-After the completion of the above commands, you can checkout the available Juju controllers by running `juju controllers` which should print out the list of controllers like this:
+Verify both controllers are available:
 
-```sh
+```bash
 juju controllers
-Controller                  Model      User   Access     Cloud/Region         Models  Nodes    HA  Version
-livepatch-demo-controller*  controller admin  superuser  microk8s/localhost        1      1     -  3.5.3  
-pro-demo-controller         controller admin  superuser  localhost/localhost       1      1  none  3.5.3  
 ```
 
-### Step 4: Deploy Livepatch on-prem
+## Deploy Livepatch on-prem
 
-First we need to create a Juju model to deploy Livepatch on-prem onto. To do this we need to run:
+Create a Juju model and deploy the Livepatch on-prem bundle:
 
-```sh
+```bash
 juju add-model livepatch
-```
-
-In order to deploy Livepatch on-prem, we can simply use the `k8s/stable` channel of the [bundle](https://charmhub.io/canonical-livepatch-onprem?channel=k8s/stable) charm. The bundle gives us all we need to deploy a working Livepatch on-prem server.
-
-```sh
 juju deploy canonical-livepatch-onprem --channel=k8s/stable --trust
 ```
 
-Deploying the bundle takes a while to create the underlying pods/containers and integrating them to each other. We can check out the status of the model by running:
+Monitor the deployment:
 
-```sh
+```bash
 juju status --watch 5s
 ```
 
-Once the status of the `livepatch` application changes to *"patch-sync token not set..."*, we are ready to continue.
+Once the status of the `livepatch` application changes to *"patch-sync token not set..."*, the deployment is initialised.
 
 ```{note}
-By default, the charm assumes an ordinary deployment of the Livepatch on-prem server (i.e., a non-airgapped setup), and that is why it asks for a patch synchronisation token. Since this is an airgapped deployment, you should ignore this message and proceed with integrating the charm with an airgapped Ubuntu Pro server.
+By default, the charm assumes an ordinary (non-airgapped) deployment and prompts for a patch-sync token. Since this is an airgapped deployment, you can ignore this message and proceed with integrating the airgapped Ubuntu Pro server.
 ```
 
-Before continuing with the airgapped Ubuntu Pro server, we need to make sure the Livepatch on-prem server is accessible through a domain name. Depending on IP addresses is not a reliable solution when referencing applications deployed on Kubernetes from outside the cluster. The standard practice is to use a Kubernetes ingress.
+### Configure the ingress
 
-To create the ingress resource on our model and point it to the running Livepatch server, we need to configure the `nginx-ingress-integrator` charm that is already deployed in our model under an application, named `ingress`:
+Configure the nginx ingress integrator charm with a domain name for the Livepatch server:
 
-```sh
+```bash
 juju config ingress service-hostname=livepatch.test.com
 ```
 
-```{note}
-Here, we used `livepatch.test.com` as the domain name, but this can be anything.
-```
+After a short delay, verify the ingress resource was created:
 
-After applying the command it takes a little time to create the corresponding `ingress` resource on the MicroK8s cluster. As mentioned, we can track the status of the Juju model by using `juju status --watch 5s`.
-
-Once the operation is finished, the `ingress` application status message will show the IP address at which the ingress resource is accessible with the `livepatch.test.com` domain name. Alternatively, we can see the IP address of the ingress resource by running:
-
-```sh
+```bash
 microk8s kubectl get ingress -n livepatch
 ```
 
-This will print out a single item like this:
+The output shows the IP address where the ingress is accessible. Add a corresponding entry to the VM's `/etc/hosts` file:
 
-```
-NAME                                    CLASS    HOSTS                ADDRESS     PORTS   AGE
-relation-6-livepatch-test-com-ingress   public   livepatch.test.com   127.0.0.1   80      4d3h
-```
-
-As you can see the IP address to access the ingress resource is `127.0.0.1`. Note that depending on the network/MicroK8s configuration, the IP can differ from the loopback interface address we see in this case.
-
-To finish this step, we need to add an entry to our VMs `/etc/hosts` (mapping `livepatch.test.com` to `127.0.0.1`) to make our Livepatch on-prem server accessible to the airgapped Ubuntu Pro server we are going to deploy in the next step.
-
-```{note}
-Note that in a real-world scenario, the airgapped Ubuntu Pro server might be deployed on another node/VM. So, the administrators might need to follow their procedures to enable communication between the deployments.
-```
-
-You can use the command below to add the mentioned entry to the `/etc/hosts` file:
-
-```sh
+```bash
 echo "127.0.0.1 livepatch.test.com" | sudo tee -a /etc/hosts
 ```
 
-### Step 5: Deploy airgapped Ubuntu Pro server
+```{note}
+In a real-world deployment, the airgapped Ubuntu Pro server may be deployed on a separate node. Administrators should follow their own procedures to enable communication between the deployments.
+```
 
-To deploy the airgapped Ubuntu Pro server, we are going to use the [`pro-airgapped-server`](https://charmhub.io/pro-airgapped-server) charm. Since this is a machine charm, we have to deploy it on a model on LXD. The first step is to switch to our LXD controller and create a model on that:
+## Deploy the airgapped Ubuntu Pro server
 
-```sh
+Switch to the LXD controller and create a new model:
+
+```bash
 juju switch pro-demo-controller
 juju add-model pro
 ```
 
-After the model is created, we can deploy the `pro-airgapped-server` charm by running:
+Deploy the `pro-airgapped-server` charm:
 
-```sh
+```bash
 juju deploy pro-airgapped-server
 ```
 
-You can watch the model status changes by running `juju status --watch 5s`.
+Provide your Ubuntu Pro token. Replace `<TOKEN>` with your token:
 
-After the charm is deployed, it will be in a blocked state waiting for an Ubuntu Pro token. You can find your Ubuntu Pro subscription token on the Ubuntu Pro [dashboard](https://ubuntu.com/pro/dashboard) page. Copy your subscription token, replace the `<TOKEN>` placeholder in the command below with your token, and run it:
-
-```sh
+```bash
 juju config pro-airgapped-server pro-tokens=<TOKEN>
 ```
 
-After that, you need to provide the charm with your Livepatch on-prem address. Assuming you are using the same `livepatch.test.com` domain, you can run:
+Configure the charm with your Livepatch on-prem address:
 
-```sh
-juju config pro-airgapped-server entitlements-url-map='{"livepatch": {"remoteServer": "http://livepatch.test.com"},"livepatch-onprem": {"remoteServer": "http://livepatch.test.com"}}' 
+```bash
+juju config pro-airgapped-server entitlements-url-map='{"livepatch": {"remoteServer": "http://livepatch.test.com"},"livepatch-onprem": {"remoteServer": "http://livepatch.test.com"}}'
 ```
 
-Now, the `pro-airgapped-server` application status should be `active`.
+Once the application status shows `active`, create a Juju application offer to allow the Livepatch on-prem deployment on the MicroK8s controller to integrate with it:
 
-We should now create a Juju *application offer* to allow applications on other Juju models/controllers (i.e., Livepatch on-prem server, in this case) to integrate with the `pro-airgapped-server` application in the current model. You can simply create an application offer by running:
-
-```sh
+```bash
 juju offer pro-airgapped-server:livepatch-server pro-offer
 ```
 
-Before we finish this step, we need to take note of the IP address of the `pro-airgapped-server` application. We will need it later when we are going to set up Ubuntu Pro clients. To find the IP address, you can just run `juju status` and copy the public IP address printed next to the `pro-airgapped-server/0` unit.
+Note the IP address of the `pro-airgapped-server/0` unit from `juju status`. You'll need this later when configuring the Livepatch client:
 
-### Step 6: Enable airgapped operation on Livepatch on-prem
+```bash
+juju status
+```
 
-We should now switch back to the Juju model containing the Livepatch on-prem and finish the integration with the `pro-airgapped-server` application. To switch to the corresponding model run:
+## Integrate Livepatch on-prem with the airgapped Ubuntu Pro server
 
-```sh
+Switch back to the Livepatch model:
+
+```bash
 juju switch livepatch-demo-controller
 ```
 
-To be able to consume the application offer we created in the previous step, we need to call `juju consume` command:
+Consume the application offer and integrate it with the Livepatch application:
 
-```sh
+```bash
 juju consume pro-demo-controller:pro.pro-offer
-```
-
-Now the application offer is ready to be integrated with:
-
-```sh
 juju integrate livepatch pro-offer
 ```
 
-When the integration is done, the status message on the `livepatch` application will change to *"url-template not set"*. This is about the URL template that the Livepatch clients can use to download the patch files.
+When the integration completes, the status message on the `livepatch` application changes to *"url-template not set"*. Configure the URL template:
 
-To configure the URL template you can use the command below:
-
-```sh
+```bash
 juju config livepatch server.url-template="http://livepatch.test.com/v1/patches/{filename}"
 ```
 
 ```{note}
-The `{filename}` placeholder should not be omitted or replaced.
+The `{filename}` placeholder must not be omitted or replaced. Livepatch replaces it with the actual file name at runtime.
 ```
 
-After some time, the Livepatch server should be up and running. You can see this in the Juju model status as the `livepatch` application status changes to `active`. To test the running Livepatch on-prem server we can use `curl` like this:
+After a short time, the Livepatch application status should change to `active`. Verify the server is running:
 
-```sh
+```bash
 curl http://livepatch.test.com
-Canonical Livepatch Health service, version v1.14.3
+# Canonical Livepatch Health service, version v1.14.3
 ```
 
-At this point, our Livepatch on-prem server is operating in airgapped mode and there is no communication with the upstream Livepatch server. The next step is to set up Livepatch clients to speak with our on-prem server.
+Your Livepatch on-prem server is now operating in airgapped mode, with no communication to the upstream Livepatch server.
 
-### Step 7: Set up Livepatch client
+## Set up the Livepatch client
 
-In a real-world scenario, Livepatch clients run on different machines than those serving the Livepatch on-prem server. Since network configuration is out of the scope of this tutorial, we reuse the VM we have used so far, to install and configure the Livepatch client.
+In a real-world scenario, Livepatch clients run on separate machines. For this tutorial, you'll reuse the same VM to install and configure a client.
 
-Before proceeding with the Livepatch client, we should first instruct the Ubuntu Pro client on the machine to communicate with the `pro-airgapped-server` we deployed on an LXD model. To do this replace the `<IP>` placeholder in the command below with the IP of the `pro-airgapped-server` you copied in Step 5, and run the command:
+Configure the Ubuntu Pro client to communicate with the airgapped Ubuntu Pro server. Replace `<IP>` with the address of the `pro-airgapped-server` unit you noted earlier:
 
-```sh
+```bash
 sudo sed -i -e 's|contract_url:.*|contract_url: http://<IP>:8484|g' /etc/ubuntu-advantage/uaclient.conf
 ```
 
-You should also instruct the Ubuntu Pro client to refresh its internal state:
+Refresh the Ubuntu Pro client's internal state:
 
-```sh
+```bash
 sudo pro refresh
 ```
 
-With Ubuntu Pro client being configured, we are ready to install the Livepatch client:
+Install the Livepatch client:
 
-```sh
+```bash
 sudo snap install canonical-livepatch
 ```
 
-By default, the Livepatch client is configured to communicate with the upstream Livepatch server. We need to change it so that the client speaks to our Livepatch on-prem server:
+Configure the Livepatch client to communicate with your on-prem server instead of the upstream service:
 
-```sh
+```bash
 sudo canonical-livepatch config remote-server='http://livepatch.test.com'
 ```
 
-Next, is to call `pro attach` and provide it with your Ubuntu Pro subscription token. You have already used the same token when configuring the `pro-airgapped-server`. Replace the `<TOKEN>` placeholder below with the same token and run the command:
+Attach your Ubuntu Pro subscription. Replace `<TOKEN>` with your Ubuntu Pro token:
 
-```sh
+```bash
 sudo pro attach <TOKEN>
 ```
 
-This might fail because we did not fully set up the `pro-airgapped-server` (e.g., apt repository mirrors). But for our purposes, it is okay and we can continue with enabling Livepatch:
+```{note}
+`pro attach` may fail if the airgapped Ubuntu Pro server is not fully configured (for example, without apt repository mirrors). This is expected for the purposes of this tutorial.
+```
 
-```sh
+Enable Livepatch:
+
+```bash
 sudo pro enable livepatch
 ```
 
-This should finish successfully. We can now check the status of the Livepatch client by running the following command:
+Verify the Livepatch client status:
 
-```sh
+```bash
 sudo canonical-livepatch status
+```
+
+The output confirms that the client is communicating with your airgapped Livepatch on-prem server:
+
+```text
 last check: 19 seconds ago
 kernel: 5.15.0-119.129-generic
 server check-in: succeeded
 ```
 
-At this point, our Livepatch client is talking to our airgapped Livepatch on-prem server.
+## Managing patches in an airgapped environment
 
-## Cleaning up
+By default, Livepatch on-prem uses the filesystem to store patches at `/var/snap/canonical-livepatch-server/common/patches`. To provide patches to the airgapped server, use the Patch Downloader tool on an Internet-connected machine to download the latest patches, transfer them to the patch storage path, then use the admin tool to refresh the patch information.
 
-Since we used Multipass for this tutorial, we only need to delete the created instance:
+See the [Patch Downloader usage guide](/server/how-to-guides/patch-management/use-the-patch-downloader-tool) for instructions on downloading patches, and the [patch storage reference](/server/reference/patch-storage/index) for information on configuring alternative storage backends.
 
-```sh
+## Cleanup
+
+Delete the Multipass VM:
+
+```bash
 multipass stop livepatch-deploy
 multipass delete --purge livepatch-deploy
 ```
 
 ## Summary
 
-In this tutorial, we deployed an airgapped Livepatch on-prem server, alongside an Ubuntu Pro server enabling airgapped operations. Then, we configured the Ubuntu Pro client and Livepatch client to communicate with our airgapped servers.
+In this tutorial, you deployed an airgapped Livepatch on-prem server on MicroK8s alongside an airgapped Ubuntu Pro server, integrated the two services, and configured a Livepatch client to communicate with the airgapped servers. The on-prem server now operates without direct communication to the upstream Livepatch service.
 
+From here, you have several options:
+
+- **Download and transfer patches**: Use the Patch Downloader tool to provide patches to your airgapped server. See the [Patch Downloader usage guide](/server/how-to-guides/patch-management/use-the-patch-downloader-tool).
+- **Configure patch storage**: Set up an S3 or Swift bucket for patch storage in the airgapped environment. See the [patch storage reference](/server/reference/patch-storage/index).
+- **Explore the Snap-based deployment**: Deploy airgapped Livepatch on-prem using Snaps instead. See the [airgapped Livepatch and Snap tutorial](/server/tutorial/airgapped-livepatch-and-snap).
+- **Get support**: Canonical customers can receive support through the [Canonical support portal](https://portal.support.canonical.com/).
