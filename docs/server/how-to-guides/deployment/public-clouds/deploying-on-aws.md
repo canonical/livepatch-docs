@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How to deploy the Livepatch server snap on AWS."
+    description: "How to deploy the Livepatch Server snap on AWS."
 ---
 
 
@@ -13,7 +13,7 @@ This section details how to deploy the Livepatch Server snap in auto-scaling con
 
 ## Required resources
 
-To set up the Livepatch server on AWS using an S3 bucket for patch storage, the following are required:
+To set up the Livepatch Server on AWS using an S3 bucket for patch storage, the following are required:
 
 * An RDS instance with PostgreSQL 12 or 14 using password authentication. The DSN string with username and password should be stored in the AWS Secrets Vault.
 * A launch template with an instance type of at least T3.Medium (two vCPUs, 4 GB RAM).
@@ -29,13 +29,13 @@ To set up the Livepatch server on AWS using an S3 bucket for patch storage, the 
 
 ## Create the deployment
 
-With AWS, an auto-scaling group and a load balancer can be set up with an EC2 launch template configured to install and set up a Livepatch server instance.
+With AWS, an auto-scaling group and a load balancer can be set up with an EC2 launch template configured to install and set up a Livepatch Server instance.
 
 ### Create the launch template
 
 To create a launch template, log in to the AWS console and navigate to the Launch Templates section in the EC2 overview page.
 
-Select an instance type with sufficient CPU and memory capacity. The minimum instance type for the Livepatch server to run efficiently is `t3.medium`, with two vCPUs and 4 GB memory. For storage options, the default volume size of 8 GB is sufficient.
+Select an instance type with sufficient CPU and memory capacity. The minimum instance type for the Livepatch Server to run efficiently is `t3.medium`, with two vCPUs and 4 GB memory. For storage options, the default volume size of 8 GB is sufficient.
 
 For network settings, select a security group that only allows network traffic from within AWS. Set up a load balancer with internet access later to redirect traffic to the server instances. For debugging purposes, create an SSH key pair to connect to the instance.
 
@@ -148,14 +148,14 @@ runcmd:
   - |
     rm /etc/livepatch/*
 
-final_message: The system is up, up to date, and Livepatch server is active after $UPTIME second
+final_message: The system is up, up to date, and Livepatch Server is active after $UPTIME second
 ```
 
 Replace the blanked-out values with the relevant resource information. For this template, the S3 and database secrets are assumed to be stored in a JSON object, while the Ubuntu Pro token and admin user string are plaintext.
 
 ### Test the deployment
 
-Once a launch template is created, test the deployment by going to **Launch Instances** and then to **Launch Instance from Template**. On the launch page, ensure the template version is set to the correct version if multiple versions exist. The instance takes a few minutes to create and configure the Livepatch server. Once the instance is ready, check if the deployment is complete by running:
+Once a launch template is created, test the deployment by going to **Launch Instances** and then to **Launch Instance from Template**. On the launch page, ensure the template version is set to the correct version if multiple versions exist. The instance takes a few minutes to create and configure the Livepatch Server. Once the instance is ready, check if the deployment is complete by running:
 
 ```bash
 sudo snap logs canonical-livepatch-server
@@ -179,4 +179,4 @@ If a load balancer is already set up, the auto-scaling group can be linked to it
 
 On the next page, configure the group size and scaling options, and optionally an automatic scaling policy and maintenance policy.
 
-Once the auto-scaling group is created, it begins provisioning Livepatch server instances based on the given launch template. The admin tool can then be used to log in (assuming an admin user was defined in the cloud-init configuration) by setting the endpoint URL to the public URL of the load balancer. Ensure the security settings for the load balancer allow external traffic so administrative duties can be performed with the admin tool.
+Once the auto-scaling group is created, it begins provisioning Livepatch Server instances based on the given launch template. The admin tool can then be used to log in (assuming an admin user was defined in the cloud-init configuration) by setting the endpoint URL to the public URL of the load balancer. Ensure the security settings for the load balancer allow external traffic so administrative duties can be performed with the admin tool.

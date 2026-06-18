@@ -1,15 +1,15 @@
 ---
 myst:
   html_meta:
-    description: "How to securely decommission the client with Livepatch client."
+    description: "How to securely decommission the client with Livepatch Client."
 ---
 
 
 (client-how-to-guides-how-to-securely-decommission-the-livepatch-client)=
 
-# How to securely decommission the Livepatch client
+# How to securely decommission the Livepatch Client
 
-The `canonical-livepatch` snap holds user, application, and configuration data during its lifecycle. The `canonical-livepatch` snap also produces application and security logs. This guide provides an overview of how to decommission the Livepatch client securely.
+The `canonical-livepatch` snap holds user, application, and configuration data during its lifecycle. The `canonical-livepatch` snap also produces application and security logs. This guide provides an overview of how to decommission the Livepatch Client securely.
 
 ## Decommission the snap data
 

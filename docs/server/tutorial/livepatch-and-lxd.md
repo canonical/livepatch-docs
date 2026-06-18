@@ -22,7 +22,7 @@ Before starting this tutorial, you'll need the following tools installed on your
 
 LXD provides a unified experience for managing system containers and virtual machines. Juju uses LXD to spawn containers for the Livepatch on-prem services.
 
-Install LXD from the snap store:
+Install LXD from the Snap Store:
 
 ```bash
 sudo snap install lxd --channel=5.0/stable
@@ -38,7 +38,7 @@ lxd init --auto
 
 Juju is an open source orchestration engine for software operators that enables the deployment, integration, and lifecycle management of applications at any scale, on any infrastructure.
 
-Install Juju from the snap store:
+Install Juju from the Snap Store:
 
 ```bash
 sudo snap install juju
@@ -115,7 +115,7 @@ juju remove-application ubuntu-advantage
 
 ## Enable Livepatch
 
-Enable Livepatch by providing your Ubuntu Pro token to the Livepatch server unit:
+Enable Livepatch by providing your Ubuntu Pro token to the Livepatch Server unit:
 
 ```bash
 juju run livepatch/0 enable token='<token>'
@@ -123,17 +123,17 @@ juju run livepatch/0 enable token='<token>'
 
 A successful action returns an output confirming that Livepatch is enabled.
 
-## Configure the Livepatch server
+## Configure the Livepatch Server
 
 ### Set the URL template
 
-The `server.url-template` option specifies the URL where Livepatch clients download patch files. The template must include the `{filename}` placeholder, which Livepatch replaces with the actual file name at runtime:
+The `server.url-template` option specifies the URL where Livepatch Clients download patch files. The template must include the `{filename}` placeholder, which Livepatch replaces with the actual file name at runtime:
 
 ```
 http(s)://domain/{filename}
 ```
 
-For this tutorial, you'll use the Livepatch server itself to serve patches. The server exposes a dedicated endpoint at:
+For this tutorial, you'll use the Livepatch Server itself to serve patches. The server exposes a dedicated endpoint at:
 
 ```
 /v1/patches/:patch_name
@@ -158,7 +158,7 @@ For production deployments, you may use an AWS S3 bucket or another file server 
 
 ### Run the database schema migration
 
-Trigger a database schema migration on the Livepatch server unit:
+Trigger a database schema migration on the Livepatch Server unit:
 
 ```bash
 juju run livepatch/0 schema-upgrade
@@ -198,7 +198,7 @@ To add additional administrators, provide a comma-separated list of `user:passwo
 
 ## Configure the admin tool
 
-The Livepatch administration tool allows you to manage the server from the command line. Install it from the snap store:
+The Livepatch administration tool allows you to manage the server from the command line. Install it from the Snap Store:
 
 ```bash
 sudo snap install canonical-livepatch-server-admin
@@ -210,7 +210,7 @@ Create a convenient alias:
 sudo snap alias canonical-livepatch-server-admin.livepatch-admin livepatch-admin
 ```
 
-Export the Livepatch server URL (pointing to the HAProxy address you retrieved earlier):
+Export the Livepatch Server URL (pointing to the HAProxy address you retrieved earlier):
 
 ```bash
 export LIVEPATCH_URL="http://$HAPROXY_ADDRESS"
@@ -224,7 +224,7 @@ livepatch-admin login -a admin:admin123
 
 ## Sync patches
 
-Download patches from Canonical's hosted Livepatch server to your on-prem instance:
+Download patches from Canonical's hosted Livepatch Server to your on-prem instance:
 
 ```bash
 livepatch-admin sync trigger --wait
@@ -262,7 +262,7 @@ In this tutorial, you deployed Livepatch on-prem using LXD and Juju, configured 
 
 From here, you have several options:
 
-- **Set up Livepatch clients**: Install and configure the Livepatch client on machines in your infrastructure. See the [Livepatch Client documentation](/client/index).
+- **Set up Livepatch Clients**: Install and configure the Livepatch Client on machines in your infrastructure. See the [Livepatch Client documentation](/client/index).
 - **Configure patch sync filters**: Limit which patches are downloaded to your on-prem server. See the [patch sync filters reference](/server/reference/patch-management/patch-sync-filters).
 - **Explore other deployment options**: Deploy Livepatch on-prem on MicroK8s instead. See the [Livepatch and MicroK8s tutorial](/server/tutorial/livepatch-and-microk8s).
 - **Get support**: Canonical customers can receive support through the [Canonical support portal](https://portal.support.canonical.com/).

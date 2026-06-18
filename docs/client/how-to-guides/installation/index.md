@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "Enable or disable the Livepatch client on your machines."
+    description: "Enable or disable the Livepatch Client on your machines."
 ---
 
 
@@ -9,7 +9,7 @@ myst:
 
 # Installation
 
-Enable or disable the Livepatch client on machines.
+Enable or disable the Livepatch Client on machines.
 
 ## In this section
 

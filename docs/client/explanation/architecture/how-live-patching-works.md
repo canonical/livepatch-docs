@@ -8,7 +8,7 @@ myst:
 
 # How kernel live patching works
 
-When a high or critical vulnerability is detected in the Linux kernel, Canonical creates a live kernel patch to address it. After the patch is developed, it is tested in Canonical's internal server farm, then promoted gradually through a series of testing tiers to ensure it has been tested for a sufficient period on live systems. Once released, a [Livepatch Security Notice](https://ubuntu.com/security/notices) (LSN) is issued, and systems running the Livepatch client receive and apply the patch over an authenticated channel.
+When a high or critical vulnerability is detected in the Linux kernel, Canonical creates a live kernel patch to address it. After the patch is developed, it is tested in Canonical's internal server farm, then promoted gradually through a series of testing tiers to ensure it has been tested for a sufficient period on live systems. Once released, a [Livepatch Security Notice](https://ubuntu.com/security/notices) (LSN) is issued, and systems running the Livepatch Client receive and apply the patch over an authenticated channel.
 
 ## The live patching process
 

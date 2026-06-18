@@ -83,7 +83,7 @@ The following values configure authentication to the server's admin endpoints. O
 
 ### Ubuntu Pro
 
-The following values configure how the server interacts with the Ubuntu Pro backend (also referred to as the contracts server) for client authentication. These are relevant for Canonical's hosted Livepatch server and airgapped deployments.
+The following values configure how the server interacts with the Ubuntu Pro backend (also referred to as the contracts server) for client authentication. These are relevant for Canonical's hosted Livepatch Server and airgapped deployments.
 
 | Name | Description | Values |
 | ---- | ----------- | ------ |

@@ -7,9 +7,9 @@ myst:
 
 (server-how-to-guides-deployment)=
 
-# How to deploy Livepatch server
+# How to deploy Livepatch Server
 
-Deploy, upgrade, and migrate a Livepatch server installation.
+Deploy, upgrade, and migrate a Livepatch Server installation.
 
 ## Available guides
 

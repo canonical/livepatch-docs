@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How to deploy the Livepatch server snap on Azure."
+    description: "How to deploy the Livepatch Server snap on Azure."
 ---
 
 
@@ -13,21 +13,21 @@ This section details how to deploy the Livepatch Server snap in auto-scaling con
 
 ## Required resources
 
-To set up the Livepatch server on Azure using a filesystem or PostgreSQL (Azure Blob Storage is not yet supported) for patch storage, the following are required:
+To set up the Livepatch Server on Azure using a filesystem or PostgreSQL (Azure Blob Storage is not yet supported) for patch storage, the following are required:
 
 * A VNet with subnets for VMSS, Application Gateway, and PostgreSQL DB.
 * An Azure Key Vault with access enabled for the VMSS subnet of the VNet.
 * An Azure-managed PostgreSQL instance with PostgreSQL 14 or above using password authentication. The username and password stored in Azure Key Vault as a JSON object.
 * A Virtual Machine Scale Set (VMSS) with an instance type with at least two vCPUs and 4 GB RAM, with a cloud-init configuration file as custom data.
 * An Ubuntu Pro token stored as a secret in Azure Key Vault.
-* Livepatch server admin credentials stored in Azure Key Vault Secrets in `<username>:<hashedpassword>` format.
+* Livepatch Server admin credentials stored in Azure Key Vault Secrets in `<username>:<hashedpassword>` format.
 * A Managed Identity with the `Key Vault Secrets User` role in Azure Key Vault.
-* An Application Gateway with a public IP address as an entry point for accessing the Livepatch server.
+* An Application Gateway with a public IP address as an entry point for accessing the Livepatch Server.
 * A VMSS as a backend pool with the corresponding Managed Identity attached.
 
 ## Create the deployment
 
-In Azure, Livepatch can be deployed on VMSS behind an Application Gateway with autoscaling configured on VMSS instances. The VMSS instances can be configured to auto-install the Livepatch server snap at startup using a cloud-init configuration file in a Standard Ubuntu Server image. This guide uses a PostgreSQL server for patch storage.
+In Azure, Livepatch can be deployed on VMSS behind an Application Gateway with autoscaling configured on VMSS instances. The VMSS instances can be configured to auto-install the Livepatch Server snap at startup using a cloud-init configuration file in a Standard Ubuntu Server image. This guide uses a PostgreSQL server for patch storage.
 
 ### Configure the VNet
 
@@ -35,7 +35,7 @@ Configure a VNet with three different subnets, one for each: Application Gateway
 
 ### Create the PostgreSQL database
 
-Create an Azure-managed PostgreSQL DB with PostgreSQL password authentication. Disable public access and use the DB subnet from the VNet to provision the database. Create a database in this PostgreSQL server for the Livepatch server to use. This can be performed from the Azure UI.
+Create an Azure-managed PostgreSQL DB with PostgreSQL password authentication. Disable public access and use the DB subnet from the VNet to provision the database. Create a database in this PostgreSQL server for the Livepatch Server to use. This can be performed from the Azure UI.
 
 ### Create the Managed Identity
 
@@ -47,7 +47,7 @@ Create an Azure Key Vault with public access disabled. Allow access from the VMS
 
 ### Configure the VMSS
 
-For VMSS, select an instance type with sufficient CPU and memory capacity. The minimum resources required for the Livepatch server to run efficiently are two vCPUs and 4 GB memory. Avoid using B-series instances. For storage options, the default volume size of 30 GB is sufficient. Assign the Managed Identity to the VMSS to allow access to Azure Key Vault.
+For VMSS, select an instance type with sufficient CPU and memory capacity. The minimum resources required for the Livepatch Server to run efficiently are two vCPUs and 4 GB memory. Avoid using B-series instances. For storage options, the default volume size of 30 GB is sufficient. Assign the Managed Identity to the VMSS to allow access to Azure Key Vault.
 
 Configure the VMSS NSG to allow traffic on port 80 from within the VNet. It is recommended not to have public IP addresses assigned to the VMSS VMs. This ensures that VMs can be accessed only through the Application Gateway. Provision a jumpbox in the same VNet with a public IP to access VMs when required.
 
@@ -167,7 +167,7 @@ runcmd:
   - |
     rm /etc/livepatch/*
 
-final_message: The system is up, up to date, and Livepatch server is active after $UPTIME second
+final_message: The system is up, up to date, and Livepatch Server is active after $UPTIME second
 ```
 
 Ensure the correct environment variable values are filled in the `write_files` section of the configuration.
@@ -180,7 +180,7 @@ Autoscaling on VMSS should be configured based on both CPU and RAM metrics.
 
 ## Troubleshooting
 
-SSH into VMSS instances to check the Livepatch server status. Check the Livepatch server snap logs by running:
+SSH into VMSS instances to check the Livepatch Server status. Check the Livepatch Server snap logs by running:
 
 ```shell
 sudo snap logs canonical-livepatch-server

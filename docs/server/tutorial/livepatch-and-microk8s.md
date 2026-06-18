@@ -28,7 +28,7 @@ If you already have an Ubuntu Pro account, copy your token from the [Ubuntu Pro 
 
 Multipass is a CLI tool for launching Ubuntu VMs from Windows, Linux, and macOS. You can run the remainder of this tutorial from within a Multipass VM to avoid affecting your host machine.
 
-Install Multipass from the snap store:
+Install Multipass from the Snap Store:
 
 ```bash
 sudo snap install multipass
@@ -48,7 +48,7 @@ multipass shell livepatch-deploy
 
 ## Install and configure MicroK8s
 
-MicroK8s is a lightweight, CNCF-certified Kubernetes distribution. Install it from the snap store:
+MicroK8s is a lightweight, CNCF-certified Kubernetes distribution. Install it from the Snap Store:
 
 ```bash
 sudo snap install microk8s --channel=1.25-strict/stable
@@ -76,7 +76,7 @@ sudo snap alias microk8s.kubectl kubectl
 
 ## Install and bootstrap Juju
 
-Install Juju from the snap store:
+Install Juju from the Snap Store:
 
 ```bash
 sudo snap install juju --channel=3.1/stable
@@ -127,13 +127,13 @@ A successful action returns output confirming that the token has been acquired.
 
 Livepatch on-prem needs a place to store patches synced from the upstream Livepatch service. By default, the bundle stores patches in PostgreSQL. Other storage options -- including S3 -- are available and can be configured at deploy time. See the [patch storage reference](/server/reference/patch-storage/index) for more information.
 
-## Configure the Livepatch server
+## Configure the Livepatch Server
 
 ### Set the URL template
 
-The `server.url-template` option specifies the URL where Livepatch clients download patch files. The template must include the `{filename}` placeholder, which Livepatch replaces with the actual file name at runtime.
+The `server.url-template` option specifies the URL where Livepatch Clients download patch files. The template must include the `{filename}` placeholder, which Livepatch replaces with the actual file name at runtime.
 
-First, find the IP address of the Livepatch server pod. Run `juju status` and locate the IP address of the `livepatch` unit, or use the following command:
+First, find the IP address of the Livepatch Server pod. Run `juju status` and locate the IP address of the `livepatch` unit, or use the following command:
 
 ```bash
 juju status --format json | jq -r '.applications.livepatch.units[]."address"'
@@ -154,7 +154,7 @@ curl <ip-address>:8080
 
 ### Configure the ingress
 
-For production deployments, referencing pods by IP address is unreliable. Use a Kubernetes ingress to expose the Livepatch server through a stable domain name.
+For production deployments, referencing pods by IP address is unreliable. Use a Kubernetes ingress to expose the Livepatch Server through a stable domain name.
 
 Configure the `service-hostname` on the nginx ingress integrator charm:
 
@@ -236,14 +236,14 @@ See the [administration tool setup guide](/server/how-to-guides/security/setup-a
 
 ### Log in with the admin tool
 
-Install the administration tool from the snap store and create an alias:
+Install the administration tool from the Snap Store and create an alias:
 
 ```bash
 sudo snap install canonical-livepatch-server-admin
 sudo snap alias canonical-livepatch-server-admin.livepatch-admin livepatch-admin
 ```
 
-Export the Livepatch server URL and log in:
+Export the Livepatch Server URL and log in:
 
 ```bash
 export LIVEPATCH_URL="http://livepatch.test.com"
@@ -252,7 +252,7 @@ livepatch-admin login -a username:password
 
 ## Sync patches
 
-Download patches from Canonical's hosted Livepatch server to your on-prem instance:
+Download patches from Canonical's hosted Livepatch Server to your on-prem instance:
 
 ```bash
 livepatch-admin sync trigger --wait
@@ -282,7 +282,7 @@ The information sent includes:
 - CPU model
 - Architecture
 - Boot time and uptime
-- Livepatch client version
+- Livepatch Client version
 - Obfuscated machine ID
 - Status of the patch currently applied to the machine's kernel
 
@@ -318,7 +318,7 @@ In this tutorial, you deployed Livepatch on-prem on MicroK8s using Juju, configu
 
 From here, you have several options:
 
-- **Set up Livepatch clients**: Install and configure the Livepatch client on machines in your infrastructure. See the [Livepatch Client documentation](/client/index).
+- **Set up Livepatch Clients**: Install and configure the Livepatch Client on machines in your infrastructure. See the [Livepatch Client documentation](/client/index).
 - **Configure patch sync filters**: Limit which patches are downloaded to your on-prem server. See the [patch sync filters reference](/server/reference/patch-management/patch-sync-filters).
 - **Explore alternative deployment options**: Deploy Livepatch on-prem on LXD. See the [Livepatch and LXD tutorial](/server/tutorial/livepatch-and-lxd).
 - **Get support**: Canonical customers can receive support through the [Canonical support portal](https://portal.support.canonical.com/).

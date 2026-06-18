@@ -15,4 +15,4 @@ LSNs are released for every high or critical kernel vulnerability. They are issu
 - Announcing a new live kernel patch that addresses a vulnerability.
 - Alerting users when a live kernel patch cannot be released, describing the reason and possible mitigation. In this case:
   - A standard [Ubuntu Security Notice](https://ubuntu.com/security/notices) (USN) is released with packages to resolve the issue.
-  - The Livepatch client issues a warning that an update and reboot is necessary.
+  - The Livepatch Client issues a warning that an update and reboot is necessary.

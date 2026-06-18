@@ -13,7 +13,7 @@ Scaling out a Livepatch deployment may be necessary in the following scenarios:
 1. High traffic due to a large number of machines being serviced
 2. High availability setups
 
-The Livepatch on-premises deployment consists of three main components: `haproxy` reverse-proxying requests, `postgresql` storing Livepatch data, and the `Livepatch server` itself. Any or all of these components can be scaled out with additional units by running the `juju` command with the following syntax:
+The Livepatch on-premises deployment consists of three main components: `haproxy` reverse-proxying requests, `postgresql` storing Livepatch data, and the `Livepatch Server` itself. Any or all of these components can be scaled out with additional units by running the `juju` command with the following syntax:
 
 ```
 juju add-unit <component> -n <number of units>
@@ -31,7 +31,7 @@ To deploy more than one ingress haproxy unit, run the following Juju command:
 juju add-unit haproxy -n 1
 ```
 
-If more than one haproxy unit is in use, the DNS entry pointing to the Livepatch server should contain links to all the haproxy units.
+If more than one haproxy unit is in use, the DNS entry pointing to the Livepatch Server should contain links to all the haproxy units.
 
 ## Scale out postgresql
 

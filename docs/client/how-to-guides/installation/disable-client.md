@@ -1,15 +1,15 @@
 ---
 myst:
   html_meta:
-    description: "How to disable client with Livepatch client."
+    description: "How to disable client with Livepatch Client."
 ---
 
 
 (client-how-to-guides-how-to-disable-the-livepatch-client)=
 
-# How to disable the Livepatch client
+# How to disable the Livepatch Client
 
-Several methods are available to disable the Livepatch client.
+Several methods are available to disable the Livepatch Client.
 
 When direct access to the system is available, disable the Livepatch service:
 
@@ -17,7 +17,7 @@ When direct access to the system is available, disable the Livepatch service:
 sudo snap stop --disable canonical-livepatch
 ```
 
-When direct access to the system is not available, the Livepatch client can be disabled in two ways:
+When direct access to the system is not available, the Livepatch Client can be disabled in two ways:
 
 * Set a kernel command line parameter `canonical_livepatch_mode`
 * Write the mode to the `/var/local/canonical_livepatch_mode` file

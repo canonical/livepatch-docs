@@ -8,7 +8,7 @@ myst:
 
 # Set up the Livepatch on-premises server administration tool
 
-To perform operations such as promoting patches to tiers and issuing tokens for machines to attach to the Livepatch server, an administration tool is provided as a snap:
+To perform operations such as promoting patches to tiers and issuing tokens for machines to attach to the Livepatch Server, an administration tool is provided as a snap:
 
 ```
 sudo snap install canonical-livepatch-server-admin
@@ -22,7 +22,7 @@ sudo snap alias canonical-livepatch-server-admin.livepatch-admin livepatch-admin
 
 ## Authentication
 
-The Livepatch administration tool can authenticate with the Livepatch server in two ways:
+The Livepatch administration tool can authenticate with the Livepatch Server in two ways:
 
 * Ubuntu SSO
 * Username and password

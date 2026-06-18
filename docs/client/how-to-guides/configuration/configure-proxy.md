@@ -1,19 +1,19 @@
 ---
 myst:
   html_meta:
-    description: "How to configure proxy with Livepatch client."
+    description: "How to configure proxy with Livepatch Client."
 ---
 
 
 (client-how-to-guides-how-to-configure-a-proxy-in-the-livepatch-client)=
 
-# How to configure a proxy in the Livepatch client
+# How to configure a proxy in the Livepatch Client
 
-The Livepatch client supports communicating with the Livepatch server through HTTP, HTTPS, or SOCKS5 proxies. Several configuration parameters control this behaviour.
+The Livepatch Client supports communicating with the Livepatch Server through HTTP, HTTPS, or SOCKS5 proxies. Several configuration parameters control this behaviour.
 
 ## Check proxy configuration
 
-To check the proxy configuration of the Livepatch client, run the following command:
+To check the proxy configuration of the Livepatch Client, run the following command:
 
 ```bash
 canonical-livepatch config
@@ -42,7 +42,7 @@ sudo canonical-livepatch config http-proxy=socks5://proxy.example.com:1080
 sudo canonical-livepatch config https-proxy=socks5://proxy.example.com:1080
 ```
 
-The client respects the standard Linux environment variables for proxy setup (`HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`). However, these variables must be set in the Livepatch client daemon process environment to take effect. Using the configuration parameters above is the recommended approach.
+The client respects the standard Linux environment variables for proxy setup (`HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`). However, these variables must be set in the Livepatch Client daemon process environment to take effect. Using the configuration parameters above is the recommended approach.
 
 ## Use an HTTPS proxy
 
@@ -61,15 +61,15 @@ sudo cp ca.crt /usr/share/ca-certificates
 sudo dpkg-reconfigure ca-certificates
 ```
 
-To trust a self-signed CA certificate without installing it system-wide, explicitly instruct the Livepatch client to trust the CA certificate:
+To trust a self-signed CA certificate without installing it system-wide, explicitly instruct the Livepatch Client to trust the CA certificate:
 
 ```bash
 sudo canonical-livepatch config ca-certs=@stdin < ca.crt
 ```
 
-## Route directly to the Livepatch server
+## Route directly to the Livepatch Server
 
-If a system-wide proxy is already configured (for example, through the `HTTP_PROXY` environment variable), bypass it for communication with the Livepatch server using the following configuration:
+If a system-wide proxy is already configured (for example, through the `HTTP_PROXY` environment variable), bypass it for communication with the Livepatch Server using the following configuration:
 
 ```bash
 sudo canonical-livepatch config no-proxy=canonical.com

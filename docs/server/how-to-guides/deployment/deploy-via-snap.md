@@ -9,7 +9,7 @@ myst:
 
 # How to deploy via Snap
 
-The Canonical Livepatch Server enables the delivery of live kernel patches to Livepatch clients, allowing reboots of critical infrastructure to be scheduled at a convenient time.
+The Canonical Livepatch Server enables the delivery of live kernel patches to Livepatch Clients, allowing reboots of critical infrastructure to be scheduled at a convenient time.
 
 This guide covers setting up the Livepatch Server snap.
 
@@ -42,7 +42,7 @@ sudo snap install canonical-livepatch-server
 
 ## Migrate the database
 
-The snap includes an internal tool for migrating a PostgreSQL database with the Livepatch server schema. To migrate the database, run:
+The snap includes an internal tool for migrating a PostgreSQL database with the Livepatch Server schema. To migrate the database, run:
 
 ```
 canonical-livepatch-server.schema-tool \
@@ -51,7 +51,7 @@ canonical-livepatch-server.schema-tool \
 
 ## Configure the database connection
 
-All configuration for the Livepatch server snap is handled within the snap daemon. To update Livepatch to target the DSN of the PostgreSQL instance, run:
+All configuration for the Livepatch Server snap is handled within the snap daemon. To update Livepatch to target the DSN of the PostgreSQL instance, run:
 
 ```
 sudo snap set canonical-livepatch-server \
@@ -88,7 +88,7 @@ To manage Livepatch, an administrator tool is available as a snap. Install it wi
 sudo snap install canonical-livepatch-server-admin
 ```
 
-The administrator tool needs to know where the Livepatch server is hosted. In an all-in-one setup on a single machine, this is `http://localhost:8080`. Export an environment variable as follows:
+The administrator tool needs to know where the Livepatch Server is hosted. In an all-in-one setup on a single machine, this is `http://localhost:8080`. Export an environment variable as follows:
 
 ```
 export LIVEPATCH_URL=http://localhost:8080
@@ -126,7 +126,7 @@ canonical-livepatch-server-admin.livepatch-admin login -a admin:admin123
 
 ## Synchronize with hosted Livepatch
 
-Once the on-premises Livepatch server is running and fully configured, synchronize patches from hosted Livepatch into the server. Run the following within the administrator tool:
+Once the on-premises Livepatch Server is running and fully configured, synchronize patches from hosted Livepatch into the server. Run the following within the administrator tool:
 
 ```
 canonical-livepatch-server-admin.livepatch-admin sync trigger
@@ -160,7 +160,7 @@ To listen for all incoming connections on a different port, run:
 sudo snap set canonical-livepatch-server lp.server.server-address=0.0.0.0:<port>
 ```
 
-Update the `LIVEPATCH_URL` environment variable to ensure the admin tool can still access the server. To access the server from a remote machine, replace `localhost` with the IP address of the machine running the Livepatch server:
+Update the `LIVEPATCH_URL` environment variable to ensure the admin tool can still access the server. To access the server from a remote machine, replace `localhost` with the IP address of the machine running the Livepatch Server:
 
 ```
 export LIVEPATCH_URL=http://localhost:<port>
@@ -168,6 +168,6 @@ export LIVEPATCH_URL=http://localhost:<port>
 
 ## Next steps
 
-The on-premises Livepatch server is now configured to synchronize with hosted Livepatch.
+The on-premises Livepatch Server is now configured to synchronize with hosted Livepatch.
 
 For further reading, consult the how-to guides.

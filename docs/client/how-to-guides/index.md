@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How-to guides with Livepatch client."
+    description: "How-to guides with Livepatch Client."
 ---
 
 
@@ -13,9 +13,9 @@ Step-by-step guides covering key operations and common tasks related to Livepatc
 
 ## In this section
 
-* [Installation](/client/how-to-guides/installation/index.md): Enable or disable the Livepatch client on machines.
+* [Installation](/client/how-to-guides/installation/index.md): Enable or disable the Livepatch Client on machines.
 * [Configuration](/client/how-to-guides/configuration/index.md): Configure the client, proxies, cloud-init, and patch cut-off behaviour.
-* [Operations](/client/how-to-guides/operations/index.md): Day-to-day operation of the Livepatch client.
+* [Operations](/client/how-to-guides/operations/index.md): Day-to-day operation of the Livepatch Client.
 * [Security](/client/how-to-guides/security/index.md): Operate and decommission the client securely, and report vulnerabilities.
 
 ```{toctree}

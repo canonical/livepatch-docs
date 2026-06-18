@@ -7,7 +7,7 @@ myst:
 
 (server-how-to-guides-decommission-livepatch-server-securely)=
 
-# Decommission a Livepatch server securely
+# Decommission a Livepatch Server securely
 
 The following procedures describe how to securely remove the Livepatch Server and all associated data from the environment.
 

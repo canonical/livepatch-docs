@@ -9,19 +9,19 @@ myst:
 
 > See also: {ref}`Authentication and authorization <server-reference-livepatch-server-authentication>`, {ref}`Security lifecycle <server-explanation-security-lifecycle>`, {ref}`Harden your deployment <server-how-to-guides-harden-your-livepatch-server-deployment>`
 
-The Livepatch on-premises server synchronizes kernel patches from Canonical's hosted Livepatch service and serves them to Livepatch clients within the operator's infrastructure. It is distributed as a Kubernetes charm and a snap package.
+The Livepatch on-premises server synchronizes kernel patches from Canonical's hosted Livepatch service and serves them to Livepatch Clients within the operator's infrastructure. It is distributed as a Kubernetes charm and a snap package.
 
-This document provides an overview of the security features and practices implemented in the on-premises Livepatch server. It describes the system from a security perspective, outlines built-in protections, and references more detailed documentation for specific cryptographic approaches and operational guidance.
+This document provides an overview of the security features and practices implemented in the on-premises Livepatch Server. It describes the system from a security perspective, outlines built-in protections, and references more detailed documentation for specific cryptographic approaches and operational guidance.
 
 ## System overview
 
-The on-premises Livepatch server acts as the central component in an on-premises Livepatch deployment, coordinating between administrators, clients, Canonical's hosted service, and external services.
+The on-premises Livepatch Server acts as the central component in an on-premises Livepatch deployment, coordinating between administrators, clients, Canonical's hosted service, and external services.
 
 ### Components
 
 The following components are part of a Livepatch on-premises deployment:
 
-- **On-premises Livepatch server**: The core service that manages patches and serves them to clients within the operator's infrastructure. It exposes HTTP APIs for the Livepatch Client, the Livepatch Admin Tool, and server-to-server communication.
+- **On-premises Livepatch Server**: The core service that manages patches and serves them to clients within the operator's infrastructure. It exposes HTTP APIs for the Livepatch Client, the Livepatch Admin Tool, and server-to-server communication.
 - **PostgreSQL database**: Stores all persistent data including authentication tokens, patch metadata, machine registrations, and macaroon root keys.
 - **Patch storage backend**: Stores patch binary files. Supports multiple backends: filesystem, PostgreSQL, OpenStack Swift, and Amazon S3.
 - **Livepatch Admin Tool**: CLI tool used by administrators to manage the server (tokens, tiers, patches, webhooks).
@@ -33,17 +33,17 @@ The following components are part of a Livepatch on-premises deployment:
 
 The following trust boundaries are relevant to the security posture of the system:
 
-- **Client network to Livepatch server**: In on-premises deployments, Livepatch clients and the server typically reside on the same internal network. TLS between clients and the server is optional -- operators may choose to forgo TLS if the internal network is trusted. When TLS is required, termination is handled by a reverse proxy or Kubernetes ingress controller in front of the server. The charm supports ingress via the `nginx-route` integration (legacy) or the `ingress` integration (modern, using Traefik or the Gateway API Integrator).
-- **Admin network to Livepatch server**: Admin API requests should originate from trusted networks. Authentication is enforced through macaroons obtained via Basic Auth.
-- **Livepatch server to PostgreSQL**: Database connections cross a trust boundary. TLS is supported but optional for this connection.
-- **Livepatch server to external services**: Connections to the Ubuntu Pro service enforce TLS. The charm supports configuring a custom CA certificate (`contracts.ca`) for verifying the Pro service certificate, which is installed into the container's system CA trust store. Connections to patch storage backends (S3, Swift) support TLS.
-- **Livepatch server to Pro Airgapped Server**: For air-gapped environments, the charm can integrate with a Pro Airgapped Server via the `pro-airgapped-server` Juju relation to validate resource tokens without external network access.
+- **Client network to Livepatch Server**: In on-premises deployments, Livepatch Clients and the server typically reside on the same internal network. TLS between clients and the server is optional -- operators may choose to forgo TLS if the internal network is trusted. When TLS is required, termination is handled by a reverse proxy or Kubernetes ingress controller in front of the server. The charm supports ingress via the `nginx-route` integration (legacy) or the `ingress` integration (modern, using Traefik or the Gateway API Integrator).
+- **Admin network to Livepatch Server**: Admin API requests should originate from trusted networks. Authentication is enforced through macaroons obtained via Basic Auth.
+- **Livepatch Server to PostgreSQL**: Database connections cross a trust boundary. TLS is supported but optional for this connection.
+- **Livepatch Server to external services**: Connections to the Ubuntu Pro service enforce TLS. The charm supports configuring a custom CA certificate (`contracts.ca`) for verifying the Pro service certificate, which is installed into the container's system CA trust store. Connections to patch storage backends (S3, Swift) support TLS.
+- **Livepatch Server to Pro Airgapped Server**: For air-gapped environments, the charm can integrate with a Pro Airgapped Server via the `pro-airgapped-server` Juju relation to validate resource tokens without external network access.
 - **Patch synchronization with Canonical's hosted service**: The on-premises server synchronizes patches from Canonical's hosted Livepatch service using either a contract resource token or a sync token for authentication. Resource tokens are obtained from the Ubuntu Pro contracts service using the `get-resource-token` Juju action (charm) or by setting the contract token via `snap set canonical-livepatch-server token=<CONTRACT_TOKEN>` (snap), which triggers the configure hook to exchange it for a resource token automatically. Sync tokens are issued by the upstream server's admin tool. The active token is configured via `patch-sync.token`. Proxy support is available for environments where direct connectivity is restricted (`patch-sync.proxy.*` configuration).
 - **Federation (hierarchical on-premises deployments)**: In federated deployments, a designated on-premises server pulls patches from Canonical's hosted service. Downstream on-premises servers (for example, in different data centers) pull patches from this designated server. To authorize these connections, the administrator uses the admin tool to issue sync tokens from the upstream server to each downstream server.
 
 ## Built-in protections
 
-The Livepatch server incorporates several mechanisms to ensure the security of its operations:
+The Livepatch Server incorporates several mechanisms to ensure the security of its operations:
 
 - **Multi-layered authentication**: The server supports multiple authentication methods depending on the API consumer: macaroons (Basic Auth-backed) for admin users, machine tokens and Ubuntu Pro resource tokens for clients, and contract resource tokens or sync tokens for patch synchronization with upstream servers. For more details, refer to the {ref}`Authentication reference <server-reference-livepatch-server-authentication>`.
 - **Request rate limiting**: An HTTP governor limits concurrent request processing and queues excess requests up to a configurable burst limit, protecting against overload and resource exhaustion.
@@ -58,9 +58,9 @@ The Livepatch server incorporates several mechanisms to ensure the security of i
 
 ## Risks
 
-While the Livepatch server is designed with security in mind, the following risks should be considered:
+While the Livepatch Server is designed with security in mind, the following risks should be considered:
 
-- **TLS not natively terminated**: The Livepatch server does not terminate TLS itself. When TLS is required, it relies on an external reverse proxy, Kubernetes ingress controller, or load balancer for TLS termination. In on-premises deployments where clients and the server are on a trusted internal network, operators may choose to run without TLS. However, if the network is not fully trusted or admin API endpoints are exposed beyond the internal network, configuring TLS termination is strongly recommended to protect authentication credentials in transit.
+- **TLS not natively terminated**: The Livepatch Server does not terminate TLS itself. When TLS is required, it relies on an external reverse proxy, Kubernetes ingress controller, or load balancer for TLS termination. In on-premises deployments where clients and the server are on a trusted internal network, operators may choose to run without TLS. However, if the network is not fully trusted or admin API endpoints are exposed beyond the internal network, configuring TLS termination is strongly recommended to protect authentication credentials in transit.
 - **TLS optional for database and storage connections**: Connections between the server and PostgreSQL, S3, and Swift storage backends support TLS but do not enforce it. Running without TLS on these connections in environments with untrusted network segments increases the risk of credential or data interception. Enabling TLS for all backend connections is recommended.
 - **No native account lockout**: The server does not implement failed login attempt tracking or temporary lockouts. Admin users are defined in configuration files with bcrypt-hashed passwords. Brute-force protection should be implemented at the network layer (firewall rules, ingress rate limiting).
 - **Configuration-based secret management**: Admin credentials and storage credentials are provided through configuration options or environment variables. All secrets are passed to the workload container as environment variables. Operators should use Juju secrets or Kubernetes secrets to protect sensitive configuration options. The charm's log redaction module mitigates the risk of secrets appearing in charm logs, but secrets may still be visible in Pebble plan output or container environment inspection.
@@ -70,9 +70,9 @@ While the Livepatch server is designed with security in mind, the following risk
 
 ### Data collection and storage
 
-The Livepatch server collects and stores the following categories of data:
+The Livepatch Server collects and stores the following categories of data:
 
-- **Machine registration data**: Machine IDs, authentication tokens, and tier information for registered Livepatch clients.
+- **Machine registration data**: Machine IDs, authentication tokens, and tier information for registered Livepatch Clients.
 - **Patch metadata**: Patch versions, checksums, distribution/architecture mappings, and storage references.
 - **Machine reports**: When enabled, the server collects machine status reports from clients. Machine IDs in reports are hashed using HMAC before storage to protect client identity.
 - **Admin credentials**: Bcrypt-hashed passwords for Basic Auth admin users.
@@ -82,7 +82,7 @@ All persistent data is stored in PostgreSQL. Patch binary files are stored in th
 
 ### Cryptographic mechanisms
 
-The following cryptographic technologies are used by the Livepatch server:
+The following cryptographic technologies are used by the Livepatch Server:
 
 **Authentication:**
 
@@ -113,21 +113,21 @@ TLS encryption is supported for all communication channels but enforcement varie
 
 | Communication path | TLS |
 | :---- | :---- |
-| Livepatch server to Livepatch Client | Optional (operator-configured) |
-| Livepatch server to Livepatch Admin Tool | Optional (operator-configured) |
-| Livepatch server to Canonical hosted Livepatch service | Optional (operator-configured) |
-| Livepatch server to Ubuntu Pro service | Enforced |
-| Livepatch server to PostgreSQL | Optional (operator-configured) |
-| Livepatch server to S3 | Optional (`s3_secure` flag) |
-| Livepatch server to Swift | Optional (operator-configured) |
+| Livepatch Server to Livepatch Client | Optional (operator-configured) |
+| Livepatch Server to Livepatch Admin Tool | Optional (operator-configured) |
+| Livepatch Server to Canonical hosted Livepatch service | Optional (operator-configured) |
+| Livepatch Server to Ubuntu Pro service | Enforced |
+| Livepatch Server to PostgreSQL | Optional (operator-configured) |
+| Livepatch Server to S3 | Optional (`s3_secure` flag) |
+| Livepatch Server to Swift | Optional (operator-configured) |
 
 TLS is implemented using Go's standard library (`crypto/tls` and `crypto/x509`). The minimum supported TLS version is 1.2.
 
 ## Security support
 
-The on-premises Livepatch server is released as a Kubernetes charm and a snap for on-premises use. Releases are made ad-hoc as features and bug fixes are implemented. When a security vulnerability in an upstream dependency is detected, a best-effort attempt is made to upgrade the dependency to the latest version that fixes the vulnerability. This security fix is then included in the next ad-hoc release.
+The on-premises Livepatch Server is released as a Kubernetes charm and a snap for on-premises use. Releases are made ad-hoc as features and bug fixes are implemented. When a security vulnerability in an upstream dependency is detected, a best-effort attempt is made to upgrade the dependency to the latest version that fixes the vulnerability. This security fix is then included in the next ad-hoc release.
 
-A fix for a reported security issue that is directly present in the on-premises Livepatch server can be prioritized and released as a minor version upgrade for both the charm and snap.
+A fix for a reported security issue that is directly present in the on-premises Livepatch Server can be prioritized and released as a minor version upgrade for both the charm and snap.
 
 ## Related security documentation
 

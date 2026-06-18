@@ -25,7 +25,7 @@ No previous or advanced knowledge of Juju or Charmed Operators is required to fo
 
 ## Obtain the Livepatch authorization token
 
-On-premises Livepatch servers act as caching proxies for the Livepatch service hosted by Canonical. The subscription token is required to authorize the on-premises instance to pull patch information.
+On-premises Livepatch Servers act as caching proxies for the Livepatch service hosted by Canonical. The subscription token is required to authorize the on-premises instance to pull patch information.
 
 To obtain the Ubuntu Pro subscription token, visit https://ubuntu.com/pro.
 
@@ -41,7 +41,7 @@ See the [resource requirements](/server/reference/platform/resource-requirements
 
 ### 2. Deploy the bundle
 
-The bundle and Charmed Operators necessary to deploy the Livepatch server are available at:
+The bundle and Charmed Operators necessary to deploy the Livepatch Server are available at:
 
 https://charmhub.io/canonical-livepatch-onprem
 
@@ -81,7 +81,7 @@ After that, set the `url_template` setting as follows:
 juju config livepatch url_template="http://10.94.227.82/v1/patches/{filename}"
 ```
 
-The `url_template` specifies the URL where patch files can be downloaded by Livepatch client agents. The URL template should be of the form `http(s)://{HOSTNAME}/v1/patches/{filename}`. The hostname is the only part that needs to be changed. The hostname can be the IP address of the HAProxy unit. If a DNS hostname is configured for the HAProxy IP address, that can also be used.
+The `url_template` specifies the URL where patch files can be downloaded by Livepatch Client agents. The URL template should be of the form `http(s)://{HOSTNAME}/v1/patches/{filename}`. The hostname is the only part that needs to be changed. The hostname can be the IP address of the HAProxy unit. If a DNS hostname is configured for the HAProxy IP address, that can also be used.
 
 #### Deploy with a config overlay (optional)
 
@@ -105,7 +105,7 @@ applications:
 
 ### 4. Set up authentication
 
-To enable admin tool access to the Livepatch server, authentication must be configured. The simplest method is to enable username and password authentication.
+To enable admin tool access to the Livepatch Server, authentication must be configured. The simplest method is to enable username and password authentication.
 
 Generate the password hash:
 
@@ -152,7 +152,7 @@ The information sent back about each machine includes:
 * CPU model
 * Architecture
 * Boot time and uptime
-* Livepatch client version
+* Livepatch Client version
 * Obfuscated machine ID
 * Status of the patch currently applied to the machine's kernel
 

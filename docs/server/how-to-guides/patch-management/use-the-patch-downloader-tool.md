@@ -10,11 +10,11 @@ myst:
 
 The Canonical Livepatch Downloader tool is a CLI application that provides basic commands to query and download patch files.
 
-Note that this tool is not a replacement for the [Canonical Livepatch client](https://snapcraft.io/canonical-livepatch). Instead it provides some basic patch download and query functionality which may be particularly desirable in the following scenarios:
+Note that this tool is not a replacement for the [Canonical Livepatch Client](https://snapcraft.io/canonical-livepatch). Instead it provides some basic patch download and query functionality which may be particularly desirable in the following scenarios:
 
-- If the Livepatch client cannot be used and patches must be inserted manually.
+- If the Livepatch Client cannot be used and patches must be inserted manually.
 - To download patches before transferring them into an airgapped on-premises deployment of the Livepatch Server.
-- To download patch tarballs before moving them to the configured patch storage, in case a patch sync with the hosted Livepatch server cannot be performed.
+- To download patch tarballs before moving them to the configured patch storage, in case a patch sync with the hosted Livepatch Server cannot be performed.
 
 ## Set up the Downloader
 
@@ -106,9 +106,9 @@ Patches downloaded and extracted to /home/demo/snap/canonical-livepatch-download
 
 ## Save the downloaded patch tarballs
 
-The default behavior of the patch downloader is to download the patch tarball served by the hosted Livepatch server to a temporary location, perform file checksum checks, extract the patch files from the tarball and then delete the downloaded patch tarball from the temporary location.
+The default behavior of the patch downloader is to download the patch tarball served by the hosted Livepatch Server to a temporary location, perform file checksum checks, extract the patch files from the tarball and then delete the downloaded patch tarball from the temporary location.
 
-This behaviour can be overridden to save the downloaded patch tarballs in a permanent location for further use, by using the `-K` or `--keep-tarball` option with the `get-latest` or `get-files` commands. A potential use-case for doing this could be to move the patch tarballs to the configured on-premises patch storage, when a patch sync with the hosted Livepatch server cannot be performed.
+This behaviour can be overridden to save the downloaded patch tarballs in a permanent location for further use, by using the `-K` or `--keep-tarball` option with the `get-latest` or `get-files` commands. A potential use-case for doing this could be to move the patch tarballs to the configured on-premises patch storage, when a patch sync with the hosted Livepatch Server cannot be performed.
 
 For example, to store the downloaded patch tarballs and the extracted patch files for the architecture `amd64`, kernel `5.15.0-25` and flavour `generic`:
 

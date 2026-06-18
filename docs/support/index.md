@@ -1,14 +1,14 @@
 ---
 myst:
   html_meta:
-    description: "Support and bug reporting information for the Livepatch client and on-premises server."
+    description: "Support and bug reporting information for the Livepatch Client and on-premises server."
 ---
 
 (support)=
 
 # Support
 
-This section provides details on obtaining support for the Ubuntu Livepatch service, the Livepatch client, and the Livepatch on-premises server. It also covers how to report bugs for each component.
+This section provides details on obtaining support for the Ubuntu Livepatch service, the Livepatch Client, and the Livepatch on-premises server. It also covers how to report bugs for each component.
 
 ## Getting support
 
@@ -22,7 +22,7 @@ For information on filing support tickets, see [Get more help](/support/get-more
 
 The Livepatch projects maintain dedicated bug trackers:
 
-- [Livepatch client bug tracker](https://bugs.launchpad.net/canonical-livepatch-client/+filebug)
+- [Livepatch Client bug tracker](https://bugs.launchpad.net/canonical-livepatch-client/+filebug)
 - [Livepatch on-prem bug tracker](https://bugs.launchpad.net/livepatch-onprem/+filebug)
 
 For details on reporting client bugs, including the diagnostic information to include, see [Report bugs](/support/report-bugs.md).

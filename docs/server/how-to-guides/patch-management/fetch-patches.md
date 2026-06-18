@@ -20,7 +20,7 @@ It is recommended to trigger a patch snapshot download once the server is succes
 
 ## Verify that the server is up to date
 
-To verify that the server is receiving the latest patches from the Livepatch server hosted by Canonical, use the following command.
+To verify that the server is receiving the latest patches from the Livepatch Server hosted by Canonical, use the following command.
 
 ```
 livepatch-admin sync reports

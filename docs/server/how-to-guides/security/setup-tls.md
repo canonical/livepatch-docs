@@ -8,7 +8,7 @@ myst:
 
 # Set up TLS for Livepatch on-premises
 
-The security of live kernel patching depends not only on the signed kernel modules but also on the secure TLS channel between the Livepatch client and the on-premises server. Setting up the necessary TLS keys and certificates for the on-premises service is therefore essential.
+The security of live kernel patching depends not only on the signed kernel modules but also on the secure TLS channel between the Livepatch Client and the on-premises server. Setting up the necessary TLS keys and certificates for the on-premises service is therefore essential.
 
 There are several ways to set up TLS for Livepatch on-premises. One approach is to use a dedicated TLS-terminating reverse proxy in front of the haproxy service. Another approach is to configure the appropriate TLS certificate and key on the haproxy instance directly.
 
@@ -80,9 +80,9 @@ export LIVEPATCH_CA_CRT='/temp/cert.pem'
 export LIVEPATCH_CA_CRT="$(cat ./cert.pem)"
 ```
 
-## Configure the Livepatch client with TLS
+## Configure the Livepatch Client with TLS
 
-If a self-signed certificate is used for the Livepatch on-premises service, Livepatch client instances must also be configured with that certificate to verify responses from the on-premises server:
+If a self-signed certificate is used for the Livepatch on-premises service, Livepatch Client instances must also be configured with that certificate to verify responses from the on-premises server:
 
 ```
 sudo canonical-livepatch config ca-certs=@stdin < ./cert.pem

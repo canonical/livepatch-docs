@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How to use patch cut-off date with Livepatch client."
+    description: "How to use patch cut-off date with Livepatch Client."
 ---
 
 

@@ -14,5 +14,5 @@ Canonical is committed to live patching every high or critical CVE as quickly as
 
 If a high or critical CVE cannot be fixed through live kernel patching, Livepatch users are informed when the SRU kernel update that resolves the issue becomes available. Two notifications are issued:
 
-- The Livepatch client indicates that the system must be rebooted by reporting a state of "reboot required." On desktop systems, this is accompanied by a desktop notification. On all systems, a notification appears in the MOTD on the terminal.
+- The Livepatch Client indicates that the system must be rebooted by reporting a state of "reboot required." On desktop systems, this is accompanied by a desktop notification. On all systems, a notification appears in the MOTD on the terminal.
 - An LSN is released containing instructions to reboot into a new SRU kernel that includes the CVE fix. LSNs are published on both the security website and via email.

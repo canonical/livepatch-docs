@@ -7,7 +7,7 @@ myst:
 
 (server-how-to-guides-configure-logging-and-monitoring-for-livepatch-server)=
 
-# Configure logging and monitoring for the Livepatch server
+# Configure logging and monitoring for the Livepatch Server
 
 The Livepatch Server provides structured security event logging and Prometheus metrics for monitoring. The following sections describe how to configure and consume these security-relevant features. For general monitoring concepts and debug endpoints, see the [Logging and Monitoring explanation](/server/explanation/observability/logging-and-monitoring.md).
 

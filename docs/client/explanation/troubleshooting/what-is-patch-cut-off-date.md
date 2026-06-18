@@ -14,7 +14,7 @@ The use of a patch cut-off date is recommended only for groups of systems that r
 
 ## Availability
 
-This feature is available only for users with a paid Ubuntu Pro subscription, or to public cloud customers running Ubuntu Pro images that retrieve Livepatch patches from Canonical's hosted Livepatch service. It is not available for self-hosted Livepatch servers.
+This feature is available only for users with a paid Ubuntu Pro subscription, or to public cloud customers running Ubuntu Pro images that retrieve Livepatch patches from Canonical's hosted Livepatch service. It is not available for self-hosted Livepatch Servers.
 
 Livepatch Client version 10.11.2 or later is required.
 

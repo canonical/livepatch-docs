@@ -45,7 +45,7 @@ Patches <patches/index.md>
 
 ## Troubleshooting
 
-Diagnose and resolve common Livepatch client issues.
+Diagnose and resolve common Livepatch Client issues.
 
 ```{toctree}
 :titlesonly:

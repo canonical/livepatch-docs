@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "Day-to-day operation of the Livepatch client."
+    description: "Day-to-day operation of the Livepatch Client."
 ---
 
 
@@ -9,7 +9,7 @@ myst:
 
 # Operations
 
-Day-to-day operation of the Livepatch client.
+Day-to-day operation of the Livepatch Client.
 
 ## In this section
 

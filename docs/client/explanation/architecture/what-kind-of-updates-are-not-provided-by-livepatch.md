@@ -10,7 +10,7 @@ myst:
 
 The Livepatch service provides patches exclusively for Canonical-released kernels, addressing security issues that have been assigned a CVE and are rated as high or critical priority.
 
-Live kernel patches are intended to address significant security issues in the kernel and provide protection from serious vulnerabilities until a reboot can be scheduled. All CVEs rated as high or critical will be fixed through live kernel patching whenever possible. If a live patch cannot be produced, the Livepatch client issues a notification that a reboot is required.
+Live kernel patches are intended to address significant security issues in the kernel and provide protection from serious vulnerabilities until a reboot can be scheduled. All CVEs rated as high or critical will be fixed through live kernel patching whenever possible. If a live patch cannot be produced, the Livepatch Client issues a notification that a reboot is required.
 
 Many patches included in [kernel updates](https://wiki.ubuntu.com/KernelTeam/KernelUpdates) are outside the scope of the Livepatch service, including:
 

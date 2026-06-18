@@ -1,15 +1,15 @@
 ---
 myst:
   html_meta:
-    description: "How to check client status with Livepatch client."
+    description: "How to check client status with Livepatch Client."
 ---
 
 
 (client-how-to-guides-how-to-check-the-livepatch-client-status)=
 
-# How to check the Livepatch client status
+# How to check the Livepatch Client status
 
-Once `canonical-livepatch`, the Livepatch client, is running on a machine, it periodically (every hour by default) checks for new patches.
+Once `canonical-livepatch`, the Livepatch Client, is running on a machine, it periodically (every hour by default) checks for new patches.
 
 To show the current state of the client, run:
 

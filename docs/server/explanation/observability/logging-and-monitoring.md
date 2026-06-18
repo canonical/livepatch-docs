@@ -13,7 +13,7 @@ The Livepatch on-premises server exposes several endpoints and mechanisms that o
 
 ## Health and version endpoints
 
-The Livepatch server exposes two debug endpoints that provide information about the server's status:
+The Livepatch Server exposes two debug endpoints that provide information about the server's status:
 
 - `/debug/info`: Returns the server's version information. Any monitoring solution can periodically check this endpoint as a liveness check to ensure the service is running.
 - `/debug/status`: Returns information about the server's database and related services.
@@ -32,6 +32,6 @@ For more information on using Juju for logging, see the [Juju documentation on d
 
 ## Security logging
 
-The Livepatch server logs all authentication successes and failures, authorization decisions, token lifecycle events, admin activity, and system events as structured JSON in compliance with OWASP logging standards.
+The Livepatch Server logs all authentication successes and failures, authorization decisions, token lifecycle events, admin activity, and system events as structured JSON in compliance with OWASP logging standards.
 
 For detailed guidance on configuring security event logging, Prometheus metrics, Grafana dashboards, log redaction, and centralized log forwarding, see {ref}`How to configure logging and monitoring <server-how-to-guides-configure-logging-and-monitoring-for-livepatch-server>`.

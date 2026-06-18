@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How to chain livepatch servers with Livepatch on-prem."
+    description: "How to chain Livepatch Servers."
 ---
 
 
@@ -24,11 +24,11 @@ To chain on-premises servers, the following are needed:
 - A new deployment of the Livepatch on-premises server.
 - The Livepatch admin tool [set up](/server/how-to-guides/security/setup-administration-tool.md) against the existing server.
 
-When deploying an instance of the Livepatch server (see the existing [guides](/server/how-to-guides/index.md)), an Ubuntu Pro token is normally used to configure the on-premises server to sync with Canonical's hosted Livepatch server.
+When deploying an instance of the Livepatch Server (see the existing [guides](/server/how-to-guides/index.md)), an Ubuntu Pro token is normally used to configure the on-premises server to sync with Canonical's hosted Livepatch Server.
 
-In this scenario, skip that step and use a token provided by the existing Livepatch server.
+In this scenario, skip that step and use a token provided by the existing Livepatch Server.
 
-Below, the "upstream" server is referred to as the original Livepatch server and the "downstream" server as the new deployment that will sync from the "upstream".
+Below, the "upstream" server is referred to as the original Livepatch Server and the "downstream" server as the new deployment that will sync from the "upstream".
 
 ## On the upstream server
 
@@ -56,7 +56,7 @@ Configure the following values on the charm or snap deployment:
 - Set `patch-sync.token` using the previously obtained token.
 - Set `patch-sync.upstream-url` to the upstream server URL.
 
-The downstream Livepatch server is now configured to sync from the upstream server.
+The downstream Livepatch Server is now configured to sync from the upstream server.
 This process can be repeated as many times as desired.
 
 ## Sync tiers (optional)

@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How to deploy the Livepatch server snap on public clouds."
+    description: "How to deploy the Livepatch Server snap on public clouds."
 ---
 
 
@@ -9,7 +9,7 @@ myst:
 
 # How to deploy on public clouds
 
-This section details how to launch the Livepatch server snap on public clouds, with single-unit or multi-unit deployments using an auto-scaling solution from the cloud provider.
+This section details how to launch the Livepatch Server snap on public clouds, with single-unit or multi-unit deployments using an auto-scaling solution from the cloud provider.
 
 ## Prerequisites
 
@@ -26,9 +26,9 @@ Before deploying the server snap, the following are required:
 
 Sensitive data such as connection strings and the Pro token should be stored in a vault that is accessed later during the installation.
 
-## Install Livepatch server with cloud-init
+## Install Livepatch Server with cloud-init
 
-VMs can be created and Livepatch can be initialized with [cloud-init](https://docs.cloud-init.io/en/latest/). Create a `cloud-config.yaml` file with the following template, including setup steps to install the Livepatch server:
+VMs can be created and Livepatch can be initialized with [cloud-init](https://docs.cloud-init.io/en/latest/). Create a `cloud-config.yaml` file with the following template, including setup steps to install the Livepatch Server:
 
 ```yaml
 #cloud-config
@@ -93,7 +93,7 @@ runcmd:
     rm /etc/livepatch/*
 
 
-final_message: The system is up, up to date, and Livepatch server is active after $UPTIME second
+final_message: The system is up, up to date, and Livepatch Server is active after $UPTIME second
 ```
 
 This template configuration performs the following operations:
@@ -101,7 +101,7 @@ This template configuration performs the following operations:
 * Waits until snapd is ready.
 * Installs the `canonical-livepatch-server` snap and stops the server temporarily for configuration.
 * Initializes the provided database with the latest schema. If the database schema is already up to date, no updates are performed.
-* Points the Livepatch server to the configured database.
+* Points the Livepatch Server to the configured database.
 * Enables the server with an Ubuntu Pro token.
 * Sets up an admin user.
 * Configures the server for all traffic on port 80.
@@ -129,11 +129,11 @@ To ensure the file is root-accessible only, add a field in the `write_files` sec
     owner: root:root
 ```
 
-> The Livepatch server requires the Pro token, database connection string, and storage connection string to operate. Do not put these values in the configuration file as plain text. Use the cloud provider's secrets manager.
+> The Livepatch Server requires the Pro token, database connection string, and storage connection string to operate. Do not put these values in the configuration file as plain text. Use the cloud provider's secrets manager.
 
 ## Set up periodic patch sync
 
-Periodic patch syncs with the hosted Livepatch server can be configured with:
+Periodic patch syncs with the hosted Livepatch Server can be configured with:
 
 ```bash
 snap set canonical-livepatch-server lp.patch-sync.enabled=true
@@ -142,7 +142,7 @@ snap set canonical-livepatch-server lp.patch-sync.interval=12h
 
 All configuration can be performed with a single `snap set` command by placing all configuration values in a single line, as shown in the template cloud-init module.
 
-With all configurations written in the `cloud-config.yaml`, VM instances can be created by passing in the configuration. The Livepatch server is installed and ready to receive traffic.
+With all configurations written in the `cloud-config.yaml`, VM instances can be created by passing in the configuration. The Livepatch Server is installed and ready to receive traffic.
 
 ```{toctree}
 :titlesonly:

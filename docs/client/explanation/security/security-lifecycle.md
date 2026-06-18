@@ -1,14 +1,14 @@
 ---
 myst:
   html_meta:
-    description: "Understand the Livepatch client security lifecycle, including snap release channels, automatic security updates, and managing refresh behavior."
+    description: "Understand the Livepatch Client security lifecycle, including snap release channels, automatic security updates, and managing refresh behavior."
 ---
 
 (client-explanation-livepatch-client-security-lifecycle)=
 
-# Livepatch client security lifecycle
+# Livepatch Client security lifecycle
 
-The Livepatch client is released as a snap. Releases are issued on an ad-hoc basis as features and bug fixes are implemented. When a security vulnerability is detected in an upstream dependency, a best-effort attempt is made to upgrade the dependency to the latest version that resolves the vulnerability. This security fix is then included in the next ad-hoc release.
+The Livepatch Client is released as a snap. Releases are issued on an ad-hoc basis as features and bug fixes are implemented. When a security vulnerability is detected in an upstream dependency, a best-effort attempt is made to upgrade the dependency to the latest version that resolves the vulnerability. This security fix is then included in the next ad-hoc release.
 
 It is recommended to install the [canonical-livepatch snap](https://snapcraft.io/canonical-livepatch) from the `latest/stable` channel in the Snap Store. This channel provides the latest stable version of the snap, including all recent stable security updates.
 

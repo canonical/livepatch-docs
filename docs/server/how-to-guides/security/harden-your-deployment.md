@@ -7,7 +7,7 @@ myst:
 
 (server-how-to-guides-harden-your-livepatch-server-deployment)=
 
-# Harden a Livepatch server deployment
+# Harden a Livepatch Server deployment
 
 The Livepatch Server is available as a Kubernetes charm and a strict-confinement snap for on-premises deployment. The following sections provide guidance on securing the server in production deployments.
 

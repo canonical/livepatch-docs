@@ -1,14 +1,14 @@
 ---
 myst:
   html_meta:
-    description: "Diagnose and understand common Livepatch client issues including unsupported kernels, missing patches, reboots, service access, and patch cut-off dates."
+    description: "Diagnose and understand common Livepatch Client issues including unsupported kernels, missing patches, reboots, service access, and patch cut-off dates."
 ---
 
 (client-explanation-troubleshooting)=
 
 # Troubleshooting
 
-Diagnose and understand common Livepatch client issues.
+Diagnose and understand common Livepatch Client issues.
 
 ```{toctree}
 :titlesonly:
