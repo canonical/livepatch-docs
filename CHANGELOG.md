@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Standardized heading style to declarative noun-phrase headings and enforced sentence case.
 - Replaced manual index link lists with structured toctree-based navigation and removed hidden toctrees.
 - Restructured release notes pages by replacing collapsible sections with plain headings and simplifying landing-page navigation.
-- Revised `README.md` and the documentation landing page to follow the Diataxis model and present Livepatch with product-focused context.
+- Revised `README.md` and the documentation landing page to follow the Diátaxis model and present Livepatch with product-focused context.
 - Improved server explanation and support documentation structure, including clearer diagnostic guidance.
 
 ### Fixed
