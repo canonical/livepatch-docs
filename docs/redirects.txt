@@ -8,7 +8,7 @@
 
 
 # Redirects for the 3rd-level Diátaxis restructure
-"client/explanation/how-livepatching-works.md" "client/explanation/architecture/how-livepatching-works.md"
+"client/explanation/how-livepatching-works.md" "client/explanation/architecture/how-live-patching-works.md"
 "client/explanation/what-are-livepatch-tiers.md" "client/explanation/architecture/what-are-livepatch-tiers.md"
 "client/explanation/what-kind-of-updates-are-not-provided-by-livepatch.md" "client/explanation/architecture/what-kind-of-updates-are-not-provided-by-livepatch.md"
 "client/explanation/what-kind-of-updates-are-provided-by-livepatch.md" "client/explanation/architecture/what-kind-of-updates-are-provided-by-livepatch.md"
