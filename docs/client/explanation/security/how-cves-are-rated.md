@@ -1,20 +1,19 @@
 ---
 myst:
   html_meta:
-    description: "How CVEs are rated? - learn about this topic in Livepatch client."
+    description: "Understand how Canonical rates CVEs in Livepatch, including the rating scale from negligible to critical and what each rating means."
 ---
-
 
 (client-explanation-how-do-you-rate-a-cve)=
 
-# How do you rate a CVE?
+# How CVEs are rated
 
-Canonical does not use an external rating system, but rates based on these qualifications:
+Canonical uses its own rating system for CVEs based on the following qualifications:
 
-| | |
-|-----------------------|-----------------------------------------------------------------------|
-| *negligible* | Something that is technically a security problem, but is only theoretical in nature, requires a very special situation, has almost no install base, or does no real damage. These tend not to get backport from upstreams, and will likely not be included in security updates unless there is an easy fix and some other issue causes an update.|
-| *low* | Something that is a security problem, but is hard to exploit due to environment, requires a user-assisted attack, a small install base, or does very little damage. These tend to be included in security updates only when higher priority issues require an update, or if many low priority issues have built up.|
-| *medium* | Something is a real security problem, and is exploitable for many people. Includes network daemon denial of service attacks, cross-site scripting, and gaining user privileges. Updates should be made soon for this priority of issue.|
-| *high* | A real problem, exploitable for many people in a default installation. Includes serious remote denial of services, local root privilege escalations, or data loss.|
-| *critical* | A world-burning problem, exploitable for nearly all people in a default installation of Ubuntu. Includes remote root privilege escalations, or massive data loss.|
+| Rating | Description |
+|--------|-------------|
+| Negligible | A theoretical security problem that requires a very specific scenario, has a minimal install base, or causes negligible damage. These usually do not receive backports from upstream and are unlikely to be included in security updates unless an easy fix is available and another issue triggers an update. |
+| Low | A security problem that is difficult to exploit due to environment constraints, requires a user-assisted attack, has a small install base, or causes limited damage. These are typically included in security updates only when higher priority issues require an update or when many low priority issues have accumulated. |
+| Medium | A real security problem that is exploitable for many users. Includes network daemon denial of service attacks, cross-site scripting, and gaining user privileges. Updates should be produced promptly for this priority. |
+| High | A real problem, exploitable for many users in a default installation. Includes serious remote denial of service, local root privilege escalation, or data loss. |
+| Critical | A severe problem, exploitable for nearly all users in a default installation of Ubuntu. Includes remote root privilege escalation or massive data loss. |

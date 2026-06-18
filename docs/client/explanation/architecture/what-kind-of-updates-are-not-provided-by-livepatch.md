@@ -1,23 +1,22 @@
 ---
 myst:
   html_meta:
-    description: "What kind of updates are not provided by Livepatch? - learn about this topic in Livepatch client."
+    description: "Understand which updates are not provided by the Livepatch service, including bug fixes, performance improvements, and driver updates outside of high and critical CVEs."
 ---
-
 
 (client-explanation-what-kind-of-updates-are-not-provided-by-the-livepatch-service)=
 
-# What kind of updates are not provided by the Livepatch service?
+# Updates not provided by Livepatch
 
 The Livepatch service provides patches exclusively for Canonical-released kernels, addressing security issues that have been assigned a CVE and are rated as high or critical priority.
 
-Live kernel patches are intended to address significant security issues in the kernel, and provide customers with protection from serious vulnerabilities until they can schedule a reboot. All CVEs that are rated as either a high or critical issue will always be remediated with live kernel patching if possible, and, if it is not possible, a notification that a reboot is required will be issued by the Livepatch client.
+Live kernel patches are intended to address significant security issues in the kernel and provide protection from serious vulnerabilities until a reboot can be scheduled. All CVEs rated as high or critical will be fixed through live kernel patching whenever possible. If a live patch cannot be produced, the Livepatch client issues a notification that a reboot is required.
 
-There are frequently patches included in [kernel updates](https://wiki.ubuntu.com/KernelTeam/KernelUpdates) that are not included in the Livepatch service, such as:
+Many patches included in [kernel updates](https://wiki.ubuntu.com/KernelTeam/KernelUpdates) are outside the scope of the Livepatch service, including:
 
-- bug fixes that are not security issues
-- performance improvements
-- driver updates
-- new features
+- Bug fixes that are not security issues
+- Performance improvements
+- Driver updates
+- New features
 
-To receive these updates, it is necessary to upgrade the kernel package using the package manager for the system (apt for Ubuntu desktop or server, or snapd if running on Ubuntu Core) and then reboot into the upgraded kernel.
+To receive these updates, upgrade the kernel package using your system's package manager — `apt` for Ubuntu Desktop or Server, or `snapd` for Ubuntu Core — then reboot into the upgraded kernel.

@@ -1,22 +1,25 @@
 ---
 myst:
   html_meta:
-    description: "Do I need to reboot? - learn about this topic in Livepatch client."
+    description: "Understand when a reboot is required for Ubuntu systems using Livepatch, including kernel upgrades and other system components that require restarts."
 ---
-
 
 (client-explanation-do-i-need-to-reboot)=
 
-# Does Ubuntu need to be rebooted?
+# When to reboot
 
-To upgrade (not just patch) your kernel to the newest version live kernel patching is not sufficient, and you need to reboot. Note that live kernel patches include only high and critical kernel vulnerabilities. The service provides protection from serious security issues, but this is just one aspect of keeping your system secure and well maintained. There are a number of other software components that can require you to reboot your system, including, but not limited to:
+Live kernel patching is not sufficient when you need to upgrade your kernel to a newer version — a reboot is required in that case. Live kernel patches include only high and critical kernel vulnerabilities. The service provides protection from serious security issues, but this is only one aspect of keeping your system secure and well maintained.
+
+Several other software components can require a system reboot, including:
 
 - CPU firmware and microcode updates
-- Updates to shared libraries and low-level dependencies (glibc, for example)
+- Updates to shared libraries and low-level dependencies (such as glibc)
 - System BIOS and EFI updates
 
-**Enabling the Livepatch service does not turn on automatic installation of security updates in APT.**
+Enabling the Livepatch service does not turn on automatic installation of security updates in APT. For best security, you should:
 
-For best security, you should [enable security updates using APT](https://help.ubuntu.com/community/AutomaticSecurityUpdates), subscribe to the [security announcement mailing list](https://lists.ubuntu.com/mailman/listinfo/ubuntu-security-announce), follow all advised security updates, and reboot your system at your earliest convenience when any software component requires it.
+- [Enable security updates using APT](https://help.ubuntu.com/community/AutomaticSecurityUpdates)
+- Subscribe to the [security announcement mailing list](https://lists.ubuntu.com/mailman/listinfo/ubuntu-security-announce)
+- Follow all advised security updates and reboot at your earliest convenience when any software component requires it
 
-Additionally, kernel SRU updates include non-security bugfixes and lower-priority security fixes that may be important to your specific circumstances, and these fixes are only available by rebooting into an updated kernel.
+Kernel SRU updates also include non-security bug fixes and lower-priority security fixes that may be important to your specific circumstances. These fixes are only available by rebooting into an updated kernel.

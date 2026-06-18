@@ -1,34 +1,23 @@
 ---
 myst:
   html_meta:
-    description: "Diagnose and understand Livepatch client issues."
+    description: "Diagnose and understand common Livepatch client issues including unsupported kernels, missing patches, reboots, service access, and patch cut-off dates."
 ---
-
 
 (client-explanation-troubleshooting)=
 
 # Troubleshooting
 
-Diagnose and understand Livepatch client issues.
-
-## In this section
-
-- [Why Livepatch is not working on the machine?](/client/explanation/troubleshooting/why-livepatch-is-not-working-on-my-machine.md)
-- [Service access problem](/client/explanation/troubleshooting/service-access-problem.md)
-- [Why are there missing patches?](/client/explanation/troubleshooting/why-are-there-missing-patches.md)
-- [What happens when a problem cannot be patched?](/client/explanation/troubleshooting/what-happens-when-a-problem-cannot-be-patched.md)
-- [Does Ubuntu need to be rebooted?](/client/explanation/troubleshooting/do-i-need-to-reboot.md)
-- [What is patch cut-off date?](/client/explanation/troubleshooting/what-is-patch-cut-off-date.md)
+Diagnose and understand common Livepatch client issues.
 
 ```{toctree}
 :titlesonly:
 :maxdepth: 1
-:hidden:
 
-Why livepatch is not working on my machine <why-livepatch-is-not-working-on-my-machine.md>
-Service access problem <service-access-problem.md>
-Why are there missing patches <why-are-there-missing-patches.md>
-What happens when a problem cannot be patched <what-happens-when-a-problem-cannot-be-patched.md>
-Do i need to reboot <do-i-need-to-reboot.md>
-What is patch cut off date <what-is-patch-cut-off-date.md>
+Livepatch not working <why-livepatch-is-not-working-on-my-machine.md>
+Service access problems <service-access-problem.md>
+Missing patches <why-are-there-missing-patches.md>
+Unpatchable problems <what-happens-when-a-problem-cannot-be-patched.md>
+When to reboot <do-i-need-to-reboot.md>
+Patch cut-off date <what-is-patch-cut-off-date.md>
 ```

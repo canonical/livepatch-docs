@@ -1,30 +1,55 @@
 ---
 myst:
   html_meta:
-    description: "Explanation - learn about this topic in Livepatch client."
+    description: "Explore explanatory and conceptual guides for Livepatch including architecture, security, patch lifecycle, and troubleshooting."
 ---
-
 
 (client-explanation)=
 
 # Explanation
 
-Discussion and clarification of key topics related to Livepatch.
+These explanatory and conceptual guides provide a deeper understanding of how Livepatch works, how patches are delivered, and how to diagnose common issues.
 
-## In this section
+## Architecture
 
-- [Architecture](/client/explanation/architecture/index.md) — How live kernel patching works and what kind of updates it provides.
-- [Security](/client/explanation/security/index.md) — How CVEs are rated and how Livepatch keeps systems secure.
-- [Patches](/client/explanation/patches/index.md) — How patches are installed and their lifecycle.
-- [Troubleshooting](/client/explanation/troubleshooting/index.md) — Diagnose and understand Livepatch client issues.
+Understand how kernel live patching works and the types of updates Livepatch provides.
 
 ```{toctree}
 :titlesonly:
 :maxdepth: 2
-:hidden:
 
 Architecture <architecture/index.md>
+```
+
+## Security
+
+Learn how CVEs are rated and how Livepatch protects your systems.
+
+```{toctree}
+:titlesonly:
+:maxdepth: 2
+
 Security <security/index.md>
+```
+
+## Patches
+
+Explore the lifecycle of live kernel patches, from CVE identification to installation on client machines.
+
+```{toctree}
+:titlesonly:
+:maxdepth: 2
+
 Patches <patches/index.md>
+```
+
+## Troubleshooting
+
+Diagnose and resolve common Livepatch client issues.
+
+```{toctree}
+:titlesonly:
+:maxdepth: 2
+
 Troubleshooting <troubleshooting/index.md>
 ```

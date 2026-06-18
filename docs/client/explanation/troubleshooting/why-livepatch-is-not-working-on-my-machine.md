@@ -1,59 +1,56 @@
 ---
 myst:
   html_meta:
-    description: "Why is Livepatch not working as expected? - learn about this topic in Livepatch client."
+    description: "Diagnose why Livepatch is not working, including unsupported kernels, HWE vs GA kernel differences, and Secure Boot key enrollment requirements."
 ---
 
-  
 (client-explanation-why-isnt-livepatch-working-on-my-machine)=
 
-# Why is Livepatch not working as expected?
+# Livepatch not working
 
-## UNSUPPORTED KERNELS
+This document explains common reasons why Livepatch may not function as expected and how to diagnose each situation.
 
-Livepatch supports only kernels that have been released by the kernel team to the updates pocket, i.e. officially-released kernels acquired through APT using Canonical's repository for system updates, or Snap-based kernels released by Canonical to stable Snap channels.
+## Unsupported kernels
 
-While a live kernel patch *might* successfully apply to a kernel acquired from other sources, only certain kernels released by Canonical are supported. Kernels from other sources are not supported, including but not limited to:
+Livepatch supports only kernels that have been released by the kernel team to the updates pocket — officially released kernels acquired through APT using Canonical's repository for system updates, or snap-based kernels released by Canonical to stable snap channels.
 
-- kernels acquired from the development (proposed) kernel PPA
-- kernels acquired from the kernel team's build PPA
-- test kernels acquired from the kernel team's development PPAs
-- personally-rebuilt kernels using the source debian package
-- personally-rebuilt kernels using Snapcraft
-- kernels acquired from a Ubuntu-derived distribution
+While a live kernel patch might successfully apply to a kernel from other sources, only certain kernels released by Canonical are supported. Kernels from the following sources are not supported:
 
-Please be aware that while it may be possible to build a kernel with the same version markings as an officially-supported kernel, and to attempt to load a Canonical-generated livepatch into that kernel, it will likely not work, and can potentially crash your system or corrupt your data.
+- Kernels acquired from the development (proposed) kernel PPA
+- Kernels acquired from the kernel team's build PPA
+- Test kernels acquired from the kernel team's development PPAs
+- Personally rebuilt kernels using the source Debian package
+- Personally rebuilt kernels using Snapcraft
+- Kernels acquired from an Ubuntu-derived distribution
 
-Also note that a kernel running unsigned, out-of-tree drivers will be tainted, and the kernel will refuse to apply live kernel patches in this state.
+Building a kernel with the same version markings as an officially supported kernel and attempting to load a Canonical-generated live patch into it will likely not work, and can potentially crash your system or corrupt your data.
 
-A full list of supported kernels is available [here](/client/reference/platform/supported-kernels.md).
+Kernels running unsigned, out-of-tree drivers are tainted, and the kernel will refuse to apply live kernel patches in this state.
 
-## HWE vs GA Kernels
+A full list of supported kernels is available in the [Supported kernels reference](/client/reference/platform/supported-kernels.md).
 
-Related to the above, detailing certain scenarios when a kernel may not be supported, it felt necessary to add a dedicated section on HWE (hardware enablement) versus GA (general availability) kernels.
+## HWE vs GA kernels
 
-Existing [blog posts](https://canonical.com/blog/canonical-livepatch-gets-even-better-now-supporting-hardware-enablement-kernels) and [official pages](https://ubuntu.com/kernel/variants) detail what exactly an HWE kernel is. Newer releases of LTS Ubuntu Desktop default to the HWE kernel, meaning your machine will be running a kernel version that will update alongside each Ubuntu release before settling on the kernel released alongside the next LTS. Ubuntu Server installs continue to remain on the GA kernel.
+Livepatch support differs between Hardware Enablement (HWE) and General Availability (GA) kernels.
 
-While Livepatch supports the GA kernel and the HWE that you eventually settle on alongside the next LTS, it does not completely support the interim kernels that are released every 6 months. This is why you might see your machine running an LTS Ubuntu Desktop release, but still encounter Livepatch messaging saying your kernel is not supported.
+Newer releases of LTS Ubuntu Desktop default to the HWE kernel, meaning your machine runs a kernel version that updates alongside each Ubuntu release before settling on the kernel released with the next LTS. Ubuntu Server installations remain on the GA kernel. For more details on HWE kernels, see the [Canonical blog](https://canonical.com/blog/canonical-livepatch-gets-even-better-now-supporting-hardware-enablement-kernels) and [Ubuntu kernel variants page](https://ubuntu.com/kernel/variants).
 
-It is possible to switch from an HWE kernel to the GA if desired by following the instructions [here](https://wiki.ubuntu.com/Kernel/LTSEnablementStack). One should take care to backup data and other important information before making such system level changes.
+Livepatch supports the GA kernel and the HWE kernel that you settle on with the next LTS. It does not fully support the interim kernels released every 6 months. This is why a machine running an LTS Ubuntu Desktop release may still display Livepatch messaging indicating that the kernel is not supported.
 
-Finally, while prior to Ubuntu 22.04 LTS, Livepatch offered no support for interim kernel versions, recently Livepatch has grown support for some flavours of interim HWE kernels as described in the [blog post](https://ubuntu.com/blog/canonical-livepatch-gets-even-better-now-supporting-hardware-enablement-kernels). Kernels for desktop users are the "generic" flavour, while kernels for public clouds have their own unique flavours, supporting cloud specific functionality. Livepatch is now supported on interim HWE kernels for various public cloud flavours. Check your kernel flavour with `uname -r`.
+You can switch from an HWE kernel to the GA kernel by following the [LTS Enablement Stack instructions](https://wiki.ubuntu.com/Kernel/LTSEnablementStack). Back up your data and important information before making system-level changes.
 
-As above, a full list of GA and HWE kernels supported is available [here](/client/reference/platform/supported-kernels.md)
+Prior to Ubuntu 22.04 LTS, Livepatch offered no support for interim kernel versions. Livepatch has since added support for some flavours of interim HWE kernels. Desktop user kernels are the "generic" flavour, while public cloud kernels have their own unique flavours supporting cloud-specific functionality. Livepatch is now supported on interim HWE kernels for various public cloud flavours. Check your kernel flavour with `uname -r`.
 
-## SECUREBOOT
+A full list of GA and HWE supported kernels is available in the [Supported kernels reference](/client/reference/platform/supported-kernels.md).
 
-If you are using secure boot with a kernel older than April 1 2021, you will also need to import the Livepatch public keys into your keyring. If your kernel is newer, there is no need to import keys as the key is included in the kernel, but doing so will not cause any harm.
+## Secure Boot
 
-Use the following command to import the Livepatch key:
+If you are using Secure Boot with a kernel older than April 1, 2021, you must import the Livepatch public keys into your keyring. For newer kernels, the key is already included, and no import is necessary (though importing will not cause harm).
+
+To import the Livepatch key:
 
 ```
-
 sudo mokutil --import /snap/canonical-livepatch/current/keys/livepatch-kmod.x509
-
 ```
 
-After this enter a password if necessary for MOK, then reboot.
-
-Your BIOS will then guide you through enrolling a new key in MOK. At this point you will be able to verify the module signatures.
+Enter a password if prompted by MOK, then reboot. Your BIOS will guide you through enrolling the new key in MOK. After enrollment, you can verify the module signatures.

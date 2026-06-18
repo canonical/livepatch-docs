@@ -1,25 +1,31 @@
 ---
 myst:
   html_meta:
-    description: "Security Lifecycle - learn about this topic in Livepatch client."
+    description: "Understand the Livepatch client security lifecycle, including snap release channels, automatic security updates, and managing refresh behavior."
 ---
-
 
 (client-explanation-livepatch-client-security-lifecycle)=
 
-# Livepatch Client Security Lifecycle
+# Livepatch client security lifecycle
 
-The Livepatch Client is released as a snap. The releases for the client are done ad-hoc as a number of features and bug fixes are implemented. When a security vulnerability in an upstream dependency is detected, a best-case effort is made to upgrade the dependency to the latest version that fixes the vulnerability. This security fix is then included in the next ad-hoc release.
+The Livepatch client is released as a snap. Releases are issued on an ad-hoc basis as features and bug fixes are implemented. When a security vulnerability is detected in an upstream dependency, a best-effort attempt is made to upgrade the dependency to the latest version that resolves the vulnerability. This security fix is then included in the next ad-hoc release.
 
-It is recommended that the [canonical-livepatch snap](https://snapcraft.io/canonical-livepatch) is installed from the `latest/stable` channel from the snapstore. This channel will hold the latest stable version for the snap, including receiving all of the most recent stable security updates.
+It is recommended to install the [canonical-livepatch snap](https://snapcraft.io/canonical-livepatch) from the `latest/stable` channel in the Snap Store. This channel provides the latest stable version of the snap, including all recent stable security updates.
 
-## Security Updates
+## Security updates
 
-Security updates will be released to the `latest/stable` channel of the canonical-livepatch snap. By default, these security updates will be automatically applied to the installed canonical-livepatch snap by the snapd daemon. The snapd daemon checks for these updates four times a day and applies an update when it is available. Each of these update checks is called a **refresh**.
+Security updates are released to the `latest/stable` channel of the canonical-livepatch snap. By default, these updates are automatically applied by the snapd daemon, which checks for updates four times a day and applies them when available. Each update check is called a **refresh**.
 
-The default update behaviour of the snapd daemon can be controlled using the `snap refresh` command. This includes manually checking for and applying updates, postponing updates for a period of time or indefinitely, scheduling updates and rolling back automatically applied updates. For more information, view the [snap documentation](https://snapcraft.io/docs/how-to-guides/manage-snaps/manage-updates/#refresh-update-control) on managing snap updates.
+You can control the default update behavior of snapd using the `snap refresh` command. This includes:
 
-Please note that, modifying the default auto-update behavior of the snapd daemon, could leave systems vulnerable to important security updates shipped to the snaps. To verify that a security update has been successfully applied, run `snap info canonical-livepatch` and ensure that the installed snap version matches the snap version in the `latest/stable` channel. If the versions do not match, manually apply the most recent updates by running the following command:
+- Manually checking for and applying updates
+- Postponing updates for a period of time or indefinitely
+- Scheduling updates
+- Rolling back automatically applied updates
+
+For more information, see the [snap documentation on managing updates](https://snapcraft.io/docs/how-to-guides/manage-snaps/manage-updates/#refresh-update-control).
+
+Modifying the default auto-update behavior of snapd could leave systems vulnerable to important security updates. To verify that a security update has been applied, run `snap info canonical-livepatch` and confirm that the installed snap version matches the version in the `latest/stable` channel. If the versions do not match, manually apply the most recent updates:
 
 ```
 sudo snap refresh canonical-livepatch --channel=latest/stable

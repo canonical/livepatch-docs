@@ -1,28 +1,19 @@
 ---
 myst:
   html_meta:
-    description: "How patches are installed, their lifecycle, and security considerations."
+    description: "Explore the Livepatch patch lifecycle and installation process, including how patches move from CVE identification to client application."
 ---
-
 
 (client-explanation-patches)=
 
 # Patches
 
-How patches are installed, their lifecycle, and security considerations.
-
-## In this section
-
-- [Patch Lifecycle: From CVE to Client Machines](/client/explanation/patches/patch-lifecycle.md)
-- [Patch Installation](/client/explanation/patches/patch-installation.md)
+Explore the lifecycle of live kernel patches, from initial CVE identification through development, testing, and distribution to installation on client machines.
 
 ```{toctree}
 :titlesonly:
 :maxdepth: 1
-:hidden:
 
-Patch Lifecycle <patch-lifecycle.md>
-Patch Installation <patch-installation.md>
+Patch lifecycle <patch-lifecycle.md>
+Patch installation <patch-installation.md>
 ```
-
-

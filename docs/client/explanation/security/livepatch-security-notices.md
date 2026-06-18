@@ -1,17 +1,18 @@
 ---
 myst:
   html_meta:
-    description: "Livepatch security notices - learn about this topic in Livepatch client."
+    description: "Understand Livepatch security notices (LSNs), including when they are issued and how to subscribe to Ubuntu Security Announcements."
 ---
-
 
 (client-explanation-livepatch-security-notices)=
 
 # Livepatch security notices
 
-The Livepatch Security Notices (LSN) are notifications issued for kernel vulnerabilities. They can be accessed by following the [Security notices](https://ubuntu.com/security/notices) or by subscribing to the [Ubuntu Security Announcements](https://lists.ubuntu.com/mailman/listinfo/ubuntu-security-announce) mailing list. LSNs are released for every high or critical kernel vulnerability. They are released for:
+Livepatch Security Notices (LSNs) are notifications issued for kernel vulnerabilities. You can access them through the [Security notices](https://ubuntu.com/security/notices) page or subscribe to the [Ubuntu Security Announcements](https://lists.ubuntu.com/mailman/listinfo/ubuntu-security-announce) mailing list.
 
-- Announcing a new live kernel patch addressing a vulnerability.
-- Communicating an alert if a live kernel patch cannot be released describing the reason and possible mitigation. In that case
-  - a standard [Ubuntu security notice](https://ubuntu.com/security/notices) (USN) will be released with packages along side it to fix the issue.
-  - the Livepatch client will issue a warning that an update and reboot is necessary.
+LSNs are released for every high or critical kernel vulnerability. They are issued in two scenarios:
+
+- Announcing a new live kernel patch that addresses a vulnerability.
+- Alerting users when a live kernel patch cannot be released, describing the reason and possible mitigation. In this case:
+  - A standard [Ubuntu Security Notice](https://ubuntu.com/security/notices) (USN) is released with packages to resolve the issue.
+  - The Livepatch client issues a warning that an update and reboot is necessary.

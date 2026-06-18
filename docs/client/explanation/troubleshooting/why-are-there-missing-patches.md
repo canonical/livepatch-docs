@@ -1,14 +1,17 @@
 ---
 myst:
   html_meta:
-    description: "Why are there missing patches? - learn about this topic in Livepatch client."
+    description: "Understand why live kernel patches may be missing for certain CVEs, including unsupported kernels, non-kernel vulnerabilities, and third-party driver limitations."
 ---
 
- 
 (client-explanation-why-was-there-no-livepatch-for-some-particular-high-or-critical-cve)=
 
-# Why was there no live kernel patch for some particular high or critical CVE?
+# Missing patches
 
-Live kernel patches are only produced for [supported kernels](/client/reference/platform/supported-kernels.md), and only for CVEs that require a Linux kernel modification to fix the problem (for example, a CPU bug may not have a kernel fix). Further, live kernel patches do not address security problems in Ubuntu software packages, or in third-party drivers that do not ship as part of the Linux kernel (i.e. NVIDIA GPU drivers).
+Live kernel patches are produced only for [supported kernels](/client/reference/platform/supported-kernels.md) and only for CVEs that require a Linux kernel modification to resolve the issue. The following scenarios may result in no live kernel patch being available:
 
-Livepatch is intended to provide protection from security issues in *addition* to regular kernel security updates, so be sure to read and follow the security advisories published in Ubuntu Security Notifications ([USNs](https://ubuntu.com/security/notices)) for your kernel.
+- The CVE does not have a kernel fix (for example, a CPU bug may not have a kernel-level fix).
+- The security problem exists in Ubuntu software packages rather than the kernel.
+- The vulnerability affects third-party drivers that do not ship as part of the Linux kernel (such as NVIDIA GPU drivers).
+
+Livepatch is intended to provide protection in addition to regular kernel security updates. Always read and follow the security advisories published in [Ubuntu Security Notices](https://ubuntu.com/security/notices) (USNs) for your kernel.

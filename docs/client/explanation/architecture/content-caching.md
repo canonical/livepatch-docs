@@ -1,24 +1,28 @@
 ---
 myst:
   html_meta:
-    description: "Content caching - technical reference for Livepatch client."
+    description: "Understand content caching in the Livepatch client, including how SHA256 checksums and HTTP headers reduce network bandwidth when retrieving CVE data."
 ---
-
 
 (client-reference-content-caching)=
 
-# Content Caching
+# Content caching
 
-This document acts as a reference on how and where content caching with hashes is used in the Livepatch server, to reduce the network bandwidth required while trying to obtain certain information.
+The Livepatch client uses content caching to reduce network bandwidth when retrieving CVE data from the Livepatch server. This document explains where and how content caching with hashes is applied.
 
-## Where is content caching used in the Livepatch Client?
+## Where content caching is used
 
-The Livepatch client gets the fixed CVE data from the hosted Livepatch server, for the kernel packages currently present in the machine. If a newer version of the kernel fixes a patched CVE, the information of the CVEs fixed in the new kernel version can be viewed using the Livepatch client. The Livepatch client uses content caching while retrieving this information from the server.
+The Livepatch client retrieves CVE data from the hosted Livepatch server for the kernel packages present on the machine. If a newer version of the kernel fixes a patched CVE, the client can display information about the CVEs fixed in the new kernel version. Content caching is used when retrieving this information.
 
-## Why is content caching required?
+## Why content caching is required
 
-The CVE data for a machine changes infrequently, because only an update to the CVE data source or a new kernel package being installed on the machine can trigger a change. Therefore, it does not make sense for the server to send this information to the client on every request.
+CVE data for a machine changes infrequently — only an update to the CVE data source or the installation of a new kernel package triggers a change. Sending this data to the client on every request is unnecessary.
 
-## How is content caching achieved by the Livepatch client?
+## How content caching works
 
-The hosted Livepatch server and the Livepatch client rely on caching using content hashes, to send up-to-date CVE data. An SHA256 checksum is used to track updates to the CVE data. The client sends the stored SHA256 checksum, for the current CVE data, to the server using the `If-None-Match` header. If there is a mismatch between the SHA256 checksums present in the client and the server, the updated CVE data is sent to the client along with the newly computed SHA256 checksum using the `ETag` header. The client stores this SHA256 checksum along with the content for use in future requests.
+The hosted Livepatch server and the Livepatch client rely on content hashes to send up-to-date CVE data efficiently:
+
+- An SHA256 checksum tracks updates to the CVE data.
+- The client sends its stored SHA256 checksum to the server using the `If-None-Match` HTTP header.
+- If the checksums differ, the server sends the updated CVE data along with the new SHA256 checksum using the `ETag` header.
+- The client stores this checksum with the content for use in future requests.

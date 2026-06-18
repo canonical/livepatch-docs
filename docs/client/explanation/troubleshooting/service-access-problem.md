@@ -1,14 +1,13 @@
 ---
 myst:
   html_meta:
-    description: "Service access problem - learn about this topic in Livepatch client."
+    description: "Diagnose Livepatch service access problems including network connectivity to the Livepatch service and proxy configuration requirements."
 ---
-
 
 (client-explanation-i-cannot-access-the-livepatch-service)=
 
-# Cannot access the Livepatch service
+# Service access problems
 
-Network access to the Ubuntu Livepatch Service ([https://livepatch.canonical.com:443](https://livepatch.canonical.com/)) is necessary as well as snapd version 2.15 - check your snapd version with `snap version`.
+Network access to the Ubuntu Livepatch Service at `https://livepatch.canonical.com:443` is required for the client to function. The system must also be running snapd version 2.15 or later. Check your snapd version with `snap version`.
 
-In addition to that, sometimes it could be a problem with the proxy configurations. Please check out [this](/client/how-to-guides/configuration/configure-proxy.md) guide on how to configure the Livepatch client to use a proxy.
+If network access is available but the client cannot connect, the issue may be related to proxy configuration. See the guide on [configuring the Livepatch client to use a proxy](/client/how-to-guides/configuration/configure-proxy.md).

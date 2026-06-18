@@ -1,19 +1,18 @@
 ---
 myst:
   html_meta:
-    description: "When to expect new updates - learn about this topic in Livepatch client."
+    description: "Understand when to expect new Livepatch updates, including the relationship between kernel SRU updates and live kernel patches, and notification mechanisms."
 ---
-
 
 (client-explanation-when-should-i-expect-new-updates)=
 
 # When to expect new updates
 
-Live kernel patches are related to and are ''usually'' derived from, but are not the same as, the kernel SRU updates for CVEs. While the vulnerabilities being addressed by both kernel SRU updates and live kernel patches are the same, the process for development and testing are not. A live kernel patch for a vulnerability can be significantly more complex than an ordinary kernel patch, and due to the additional complexity, can take more time to develop and test.
+Live kernel patches are related to kernel SRU updates for CVEs and are usually derived from them, but are not the same. While the vulnerabilities addressed by both kernel SRU updates and live kernel patches are identical, the development and testing processes differ. A live kernel patch for a vulnerability can be significantly more complex than an ordinary kernel patch and may require additional time to develop and test.
 
-Canonical is committed to live kernel patching every high or critical rated CVE possible as quickly as possible, and in ideal circumstances, a live kernel patch will be available at the same time as the corresponding kernel SRU update.
+Canonical is committed to live patching every high or critical CVE as quickly as possible. In ideal circumstances, a live kernel patch is available at the same time as the corresponding kernel SRU update.
 
-If a high or critical CVE cannot be remediated with live kernel patching, Livepatch users will be informed at the same time an SRU kernel update that does fix the issue becomes available, in two ways:
+If a high or critical CVE cannot be fixed through live kernel patching, Livepatch users are informed when the SRU kernel update that resolves the issue becomes available. Two notifications are issued:
 
-- The Livepatch client will indicate that the system must be rebooted by reporting a state of "reboot required." This will be accompanied by a notification in the desktop, on desktop systems, and a notification in the MOTD on the terminal.
-- A LSN will be released containing instructions to reboot into a new SRU kernel that contains a fix for the CVE. LSNs are released on both the security website and via email.
+- The Livepatch client indicates that the system must be rebooted by reporting a state of "reboot required." On desktop systems, this is accompanied by a desktop notification. On all systems, a notification appears in the MOTD on the terminal.
+- An LSN is released containing instructions to reboot into a new SRU kernel that includes the CVE fix. LSNs are published on both the security website and via email.

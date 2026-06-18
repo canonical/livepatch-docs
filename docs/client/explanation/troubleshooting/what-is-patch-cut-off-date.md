@@ -1,29 +1,28 @@
 ---
 myst:
   html_meta:
-    description: "What is patch cut-off date? - learn about this topic in Livepatch client."
+    description: "Understand the patch cut-off date feature in Livepatch, including how it controls patch application, availability requirements, and security risk warnings."
 ---
 
- 
 (client-explanation-what-is-patch-cut-off-date)=
 
-# What is patch cut-off date?
+# Patch cut-off date
 
-*Patch cut-off date* is a feature that allows you to set a time in the past, after which no patches will be applied to the system. This is useful for ensuring that the state of the system is deterministic and reproducible. It guarantees that no changes will be made after a certain date.
+The patch cut-off date is a feature that allows you to set a point in time after which no patches will be applied to the system. This is useful for ensuring that the system state is deterministic and reproducible, guaranteeing that no changes occur after a specific date.
 
-The use of patch cut-off date is recommended only for groups of systems that require a high level of uniformity, and synchronized updates. Delaying the application of high and critical security patches leaves the exploit window of a known vulnerability open, until the patch is applied.
+The use of a patch cut-off date is recommended only for groups of systems that require a high level of uniformity and synchronized updates. Delaying the application of high and critical security patches leaves the exploit window of a known vulnerability open until the patch is applied.
 
 ## Availability
 
-This feature is available only for users with a paid Ubuntu Pro subscription, or to public cloud customers running Ubuntu Pro images, which retrieve Livepatch patches from Canonical's hosted Livepatch service. This feature is not available for self-hosted Livepatch servers.
+This feature is available only for users with a paid Ubuntu Pro subscription, or to public cloud customers running Ubuntu Pro images that retrieve Livepatch patches from Canonical's hosted Livepatch service. It is not available for self-hosted Livepatch servers.
 
-Livepatch Client version 10.11.2 or greater is required.
+Livepatch Client version 10.11.2 or later is required.
 
 ## Excluded CVE fixes
 
-Starting from Livepatch Client version 10.15.0, the verbose output will contain a warning message if the cut-off date blocked the latest patch. This message will contain the CVEs the machine is no longer protected against, along with the related LSN and LSN publish timestamp.
+Starting from Livepatch Client version 10.15.0, verbose output includes a warning message if the cut-off date has blocked the latest patch. This message lists the CVEs the machine is no longer protected against, along with the related LSN and LSN publish timestamp.
 
-An example of running `canonical-livepatch status –verbose` with an older patch:
+Example output from running `canonical-livepatch status --verbose` with an older patch:
 
 ```
 [!] KERNEL PATCHES BLOCKED: SECURITY RISK DETECTED
@@ -51,11 +50,10 @@ UBUNTU-CVE-2024-53104  2025-03-26 09:20:22 +0000 UTC  LSN-0110-1
 UBUNTU-CVE-2024-53140  2025-03-26 09:20:22 +0000 UTC  LSN-0110-1
 UBUNTU-CVE-2024-56672  2025-03-26 09:20:22 +0000 UTC  LSN-0110-1
 UBUNTU-CVE-2025-0927   2025-03-26 09:20:22 +0000 UTC  LSN-0110-1
-
 ```
 
-## What if a patch has already been applied?
+## What happens if a patch has already been applied
 
-If you already have a patch applied and its release date is after the cut-off date to fully remove the changes from your system, you will need to reboot the machine.
+If you already have a patch applied and its release date is after the cut-off date, you must reboot the machine to fully remove the changes.
 
-If you set a cut-off date and the release date of the patch is before the cut-off date, you are not required to take any action. The patch will remain applied.
+If the patch release date is before the cut-off date, no action is required — the patch will remain applied.

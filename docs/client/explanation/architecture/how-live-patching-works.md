@@ -1,22 +1,19 @@
 ---
 myst:
   html_meta:
-    description: "How kernel live patching works - learn about this topic in Livepatch client."
+    description: "Understand how kernel live patching works in Livepatch, including the process from vulnerability detection to patch delivery and application."
 ---
-
 
 (client-explanation-how-kernel-live-patching-works)=
 
 # How kernel live patching works
 
-## The live kernel patching process
+When a high or critical vulnerability is detected in the Linux kernel, Canonical creates a live kernel patch to address it. After the patch is developed, it is tested in Canonical's internal server farm, then promoted gradually through a series of testing tiers to ensure it has been tested for a sufficient period on live systems. Once released, a [Livepatch Security Notice](https://ubuntu.com/security/notices) (LSN) is issued, and systems running the Livepatch client receive and apply the patch over an authenticated channel.
 
-When a high or critical vulnerability is detected on the Linux kernel Canonical creates a live kernel patch addressing the vulnerability. After the live kernel patch is made available, it is tested in Canonical’s internal server farm, and then promoted gradually to a series of testing tiers ensuring that any released live kernel patch has been tested sufficient time on live systems. Once the patch is released a [Livepatch Security Notice](https://ubuntu.com/security/notices) is issued and systems that enable the Livepatch client will receive the patch over an authenticated channel and apply it.
+## The live patching process
 
-## How does kernel live patching work?
-
-There are many types of vulnerabilities and many reasons behind them, such as a logic error or a missing check in a small piece of code, and others. On the high level the live kernel patch will provide new kernel code replacing the vulnerable one, and will update the rest of the kernel to use the new code. The diagram below shows how a kernel vulnerability is being patched using Ubuntu Livepatch.
+Kernel vulnerabilities can arise from many causes, such as logic errors or missing checks in small sections of code. At a high level, a live kernel patch provides new kernel code that replaces the vulnerable code and updates the rest of the kernel to use the new code.
 
 ![Ubuntu Livepatch kernel patching diagram](/_static/images/at-a-glance-diagram.svg)
 
-The simplistic description above shows the principle, but also hints on why some vulnerabilities that depend on very complex code interactions cannot be remediated with live kernel patching. When a kernel vulnerability cannot be remediated with live kernel patching, a [Livepatch Security Notice](https://ubuntu.com/security/notices) is issued that advises to apply any pending kernel updates and reboot.
+The principle above also explains why some vulnerabilities that depend on complex code interactions cannot be fixed through live kernel patching. When a kernel vulnerability cannot be addressed with a live patch, a [Livepatch Security Notice](https://ubuntu.com/security/notices) is issued advising you to apply any pending kernel updates and reboot.

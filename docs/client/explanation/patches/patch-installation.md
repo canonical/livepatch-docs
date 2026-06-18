@@ -1,37 +1,31 @@
 ---
 myst:
   html_meta:
-    description: "Patch Installation - technical reference for Livepatch client."
+    description: "Understand how Livepatch patch installation works, including module insertion, crash loop prevention, boot behavior, and kernel version matching."
 ---
-
 
 (client-explanation-patches-patch-installation)=
 
-# Patch Installation
+# Patch installation
 
-This document acts as a reference on how patch installation takes place.
+This document explains how live kernel patches are installed, how the Livepatch client prevents crash loops, and how patches are matched to the running kernel.
 
-## How are patches installed?
+## How patches are installed
 
-Once the Livepatch client downloads a patch, it is stored on the machine's filesystem. The patch contains a Linux kernel module responsible for patching the running kernel.
+When the Livepatch client downloads a patch, it is stored on the machine's filesystem. The patch contains a Linux kernel module responsible for patching the running kernel. The client inserts this kernel module by making the appropriate syscall. The module affects only the in-memory kernel, without modifying the installed kernel on disk.
 
-The Livepatch client inserts the kernel module by making the appropriate syscall. The kernel module only affects the kernel as it is in-memory, without modifying the installed kernel.
+## Crash loop prevention
 
-## What if the system crashes or the patch is buggy after a Livepatch module is inserted?
+If a module causes a system crash, it is not loaded on reboot. The Livepatch client makes a best-effort attempt to avoid re-inserting and reloading the patch if it detects a system crash within 10 seconds of loading the module.
 
-If a module crashes a system, it will not be loaded on reboot. Livepatch will make a best-effort attempt to not re-insert and reload the patch, given it detects a system crash within 10 seconds of loading the module.
+If a patch contains a bug, the Livepatch client performs a best-effort match against kernel logs to locate bug messages after insertion. When a bug is detected, the client reports that the module was inserted but caused a bug, and the patch is not reapplied on reboot.
 
-In a scenario where a patch contains a bug, Livepatch will do a best effort match against the kernel logs to locate bug messages after insertion. In case a bug is found the Livepatch client will report that the module was inserted but caused a bug and the patch will not be reapplied on reboot
+In both crash and bug scenarios, a lockfile is created containing the bug trace. On the next reboot, if the lockfile is present, the patch is not inserted again. Once Canonical becomes aware that the patch is faulty, it is blocked from delivery.
 
-Additionally, in both cases a “lockfile” is created, containing the bug trace.
+## Boot behavior
 
-On the next reboot of the machine, if the lockfile is present, the patch will not be inserted again.
-After Canonical becomes aware that the patch is faulty, it will be blocked from delivery.
+Modules are not inserted at boot time. Patches are inserted when the Livepatch client daemon service starts. This design prevents placing a system into a crash loop during startup.
 
-## Are the Livepatch modules inserted on system boot?
+## Kernel version matching
 
-No, modules are not inserted at boot, instead patches are inserted when the Livepatch client daemon service starts. This helps to prevent placing a system into a crash loop.
-
-## How does a user know if the patch is designed for their system?
-
-Each patch payload designed for Livepatch contains the kernel version in the format “ABI.BUILDNO-FLAVOUR” which is matched against the currently running kernel.
+Each patch payload designed for Livepatch contains the kernel version in the format `ABI.BUILDNO-FLAVOUR`, which is matched against the currently running kernel. This ensures a patch is only applied to the kernel it was built for.

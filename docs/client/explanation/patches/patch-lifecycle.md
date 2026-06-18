@@ -1,56 +1,58 @@
 ---
 myst:
   html_meta:
-    description: "Patch Lifecycle - technical reference for Livepatch client."
+    description: "Understand the full lifecycle of live kernel patches in Livepatch, from CVE triage and development through testing, release, installation, and ongoing monitoring."
 ---
-
 
 (client-explanation-patches-patch-lifecycle-from-cve-to-client-machines)=
 
-# Patch Lifecycle: From CVE to Client Machines
+# Patch lifecycle: from CVE to client machines
 
-This document outlines the comprehensive lifecycle of kernel live patches, from the initial identification of Common Vulnerabilities and Exposures (CVEs), to their distribution and ongoing monitoring on customer systems. It details the rigorous quality assurance (QA) methods employed to ensure the stability and effectiveness of patches, and how they are delivered and observed in the field.
+This document outlines the complete lifecycle of kernel live patches, from the initial identification of Common Vulnerabilities and Exposures (CVEs) through to distribution and ongoing monitoring on customer systems. It covers the quality assurance (QA) methods used to ensure patch stability and effectiveness, and how patches are delivered and observed in the field.
 
-## CVE Triage and Kernel Patching Process
+## CVE triage and kernel patching
 
-The process begins with the Canonical Security team, which receives initial CVE reports and provides a list of CVEs affecting kernel packages, and passes them on to the kernel team. The kernel team then triages these CVEs, assigning priority levels (e.g., high, critical). The kernel team also writes the patches for the affected kernels to fix these CVEs. Only patches that fix high or critical severity Linux kernel vulnerabilities are eligible for live kernel patching. The Livepatch team is responsible for developing live kernel patches based on the prioritized patches. While the vulnerabilities being addressed by the kernel updates and live kernel patches are the same, a live kernel patch for a vulnerability can be significantly more complex than an ordinary kernel patch.
+The process begins with the Canonical Security team, which receives initial CVE reports, identifies CVEs affecting kernel packages, and forwards them to the kernel team. The kernel team triages these CVEs, assigning priority levels such as high or critical, and writes patches for the affected kernels. Only patches that fix high or critical severity Linux kernel vulnerabilities are eligible for live kernel patching.
 
-## Livepatch Testing and Release
+The Livepatch team develops live kernel patches based on the prioritized kernel patches. While the vulnerabilities addressed by kernel updates and live kernel patches are the same, a live kernel patch for a vulnerability can be significantly more complex than an ordinary kernel patch.
 
-Live kernel patches undergo a meticulous testing process. Easy patches are prioritized first, while more complex ones requiring rework or backports are addressed subsequently. Testing involves:
+## Testing and release
+
+Live kernel patches undergo a thorough testing process. Simpler patches are prioritized first, while more complex ones requiring rework or backports are addressed subsequently. Testing includes:
 
 - **Unit tests**: Performed on a virtual machine by loading the live kernel patch against the same kernel it was written for.
-- **Kernel regression tests**: Determine if the live kernel patch causes any issues while running kernel regression tests. The goal is for the live-patched kernel to pass the same tests as the original, unpatched kernel. These tests are performed on internal machines and monitored for any problems in the patches
+- **Kernel regression tests**: Verify that the live kernel patch does not introduce issues when running kernel regression tests. The objective is for the live-patched kernel to pass the same tests as the original, unpatched kernel. These tests run on internal machines and are monitored for any problems.
 
-Upon successful testing internally, patches are released in phases to the updates tier (e.g., 10%, 20%, 40%, 60%), which consists of free users of Ubuntu Pro. The Livepatch team continuously monitors the metrics for each patch version. This is done using the monitoring support included with the Livepatch client to track patch health and client machine issues. If no crashes are detected and no negative feedback or bug reports are raised, the live kernel patches are then promoted to the stable tier, which is available to paid Ubuntu Pro users.
+After successful internal testing, patches are released in phases to the Updates tier (for example, 10%, 20%, 40%, 60%), which serves free users of Ubuntu Pro. The Livepatch team continuously monitors metrics for each patch version using the monitoring support included with the Livepatch client to track patch health and client machine issues. If no crashes are detected and no negative feedback or bug reports are raised, the patches are promoted to the Stable tier, available to paid Ubuntu Pro users.
 
-## Livepatch Installation
+## Installation
 
-Once the live kernel patch for a kernel has been released for use, the Livepatch client downloads the patch from the configured Livepatch server and patch source. The downloaded payload consists of the Linux kernel module responsible for patching the running kernel, as well as some metadata. The Livepatch client then inserts the kernel module by making the appropriate syscall. This only affects the in-memory kernel code and not the installed kernel.
+Once a live kernel patch has been released, the Livepatch client downloads it from the configured Livepatch server and patch source. The downloaded payload consists of the Linux kernel module responsible for patching the running kernel, along with metadata. The Livepatch client inserts the kernel module by making the appropriate syscall. This affects only the in-memory kernel code, not the installed kernel.
 
-The Livepatch client is also equipped with mechanisms to prevent crash loops on installation of a faulty live kernel patch. For more information on patch installation and preventing crash loops, see [Patch Installation reference](/client/explanation/patches/patch-installation.md)
+The Livepatch client includes mechanisms to prevent crash loops when installing a faulty live kernel patch. For more information on patch installation and crash loop prevention, see the [Patch installation reference](/client/explanation/patches/patch-installation.md).
 
-## Livepatch Security
+## Security
 
-Ensuring the secure transmission and application of a live kernel patch is paramount to maintaining kernel stability and preventing installation of malicious kernel modules. The Livepatch client ensures that installed live kernel patches are genuine and authentic before applying them to the kernel. This is achieved by verifying the live kernel patch content using SHA256 file checksums, verifying the digital signature for the Livepatch kernel module using asymmetric encryption and using TLS to communicate with the hosted Canonical Livepatch server.
+Ensuring secure transmission and application of live kernel patches is essential to maintaining kernel stability and preventing the installation of malicious kernel modules. The Livepatch client verifies that installed patches are genuine before applying them to the kernel:
 
-For more information on how the security of live kernel patches is ensured, see [Patch Security reference.](/client/reference/patches/patch-security.md)
+- Patch content is verified using SHA256 file checksums.
+- The digital signature for the Livepatch kernel module is verified using asymmetric encryption.
+- Communication with the hosted Canonical Livepatch server uses TLS.
 
-## Livepatch Monitoring and Blocklisting on faulty patches
+For more information on how patch security is ensured, see the [Patch security reference](/client/reference/patches/patch-security.md).
 
-In order to [avoid crash loops after application of a faulty live kernel patch](/client/explanation/patches/patch-installation.md), Livepatch client monitors the health of the machine before, during, and after the patching activity. The various phases of Livepatch client's activity include: patch download, patch insertion, patch transition, and patch application.
+## Monitoring and blocklisting
 
-Livepatch client transmits pings which contain data about patching activity to the Livepatch server. These pings are anonymous and are only used to understand the health and status of machines during the insertion process and after the application process.
+To prevent crash loops after applying a faulty live kernel patch, the Livepatch client monitors machine health before, during, and after patching activity. The phases of client activity include patch download, patch insertion, patch transition, and patch application.
 
-Insertion pings are sent just before and after the Livepatch module has been loaded into the kernel. These pings enable the Livepatch team to monitor the number of Livepatch module insertions that were attempted. Note that once loaded, the kernel may not apply the patch immediately if the patch affects functions that are under heavy use.
+The Livepatch client transmits pings containing data about patching activity to the Livepatch server. These pings are anonymous and are used solely to understand the health and status of machines during and after the patching process.
 
-If the system is running a kernel version above 4.4, the client will move into a transition period where it waits for the kernel to report the patch has been applied. Livepatch client sends transition pings to Livepatch Server which provides data about how many machines have live kernel patch modules loaded into the kernel, but have not been applied yet. However, if the application of a live kernel patch results in a kernel crash or a kernel bug within the transition period the error state is reported to the Livepatch server detailing the reason for the failure. Once the client detects the kernel applied the Livepatch module, the client proceeds to the the health check pings.
+**Insertion pings** are sent immediately before and after the Livepatch module is loaded into the kernel. These pings allow the Livepatch team to monitor the number of insertion attempts. After loading, the kernel may not apply the patch immediately if the affected functions are under heavy use.
 
-If the system is on kernel version 4.4 or earlier, due to older kernel interfaces, the client will not enter a transition period, and instead check kernel logs for issues after 10 seconds before proceeding to the health check pings.
+If the system is running a kernel version above 4.4, the client enters a **transition period** where it waits for the kernel to report that the patch has been applied. The client sends transition pings to the Livepatch server, providing data about machines with loaded but unapplied patch modules. If patch application results in a kernel crash or bug during the transition period, the error state is reported to the Livepatch server with details about the failure. Once the client detects the kernel has applied the module, it proceeds to health check pings.
 
-After a Livepatch module is applied, the Livepatch client sends multiple health pings to the hosted Canonical Livepatch server. The first ping will have the time spent waiting for the kernel to apply the Livepatch module (if running a kernel later than version 4.4), Then the client sends 3 more health pings from 1 minute, 5 minutes and 15 minutes from the time the kernel applied the Livepatch module.
+If the system is on kernel version 4.4 or earlier, the client does not enter a transition period due to older kernel interfaces. Instead, it checks kernel logs for issues after 10 seconds before proceeding to health check pings.
 
-If Livepatch client is retrieving patches from livepatch.canonical.com, the reported metrics are monitored by Canonical's Livepatch team. In the unlikely event that Livepatch client is reporting an error across a significant number of machines, the Livepatch team performs further analysis, and considers halting distribution (blocklisting) of the patch in question. Once a patch has been blocklisted, it will no longer be distributed to new clients or applied in the client machines that already possess the blocklisted patch.
+After a Livepatch module is applied, the client sends multiple **health pings** to the hosted Canonical Livepatch server. The first ping includes the time spent waiting for the kernel to apply the module (for kernels later than version 4.4). The client then sends three additional health pings at 1 minute, 5 minutes, and 15 minutes from the time the kernel applied the module.
 
-
-
+If the client retrieves patches from `livepatch.canonical.com`, the reported metrics are monitored by Canonical's Livepatch team. If the client reports errors across a significant number of machines, the Livepatch team performs further analysis and considers halting distribution (blocklisting) of the patch. Once a patch is blocklisted, it is no longer distributed to new clients or applied on client machines that already possess it.
