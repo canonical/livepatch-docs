@@ -83,7 +83,7 @@
 "livepatch/explanation/do-i-need-to-reboot.md" "client/explanation/troubleshooting/do-i-need-to-reboot.md"
 "livepatch/explanation/get-more-help.md" "support/get-more-help.md"
 "livepatch/explanation/how-cves-are-rated.md" "client/explanation/security/how-cves-are-rated.md"
-"livepatch/explanation/how-livepatching-works.md" "client/explanation/architecture/how-livepatching-works.md"
+"livepatch/explanation/how-livepatching-works.md" "client/explanation/architecture/how-live-patching-works.md"
 "livepatch/explanation/index.md" "client/explanation/index.md"
 "livepatch/explanation/livepatch-security-notices.md" "client/explanation/security/livepatch-security-notices.md"
 "livepatch/explanation/report-bugs.md" "support/report-bugs.md"
