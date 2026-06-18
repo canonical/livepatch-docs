@@ -5,6 +5,7 @@ myst:
 ---
 
 (server-explanation)=
+
 # Explanation
 
 These explanatory and conceptual guides provide a deeper understanding of how the Livepatch on-premises server works and the security principles underpinning its design.

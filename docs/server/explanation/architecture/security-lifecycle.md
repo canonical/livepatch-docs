@@ -5,6 +5,7 @@ myst:
 ---
 
 (server-explanation-security-lifecycle)=
+
 # Security lifecycle
 
 > See also: {ref}`Security overview <server-explanation-security-overview>`, {ref}`Report server vulnerabilities <server-how-to-guides-report-a-livepatch-server-vulnerability>`

@@ -5,6 +5,7 @@ myst:
 ---
 
 (server-explanation-security-overview)=
+
 # Security overview
 
 > See also: {ref}`Authentication and authorization <server-reference-livepatch-server-authentication>`, {ref}`Security lifecycle <server-explanation-security-lifecycle>`, {ref}`Harden your deployment <server-how-to-guides-harden-your-livepatch-server-deployment>`

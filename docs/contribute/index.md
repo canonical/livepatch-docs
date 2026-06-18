@@ -5,6 +5,7 @@ myst:
 ---
 
 (contribute-to-docs)=
+
 # Contribute to our documentation
 
 We warmly welcome your engagement with the Livepatch community and appreciate all contributions, suggestions, and feedback. There are many reasons why you should contribute to the Livepatch documentation.

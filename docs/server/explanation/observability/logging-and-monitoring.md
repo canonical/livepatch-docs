@@ -5,6 +5,7 @@ myst:
 ---
 
 (server-explanation-logging-and-monitoring)=
+
 # Logging and monitoring
 
 > See also: {ref}`Configure logging and monitoring <server-how-to-guides-configure-logging-and-monitoring-for-livepatch-server>`, {ref}`Security overview <server-explanation-security-overview>`

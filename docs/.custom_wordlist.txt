@@ -59,6 +59,7 @@ lang
 lastmod
 LaTeX
 latexmk
+liveness
 LLMs?
 lockfile
 logrotate
@@ -128,7 +129,7 @@ txt
 ulwazi
 unapplied
 uncomment(ing)?
-unmount
+unmount(s)?
 unpatchable
 unpatched
 untrusted

@@ -5,6 +5,7 @@ myst:
 ---
 
 (server-explanation-observability)=
+
 # Observability
 
 The Livepatch on-premises server provides logging and monitoring capabilities to help operators maintain visibility into the health and security of their deployment.

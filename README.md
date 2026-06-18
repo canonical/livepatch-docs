@@ -47,4 +47,4 @@ Livepatch is a member of the Ubuntu family. It welcomes community contributions,
 
 ### Commercial support
 
-Thinking about using Livepatch for your next project? [Get in touch!](https://ubuntu.com/security/livepatch#get-in-touch)
+Thinking about using Livepatch for your next project? [Get in touch!](https://ubuntu.com/security/livepatch)

@@ -80,6 +80,8 @@ export LIVEPATCH_CA_CRT='/temp/cert.pem'
 export LIVEPATCH_CA_CRT="$(cat ./cert.pem)"
 ```
 
+(configuring-livepatch-client-with-tls)=
+
 ## Configure the Livepatch Client with TLS
 
 If a self-signed certificate is used for the Livepatch on-premises service, Livepatch Client instances must also be configured with that certificate to verify responses from the on-premises server:

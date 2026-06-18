@@ -5,6 +5,7 @@ myst:
 ---
 
 (server-explanation-architecture)=
+
 # Architecture
 
 The Livepatch on-premises server is designed around a clear security model with defined trust boundaries, an update lifecycle for distributing security patches, and a token-based access control system. This section explains each of these concepts.

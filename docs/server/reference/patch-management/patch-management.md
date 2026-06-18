@@ -38,7 +38,7 @@ If validation or a staggered rollout of patches is required, use the patch tiers
 
 ![Multi-tier promotion](/_static/images/hJiubhhVct8K28ljnzbxYhdyjza.png)
 
-### Promote a patch to a different tier
+## Promote a patch to a different tier
 
 To promote an individual patch to a different tier:
 
@@ -48,7 +48,7 @@ livepatch-admin patch promote <patch-version> <tier>
 
 The `patch-version` is the numerical patch version (for example, `57.1`).
 
-### Promote all patches in a tier
+## Promote all patches in a tier
 
 To promote all patches from one tier to another, use the `promote-all` shortcut:
 

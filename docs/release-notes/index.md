@@ -5,6 +5,7 @@ myst:
 ---
 
 (release-notes)=
+
 # Release notes
 
 Release notes documenting new features, bug fixes, and changes across all Livepatch Client and server releases.

@@ -5,6 +5,7 @@ myst:
 ---
 
 (release-notes-server)=
+
 # Livepatch Server release notes
 
 The [Livepatch Server K8s charm](https://charmhub.io/canonical-livepatch-server-k8s) is the recommended method for deploying the Livepatch Server on Kubernetes. The charm configures and runs the Livepatch Server, which serves live kernel patches and associated metadata to clients. Use the `latest/stable` channel charm for production environments.
