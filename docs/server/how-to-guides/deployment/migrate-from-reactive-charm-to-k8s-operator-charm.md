@@ -90,6 +90,10 @@ result:
 
 The K8s charm compatible configuration is in the `new-config` field, with deprecated and unknown configuration keys listed in `removed-keys` and `unrecognized-keys` respectively.
 
+```{note}
+If the migrated configuration includes `auth.sso.*` keys, note that Ubuntu SSO authentication is deprecated and is no longer available for on-premises deployments. Remove those keys and configure Basic Auth (`auth.basic.*`) instead.
+```
+
 The whole output for the action can also be taken and the new configuration portion written into a new YAML file with:
 
 ```bash

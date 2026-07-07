@@ -24,8 +24,8 @@ sudo snap alias canonical-livepatch-server-admin.livepatch-admin livepatch-admin
 
 The Livepatch administration tool can authenticate with the Livepatch Server in two ways:
 
-* Ubuntu SSO
 * Username and password
+* Ubuntu SSO (deprecated)
 
 (server-how-to-guides-password-authentication)=
 
@@ -63,7 +63,11 @@ export LIVEPATCH_URL={haproxy URL or unit IP}
 livepatch-admin login --auth <username>:<password>
 ```
 
-## Ubuntu SSO authentication
+## Ubuntu SSO authentication (deprecated)
+
+```{note}
+Ubuntu SSO authentication is deprecated and is no longer available for on-premises deployments. Use password (Basic Auth) authentication instead.
+```
 
 Ubuntu SSO authentication uses membership in public Launchpad groups to gate access. The Launchpad groups that have administrator privileges are specified using charmed operator configuration:
 

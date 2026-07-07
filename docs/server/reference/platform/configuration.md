@@ -66,9 +66,8 @@ The following sections describe the available configuration values.
 
 ### Admin authentication
 
-The following values configure authentication to the server's admin endpoints. Only Basic Auth and Ubuntu SSO authentication are supported.
+The following values configure authentication to the server's admin endpoints. Ubuntu SSO authentication is deprecated and is no longer available for on-premises deployments. Only Basic Auth is supported.
 
-- SSO Teams represent Launchpad teams.
 - Basic Auth configuration accepts a comma-separated list of users. See the [admin tool setup guide](/server/how-to-guides/security/setup-administration-tool.md#password-authentication) for details.
 - Basic Auth passwords must be bcrypt hashed.
 
@@ -76,6 +75,15 @@ The following values configure authentication to the server's admin endpoints. O
 | ---- | ----------- | ------ |
 | `auth.basic.enabled` | Enable Basic Auth. | `bool` |
 | `auth.basic.users` | Comma-separated list of user objects. | `<user1>:<bcrypt hashed password>, <user2>:<bcrypt hashed password>` |
+
+#### Ubuntu SSO authentication (deprecated)
+
+```{note}
+Ubuntu SSO authentication is deprecated and is no longer available for on-premises deployments. Use Basic Auth instead.
+```
+
+| Name | Description | Values |
+| ---- | ----------- | ------ |
 | `auth.sso.enabled` | Enable Ubuntu SSO authentication. | `bool` |
 | `auth.sso.teams` | SSO authentication configuration listing authorised teams. | `https://launchpad.net/~team-1,https://launchpad.net/~team-2` |
 | `auth.sso.url` | URL for SSO authentication. | `login.ubuntu.com` |
