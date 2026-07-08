@@ -79,9 +79,9 @@ The script creates or overwrites the output file specified by the `-o` parameter
 | event_bus_client_key | machine-reports.event-bus.client-key | |
 | event_bus_ca_cert | machine-reports.event-bus.ca-cert | |
 | event_bus_brokers | machine-reports.event-bus.brokers | |
-| auth_lp_teams | auth.sso.teams | **Removed.** Ubuntu SSO authentication is no longer available for on-premises deployments. Use `auth.basic.*` instead. |
-| auth_sso_public_key | auth.sso.public-key | **Removed.** See above. |
-| auth_sso_location | auth.sso.url | **Removed.** See above. |
+| auth_lp_teams | **Removed** | **Removed.** Ubuntu SSO authentication is no longer available for on-premises deployments. Use `auth.basic.*` instead. |
+| auth_sso_public_key | **Removed** | **Removed.** See above. |
+| auth_sso_location | **Removed** | **Removed.** See above. |
 | auth_basic_users | auth.basic.users | Make sure that auth.basic.enabled is set to true |
 | | | |
 | swift_container_name | patch-storage.swift-container | |
