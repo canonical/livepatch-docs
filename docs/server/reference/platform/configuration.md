@@ -66,7 +66,7 @@ The following sections describe the available configuration values.
 
 ### Admin authentication
 
-The following values configure authentication to the server's admin endpoints. Ubuntu SSO authentication has been removed. Only Basic Auth is supported.
+The following values configure authentication to the server's admin endpoints. Ubuntu SSO authentication has been removed; only Basic Auth is supported. The `auth.sso.*` keys below are retained for legacy configuration/migration reference and are ignored by the server.
 
 - Basic Auth configuration accepts a comma-separated list of users. See the [admin tool setup guide](/server/how-to-guides/security/setup-administration-tool.md#password-authentication) for details.
 - Basic Auth passwords must be bcrypt hashed.
