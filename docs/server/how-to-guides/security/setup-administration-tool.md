@@ -22,7 +22,7 @@ sudo snap alias canonical-livepatch-server-admin.livepatch-admin livepatch-admin
 
 ## Authentication
 
-The Livepatch administration tool authenticates with the Livepatch Server using username and password.
+The Livepatch administration tool authenticates with the Livepatch Server using Basic Auth (username and password).
 
 (server-how-to-guides-password-authentication)=
 
