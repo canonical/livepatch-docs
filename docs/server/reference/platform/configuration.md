@@ -66,7 +66,7 @@ The following sections describe the available configuration values.
 
 ### Admin authentication
 
-The following values configure authentication to the server's admin endpoints. Ubuntu SSO authentication is deprecated and is no longer available for on-premises deployments. Only Basic Auth is supported.
+The following values configure authentication to the server's admin endpoints. Ubuntu SSO authentication has been removed. Only Basic Auth is supported.
 
 - Basic Auth configuration accepts a comma-separated list of users. See the [admin tool setup guide](/server/how-to-guides/security/setup-administration-tool.md#password-authentication) for details.
 - Basic Auth passwords must be bcrypt hashed.
@@ -76,10 +76,10 @@ The following values configure authentication to the server's admin endpoints. U
 | `auth.basic.enabled` | Enable Basic Auth. | `bool` |
 | `auth.basic.users` | Comma-separated list of user objects. | `<user1>:<bcrypt hashed password>, <user2>:<bcrypt hashed password>` |
 
-#### Ubuntu SSO authentication (deprecated)
+#### Ubuntu SSO authentication (removed)
 
 ```{note}
-Ubuntu SSO authentication is deprecated and is no longer available for on-premises deployments. Use Basic Auth instead.
+Ubuntu SSO authentication has been removed. Use Basic Auth instead.
 ```
 
 | Name | Description | Values |
