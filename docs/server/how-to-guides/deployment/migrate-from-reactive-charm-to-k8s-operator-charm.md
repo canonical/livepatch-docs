@@ -63,7 +63,6 @@ The output for this action will look like the following:
 result:
   new-config: |-
     canonical-livepatch-server-k8s:
-      auth.sso.url: login.ubuntu.com
       database.connection-lifetime-max: 30m
       database.connection-pool-max: 15
       machine-reports.database.cleanup-interval: 6h
@@ -90,6 +89,10 @@ result:
 
 The K8s charm compatible configuration is in the `new-config` field, with deprecated and unknown configuration keys listed in `removed-keys` and `unrecognized-keys` respectively.
 
+```{note}
+The action output may include `auth.sso.*` keys if your reactive charm had SSO configured. Ubuntu SSO authentication has been removed; remove any such keys before applying the configuration.
+```
+
 The whole output for the action can also be taken and the new configuration portion written into a new YAML file with:
 
 ```bash
@@ -100,7 +103,6 @@ With the above example, the resulting configuration file will contain:
 
 ```yaml
 canonical-livepatch-server-k8s:
-  auth.sso.url: login.ubuntu.com
   database.connection-lifetime-max: 30m
   database.connection-pool-max: 15
   machine-reports.database.cleanup-interval: 6h
