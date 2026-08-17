@@ -19,6 +19,7 @@ Canonical('s)?
 Charmcraft
 charmstore
 cjk
+COS
 crypto
 cryptographically
 CVEs
@@ -29,12 +30,15 @@ Downloader
 dvipng
 enablement
 Enablement
+Entra
 filepath
 firewalled
 fonts
 freefont
 Furo
 gcp
+GCE
+GCS
 github
 GitHub
 gkeop
@@ -42,6 +46,7 @@ glibc
 GPG
 gyre
 hostnames
+HMAC
 hotfix(es)?
 html
 https
@@ -75,6 +80,7 @@ MyST
 npm
 Numpy
 oem
+OCI
 Open Graph
 openapi
 otf
@@ -93,6 +99,7 @@ pymarkdown
 pymarkdownlnt
 QEMU
 Read the Docs
+rclone
 readthedocs
 redeclare
 rediraffe
@@ -104,6 +111,7 @@ Rockcraft
 rollout
 rollouts
 rst
+rsync
 rtd
 SCons
 sequenceDiagram

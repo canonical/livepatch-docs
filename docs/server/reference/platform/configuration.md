@@ -143,7 +143,7 @@ The following values configure how the server manages patch storage. See the [pa
 
 | Name | Description | Values |
 | ---- | ----------- | ------ |
-| `patch-storage.type` | Storage backend type for on-premises patch synchronisation. | `oneof: filesystem, swift, postgres, s3` |
+| `patch-storage.type` | Storage backend type for on-premises patch synchronisation. | `oneof: filesystem, swift, postgres, s3, gcs, azure, ibm, oracle` |
 | `patch-storage.filesystem-path` | Directory path for filesystem storage. | `string` |
 | `patch-storage.swift-username` | Swift account username. | `string` |
 | `patch-storage.swift-api-key` | Swift API key. | `string` |
@@ -154,11 +154,38 @@ The following values configure how the server manages patch storage. See the [pa
 | `patch-storage.swift-region` | Swift region. | `string` |
 | `patch-storage.postgres-connection-string` | PostgreSQL connection string. Can be left blank in charmed deployments to use Juju relations. | `string` |
 | `patch-storage.s3-bucket` | S3 bucket for storing patches. | `string` |
-| `patch-storage.s3-endpoint` | S3 endpoint URL. | `string` |
+| `patch-storage.s3-endpoint` | S3 endpoint URL (only needed for non-AWS S3-compatible services, e.g. MinIO). | `string` |
 | `patch-storage.s3-region` | AWS region for S3. | `string` |
 | `patch-storage.s3-secure` | Whether to use secure transfers. | `bool` |
-| `patch-storage.s3-access-key` | AWS access key. | `string` |
-| `patch-storage.s3-secret-key` | AWS secret key. | `string` |
+| `patch-storage.s3-use-path-style` | Whether to use path-style bucket addressing. Defaults to `false` (virtual-hosted-style); typically needs to be `true` for non-AWS S3-compatible services (e.g. MinIO, Ceph). | `bool` |
+| `patch-storage.s3-access-key` | AWS access key (optional; defaults to the VM's ambient credentials, e.g. an EC2 instance role). | `string` |
+| `patch-storage.s3-secret-key` | AWS secret key (optional; see `s3-access-key`). | `string` |
+| `patch-storage.s3-assume-role-arn` | IAM role ARN to assume via STS, using the resolved credentials above (optional). | `string` |
+| `patch-storage.gcs-bucket` | Google Cloud Storage bucket for storing patches. | `string` |
+| `patch-storage.gcs-credentials-file` | Path to a service account JSON key file (optional; defaults to Application Default Credentials). | `string` |
+| `patch-storage.gcs-credentials-json` | Inline service account JSON key (optional; see `gcs-credentials-file`). | `string` |
+| `patch-storage.gcs-impersonate-service-account` | Email of a service account to impersonate, using the resolved credentials above (optional). | `string` |
+| `patch-storage.azure-container` | Azure Blob Storage container for storing patches. | `string` |
+| `patch-storage.azure-account-name` | Azure storage account name (not required when `azure-connection-string` is set, which already carries the account name). | `string` |
+| `patch-storage.azure-account-key` | Azure storage account key (optional; defaults to a managed identity bound to the VM). | `string` |
+| `patch-storage.azure-connection-string` | Azure storage connection string (optional alternative to account name/key). | `string` |
+| `patch-storage.azure-tenant-id` | Entra ID tenant ID, for explicit service principal auth (optional; requires `azure-client-id` and `azure-client-secret`). | `string` |
+| `patch-storage.azure-client-id` | Entra ID application (client) ID, for explicit service principal auth (optional). | `string` |
+| `patch-storage.azure-client-secret` | Entra ID client secret, for explicit service principal auth (optional). | `string` |
+| `patch-storage.azure-managed-identity-client-id` | Client ID of a user-assigned managed identity to use instead of the VM's system-assigned identity (optional). | `string` |
+| `patch-storage.ibm-bucket` | IBM Cloud Object Storage bucket for storing patches. | `string` |
+| `patch-storage.ibm-endpoint` | IBM Cloud Object Storage endpoint. | `string` |
+| `patch-storage.ibm-region` | IBM Cloud Object Storage region. | `string` |
+| `patch-storage.ibm-access-key` | IBM COS HMAC access key (optional; see `ibm-api-key`). | `string` |
+| `patch-storage.ibm-secret-key` | IBM COS HMAC secret key (optional; see `ibm-access-key`). | `string` |
+| `patch-storage.ibm-api-key` | IBM Cloud IAM API key (optional; defaults to the ambient VPC Instance Metadata Service). | `string` |
+| `patch-storage.ibm-service-instance-id` | IBM COS resource instance ID, required when using `ibm-api-key`. | `string` |
+| `patch-storage.ibm-trusted-profile-id` | Trusted profile ID to assume via the ambient VPC Instance Metadata Service (optional; defaults to the instance's default trusted profile). | `string` |
+| `patch-storage.oracle-bucket` | OCI Object Storage bucket for storing patches. | `string` |
+| `patch-storage.oracle-namespace` | OCI Object Storage namespace. | `string` |
+| `patch-storage.oracle-region` | OCI region. | `string` |
+| `patch-storage.oracle-config-file` | Path to an OCI config file (optional; defaults to instance principal authentication). | `string` |
+| `patch-storage.oracle-profile` | Profile to use within `oracle-config-file` (optional). | `string` |
 
 ### Patch cache
 
