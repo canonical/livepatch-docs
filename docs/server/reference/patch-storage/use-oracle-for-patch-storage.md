@@ -9,8 +9,6 @@ myst:
 
 # Livepatch on-prem with Oracle Cloud Infrastructure Object Storage patch storage
 
-In an OCI deployment of Livepatch on-prem, Oracle Cloud Infrastructure (OCI) Object Storage is a good choice for patch storage if the expected number of client machines is high (over 2000).
-
 To configure this, follow these steps:
 
 - Create an Object Storage bucket in the preferred region (best if the region is the same as the deployment's). Care needs to be taken to make the bucket not publicly writable, as this would pose a significant security risk.

@@ -9,8 +9,6 @@ myst:
 
 # Livepatch on-prem with Google Cloud Storage patch storage
 
-In a GCP deployment of Livepatch on-prem, Google Cloud Storage (GCS) is a good choice for patch storage if the expected number of client machines is high (over 2000).
-
 To configure this, follow these steps:
 
 - Create a GCS bucket in the preferred region (best if the region is the same as the deployment's). Care needs to be taken to make the bucket not publicly writable, as this would pose a significant security risk.

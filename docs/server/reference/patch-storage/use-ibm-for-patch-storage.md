@@ -9,8 +9,6 @@ myst:
 
 # Livepatch on-prem with IBM Cloud Object Storage patch storage
 
-In an IBM Cloud deployment of Livepatch on-prem, IBM Cloud Object Storage (COS) is a good choice for patch storage if the expected number of client machines is high (over 2000).
-
 To configure this, follow these steps:
 
 - Create a COS bucket in the preferred region (best if the region is the same as the deployment's). Care needs to be taken to make the bucket not publicly writable, as this would pose a significant security risk.

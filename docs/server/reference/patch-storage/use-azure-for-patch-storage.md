@@ -9,8 +9,6 @@ myst:
 
 # Livepatch on-prem with Azure Blob Storage patch storage
 
-In an Azure deployment of Livepatch on-prem, Azure Blob Storage is a good choice for patch storage if the expected number of client machines is high (over 2000).
-
 To configure this, follow these steps:
 
 - Create a Blob Storage container in the preferred region (best if the region is the same as the deployment's). Care needs to be taken to make the container not publicly writable, as this would pose a significant security risk.
