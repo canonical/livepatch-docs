@@ -9,7 +9,9 @@ myst:
 
 # Migrating patches between storage backends
 
-Every patch storage backend supported by Livepatch Server (filesystem, S3, GCS, Azure, IBM, Oracle, Swift) stores patches as a flat set of files, each keyed by its filename. This means the same set of patch files works unmodified on any backend: migrating between backends is simply a matter of copying the patch files across, then updating [`patch-storage.type`](/server/reference/platform/configuration.md) and its associated options to point at the new backend.
+This guide covers migrating between the file-based patch storage backends (filesystem, S3, GCS, Azure, IBM, Oracle, Swift). Each of these stores patches as a flat set of files, each keyed by its filename, so the same set of patch files works unmodified on any of them: migrating between backends is simply a matter of copying the patch files across, then updating [`patch-storage.type`](/server/reference/platform/configuration.md) and its associated options to point at the new backend.
+
+The Postgres backend (`patch-storage.postgres-connection-string`) is not covered here, since it stores patches as rows in a database rather than as files, and cannot be migrated with `rsync` in the same way.
 
 The recommended tool for copying patches is `rsync`, since it performs a checksum-verified copy. Disable patch synchronisation in the config first (so no new patches arrive, and avoid running any manual syncs), then run `rsync` once to copy the existing patches across.
 
