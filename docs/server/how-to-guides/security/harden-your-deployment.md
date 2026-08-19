@@ -41,7 +41,7 @@ In [federated deployments](/server/how-to-guides/patch-management/chain-livepatc
 
 TLS for PostgreSQL connections is supported through the connection string. Include `sslmode=verify-full` (or at minimum `sslmode=require`) in the database connection string to encrypt traffic between the server and PostgreSQL.
 
-For charm deployments, database credentials are obtained through Juju relations (`database` interface with the [PostgreSQL K8s Charm](https://charmhub.io/postgresql-k8s)). TLS for the database connection is managed by the PostgreSQL charm's [TLS integration](https://canonical-charmed-postgresql-k8s.readthedocs-hosted.com/14/tutorial/index.html#enable-encryption-with-tls). The Livepatch charm does not expose separate database credential configuration -- all credentials are exchanged through the Juju relation protocol.
+For charm deployments, database credentials are obtained through Juju relations (`database` interface with the [PostgreSQL K8s Charm](https://charmhub.io/postgresql-k8s)). TLS for the database connection is managed by the PostgreSQL charm's [TLS integration](https://canonical.com/data/postgresql/docs/16/how-to/network-and-encryption/enable-tls/). The Livepatch charm does not expose separate database credential configuration -- all credentials are exchanged through the Juju relation protocol.
 
 ## Encrypt patch storage connections
 
