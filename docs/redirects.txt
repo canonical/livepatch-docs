@@ -123,6 +123,7 @@
 "livepatch/reference/patch-lifecycle.md" "client/explanation/patches/patch-lifecycle.md"
 "livepatch/reference/patch-security.md" "client/reference/patches/patch-security.md"
 "livepatch/reference/supported-kernels.md" "client/reference/platform/supported-kernels.md"
+"livepatch/reference/kernels.md" "client/reference/platform/supported-kernels.md"
 "livepatch_on_prem/explanation/access-control.md" "server/explanation/architecture/access-control.md"
 "livepatch_on_prem/explanation/data-sent.md" "server/reference/telemetry/data-sent.md"
 "livepatch_on_prem/explanation/index.md" "server/explanation/index.md"

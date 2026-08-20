@@ -31,6 +31,7 @@ dvipng
 enablement
 Enablement
 Entra
+eTags
 filepath
 firewalled
 fonts
@@ -106,6 +107,7 @@ rediraffe
 redownloading
 rerediraffe
 reStructuredText
+resync
 retrigger(ing)?
 Rockcraft
 rollout
