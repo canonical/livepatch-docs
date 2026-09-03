@@ -4,7 +4,6 @@ myst:
     description: "Use GCS for patch storage - learn about this topic in Livepatch on-prem."
 ---
 
- 
 (server-reference-livepatch-on-prem-with-gcs-patch-storage)=
 
 # Livepatch on-prem with Google Cloud Storage patch storage

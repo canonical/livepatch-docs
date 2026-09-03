@@ -4,7 +4,6 @@ myst:
     description: "Migrate patches between storage backends - learn about this topic in Livepatch on-prem."
 ---
 
- 
 (server-reference-migrating-patch-storage)=
 
 # Migrating patches between storage backends
@@ -28,7 +27,7 @@ rsync -avz --progress /var/snap/canonical-livepatch-server/common/patches/ user@
 For the object storage backends (S3, GCS, Azure, IBM, Oracle), mount the bucket or container as a local directory with [rclone](https://rclone.org/), which supports all of these backends (including any S3-compatible endpoint, such as IBM COS or MinIO), then `rsync` into or out of the mount as if it were a normal directory.
 
 1. Disable [`patch-sync`](/server/reference/patch-management/patch-sync-filters.md) in the config so no new patches are synced to the on-prem server, and avoid running any manual syncs, while the migration is in progress.
-2. Install rclone and configure a remote for the bucket/container, following [rclone's documentation](https://rclone.org/docs/) for the relevant backend (`s3`, `google cloud storage`, `azureblob`, or `oracle-object-storage`).
+2. Install rclone and configure a remote for the bucket/container, following [rclone's documentation](https://rclone.org/docs/) for the relevant backend (`s3`, `google cloud storage`, `azureblob`, `swift`, or `oracle-object-storage`).
 3. Mount the remote:
    ```bash
    mkdir -p /mnt/livepatch-patches

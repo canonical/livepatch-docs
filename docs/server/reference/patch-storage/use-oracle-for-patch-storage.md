@@ -4,7 +4,6 @@ myst:
     description: "Use OCI Object Storage for patch storage - learn about this topic in Livepatch on-prem."
 ---
 
- 
 (server-reference-livepatch-on-prem-with-oracle-patch-storage)=
 
 # Livepatch on-prem with Oracle Cloud Infrastructure Object Storage patch storage

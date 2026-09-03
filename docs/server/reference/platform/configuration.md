@@ -166,7 +166,7 @@ The following values configure how the server manages patch storage. See the [pa
 | `patch-storage.gcs-credentials-json` | Inline service account JSON key (optional; see `patch-storage.gcs-credentials-file`). | `string` |
 | `patch-storage.gcs-impersonate-service-account` | Email of a service account to impersonate, using the resolved credentials above (optional). | `string` |
 | `patch-storage.azure-container` | Azure Blob Storage container for storing patches. | `string` |
-| `patch-storage.azure-account-name` | Azure storage account name (not required when `azure-connection-string` is set, which already carries the account name). | `string` |
+| `patch-storage.azure-account-name` | Azure storage account name (not required when `patch-storage.azure-connection-string` is set, which already carries the account name). | `string` |
 | `patch-storage.azure-account-key` | Azure storage account key (optional; defaults to a managed identity bound to the VM). | `string` |
 | `patch-storage.azure-connection-string` | Azure storage connection string (optional alternative to account name/key). | `string` |
 | `patch-storage.azure-tenant-id` | Entra ID tenant ID, for explicit service principal auth (optional; requires `patch-storage.azure-client-id` and `patch-storage.azure-client-secret`). | `string` |

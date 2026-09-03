@@ -4,7 +4,6 @@ myst:
     description: "Use Azure for patch storage - learn about this topic in Livepatch on-prem."
 ---
 
- 
 (server-reference-livepatch-on-prem-with-azure-patch-storage)=
 
 # Livepatch on-prem with Azure Blob Storage patch storage
