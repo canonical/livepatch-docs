@@ -52,7 +52,7 @@ The process of reporting, blocklisting, and releasing a replacement Livepatch ta
 1. If the current Livepatch mode in the `/var/local/canonical_livepatch_mode` file is `stop` and the Livepatch daemon is not running, no configuration changes can be made.
 2. Set the Livepatch mode to `no-apply` using `sudo bash -c 'echo -n no-apply > /var/local/canonical_livepatch_mode'`.
 3. Run `sudo snap restart canonical-livepatch`. This enables the Livepatch daemon. The daemon refreshes patch information but never applies the patch to the kernel in this mode.
-4. Once the daemon is enabled, set the `cutoff-date` configuration option to a date before the faulty patch was released. For example, `sudo canonical-livepatch config cutoff-date=2024-01-01T01:00:00Z`. The release date for the problematic LSN can be found on the [Ubuntu Security Notices page](https://ubuntu.com/security/notices?details=lsn).
+4. Once the daemon is enabled, set the `cutoff-date` configuration option to a date before the faulty patch was released. For example, `sudo canonical-livepatch config cutoff-date=2024-01-01T01:00:00Z`. The release date for the problematic LSN can be found on the [Ubuntu Security Notices page](https://ubuntu.com/security/notices).
 5. Set the Livepatch mode to `normal` or delete the Livepatch mode file.
 6. Run `sudo snap restart canonical-livepatch`. This enables the full operation of the Livepatch daemon. The daemon retrieves the most recent stable patch version due to the `cutoff-date` config option and applies it to the running kernel.
 

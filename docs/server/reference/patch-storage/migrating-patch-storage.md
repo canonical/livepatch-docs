@@ -12,7 +12,7 @@ This guide covers migrating between the file-based patch storage backends (files
 
 The Postgres backend (`patch-storage.postgres-connection-string`) is not covered here, since it stores patches as rows in a database rather than as files, and cannot be migrated with `rsync` in the same way.
 
-The recommended tool for copying patches is `rsync`, since it performs a checksum-verified copy. Disable patch synchronisation in the config first (so no new patches arrive, and avoid running any manual syncs), then run `rsync` once to copy the existing patches across.
+ The recommended tool for copying patches is `rsync`. If you need checksum-based verification, add `--checksum` (note that this can be slower). Disable patch synchronisation in the config first (so no new patches arrive, and avoid running any manual syncs), then run `rsync` once to copy the existing patches across.
 
 ## Filesystem to filesystem
 
@@ -24,7 +24,7 @@ rsync -avz --progress /var/snap/canonical-livepatch-server/common/patches/ user@
 
 ## Migrating to or from object storage
 
-For the object storage backends (S3, GCS, Azure, IBM, Oracle), mount the bucket or container as a local directory with [rclone](https://rclone.org/), which supports all of these backends (including any S3-compatible endpoint, such as IBM COS or MinIO), then `rsync` into or out of the mount as if it were a normal directory.
+For the object storage backends (S3, GCS, Azure, IBM, Oracle, Swift), mount the bucket or container as a local directory with [rclone](https://rclone.org/), which supports all of these backends (including any S3-compatible endpoint, such as IBM COS or MinIO), then `rsync` into or out of the mount as if it were a normal directory.
 
 1. Disable [`patch-sync`](/server/reference/patch-management/patch-sync-filters.md) in the config so no new patches are synced to the on-prem server, and avoid running any manual syncs, while the migration is in progress.
 2. Install rclone and configure a remote for the bucket/container, following [rclone's documentation](https://rclone.org/docs/) for the relevant backend (`s3`, `google cloud storage`, `azureblob`, `swift`, or `oracle-object-storage`).

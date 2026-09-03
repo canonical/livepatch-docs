@@ -31,7 +31,7 @@ Patch files are distributed as tarballs containing metadata and a Linux kernel m
 All kernel modules are signed by Canonical to verify their authenticity, using asymmetric encryption:
 
 - Signature algorithm: SHA-512 with RSA
-- Canonical's [public key](https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/jammy/plain/debian/certs/canonical-livepatch-all.pem)
+- Canonical's public key
 
 Kernel modules are authenticated before they are installed. This ensures the patch was produced by Canonical and protects the client from installing maliciously crafted patches. The public keys used for signature verification are embedded in the Livepatch Client and do not require external access.
 

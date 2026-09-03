@@ -13,8 +13,8 @@ Livepatch Server supports several different drivers for storing patch files down
 
 1. Local filesystem
 2. Swift
-3. S3 (and compatible implementations, e.g. minio)
-4. Postgresql
+3. S3 (and compatible implementations, e.g. MinIO)
+4. PostgreSQL
 5. Google Cloud Storage (GCS)
 6. Azure Blob Storage
 7. IBM Cloud Object Storage
