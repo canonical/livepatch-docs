@@ -10,7 +10,7 @@ myst:
 
 To configure this, follow these steps:
 
-- Create a COS bucket in the preferred region (best if the region is the same as the deployment's). Care needs to be taken to make the bucket not publicly writable, as this would pose a significant security risk.
+- Create an IBM Cloud Object Storage (COS) bucket in the preferred region (best if the region is the same as the deployment's). Care needs to be taken to make the bucket not publicly writable, as this would pose a significant security risk.
 - Choose an authentication method: an IAM API key with a service instance ID, or the ambient VPC Instance Metadata Service if the VM is granted the required trusted profile.
 - Configure the relevant IBM [config options](/server/reference/platform/configuration.md).
 
