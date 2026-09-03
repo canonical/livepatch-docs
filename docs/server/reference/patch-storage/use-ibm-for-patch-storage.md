@@ -4,7 +4,6 @@ myst:
     description: "Use IBM Cloud Object Storage for patch storage - learn about this topic in Livepatch on-prem."
 ---
 
- 
 (server-reference-livepatch-on-prem-with-ibm-patch-storage)=
 
 # Livepatch on-prem with IBM Cloud Object Storage patch storage
