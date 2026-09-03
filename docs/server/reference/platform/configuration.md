@@ -176,8 +176,6 @@ The following values configure how the server manages patch storage. See the [pa
 | `patch-storage.ibm-bucket` | IBM Cloud Object Storage bucket for storing patches. | `string` |
 | `patch-storage.ibm-endpoint` | IBM Cloud Object Storage endpoint. | `string` |
 | `patch-storage.ibm-region` | IBM Cloud Object Storage region. | `string` |
-| `patch-storage.ibm-access-key` | IBM COS HMAC access key (optional; see `patch-storage.ibm-api-key`). | `string` |
-| `patch-storage.ibm-secret-key` | IBM COS HMAC secret key (optional; see `patch-storage.ibm-access-key`). | `string` |
 | `patch-storage.ibm-api-key` | IBM Cloud IAM API key (optional; defaults to the ambient VPC Instance Metadata Service). | `string` |
 | `patch-storage.ibm-service-instance-id` | IBM COS resource instance ID, required when using `patch-storage.ibm-api-key`. | `string` |
 | `patch-storage.ibm-trusted-profile-id` | Trusted profile ID to assume via the ambient VPC Instance Metadata Service (optional; defaults to the instance's default trusted profile). | `string` |
