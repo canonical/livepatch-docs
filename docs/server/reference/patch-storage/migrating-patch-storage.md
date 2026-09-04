@@ -12,7 +12,7 @@ This guide covers migrating between the file-based patch storage backends (files
 
 The Postgres backend (`patch-storage.postgres-connection-string`) is not covered here, since it stores patches as rows in a database rather than as files, and cannot be migrated with `rsync` in the same way.
 
- The recommended tool for copying patches is `rsync`. If you need checksum-based verification, add `--checksum` (note that this can be slower). Disable patch synchronisation in the config first (so no new patches arrive, and avoid running any manual syncs), then run `rsync` once to copy the existing patches across.
+The recommended tool for copying patches is `rsync`. If you need checksum-based verification, add `--checksum` (note that this can be slower). Disable patch synchronisation in the config first (so no new patches arrive, and avoid running any manual syncs), then run `rsync` once to copy the existing patches across.
 
 ## Filesystem to filesystem
 
