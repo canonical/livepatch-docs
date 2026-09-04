@@ -23,6 +23,7 @@ COS
 crypto
 cryptographically
 CVEs
+denormalized
 Diátaxis
 docstrings?
 downloader
@@ -69,6 +70,7 @@ liveness
 LLMs?
 lockfile
 logrotate
+lookups
 loopback
 lowlatency
 LSNs

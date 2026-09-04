@@ -10,6 +10,43 @@ myst:
 
 The [Livepatch Server K8s charm](https://charmhub.io/canonical-livepatch-server-k8s) is the recommended method for deploying the Livepatch Server on Kubernetes. The charm configures and runs the Livepatch Server, which serves live kernel patches and associated metadata to clients. Use the `latest/stable` channel charm for production environments.
 
+## v2.3.0
+
+### New features
+
+- Added support for Public Cloud Stores (AWS S3, Azure Blob Store, Google Cloud Storage, IBM COS, Oracle Cloud Storage) to be used as patch stores.
+
+### Optimizations
+
+- Marked the `comparable_patch_version` function as parallel-safe for faster patch version lookups.
+
+### Deprecations
+
+- Deprecated SSO macaroon issuance, SSO macaroon-based admin authentication, and SSO auth configuration on the server.
+
+## v2.0.0
+
+### New features
+
+- Removed the `/api/auth-tokens` endpoint.
+- Ping metrics can now be pushed directly to an OTLP collector.
+- Traces can now be pushed directly to an OTLP collector.
+
+### Bug fixes
+
+- Updated dependencies to pull in upstream CVE fixes.
+
+## v1.21.3
+
+### New features
+
+- Added support for new ping types sent by client machines which improves monitoring of client machines.
+- Fixed CVE data is now denormalized for faster database lookups.
+
+### Bug Fixes:
+
+- Fixed config parsing logic which caused invalid handling of nested config struct pointers. 
+
 ## v1.20.0
 
 ### New features
