@@ -47,7 +47,6 @@ The [Livepatch Server K8s charm](https://charmhub.io/canonical-livepatch-server-
 
 - Fixed config parsing logic which caused invalid handling of nested config struct pointers. 
 
-
 ## v1.20.0
 
 ### New features
