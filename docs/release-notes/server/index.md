@@ -18,30 +18,29 @@ The [Livepatch Server K8s charm](https://charmhub.io/canonical-livepatch-server-
 
 ### Optimizations
 
-- Mark the comparable_patch_version function as parallel safe for faster patch version lookups.
+- Marked the `comparable_patch_version` function as parallel-safe for faster patch version lookups.
 
 ### Deprecations
 
-- Deprecate SSO Macaroon issuance, SSO Macaroon based admin auth and SSO Auth config from the server.
+- Deprecated SSO macaroon issuance, SSO macaroon-based admin authentication, and SSO auth configuration on the server.
 
 ## v2.0.0
 
-### New Features
+### New features
 
-- Removed the `/api/auth-tokens` endpoint. 
+- Removed the `/api/auth-tokens` endpoint.
 - Ping metrics can now be pushed directly to an OTLP collector.
 - Traces can now be pushed directly to an OTLP collector.
 
-### Bug Fixes
-
+### Bug fixes
 - Updated dependencies to pull in upstream CVE fixes.
 
 ## v1.21.3
 
 ### New features
 
-- Added support for new ping types sent by client machines which improves monitoring of client machines. 
-- Fixed CVE data is now denormalized for faster database lookups. 
+- Added support for new ping types sent by client machines which improves monitoring of client machines.
+- Fixed CVE data is now denormalized for faster database lookups.
 
 ### Bug Fixes:
 
