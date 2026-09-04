@@ -33,6 +33,7 @@ The [Livepatch Server K8s charm](https://charmhub.io/canonical-livepatch-server-
 - Traces can now be pushed directly to an OTLP collector.
 
 ### Bug fixes
+
 - Updated dependencies to pull in upstream CVE fixes.
 
 ## v1.21.3
