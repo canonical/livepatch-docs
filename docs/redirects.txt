@@ -176,5 +176,7 @@
 "client/explanation/report-bugs.md" "support/report-bugs.md"
 
 # Directory-level redirects for restructured sections
+"livepatch/explanation/howitworks/" "client/explanation/architecture/how-live-patching-works/"
+"on_prem/" "server/"
 "livepatch_on_prem/reference/release-notes/" "release-notes/server/index"
 "livepatch_server_on_public_clouds/how-to-guides/" "server/how-to-guides/deployment/public-clouds/"
