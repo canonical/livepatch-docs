@@ -18,5 +18,3 @@ The [Ubuntu Security disclosure and embargo policy](https://ubuntu.com/security/
 ## Report a Livepatch Server administration tool vulnerability
 
 Reporting a security issue in the [Livepatch Server administration tool](/server/how-to-guides/security/setup-administration-tool.md) follows the same process as for the Livepatch Server: file a [Private/Embargoed Security Bug](https://bugs.launchpad.net/livepatch-onprem/+filebug) on Launchpad with a description of the issue, the steps taken to reproduce the issue, affected versions, and, if known, mitigations for the issue.
-
-The [Ubuntu Security disclosure and embargo policy](https://ubuntu.com/security/disclosure-policy) contains more information about what to expect when contacting the team, and what is expected in return.
