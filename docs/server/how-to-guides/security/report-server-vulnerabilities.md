@@ -13,7 +13,6 @@ To report a security issue, file a [Private/Embargoed Security Bug](https://bugs
 
 The Livepatch team is notified of the issue and works to determine whether the issue qualifies as a security issue. The team then handles identifying a fix, getting a CVE assigned, and coordinating the release of the fix.
 
-The [Ubuntu Security disclosure and embargo policy](https://ubuntu.com/security/disclosure-policy) contains more information about what to expect when contacting the team, and what is expected in return.
 
 ## Report a Livepatch Server administration tool vulnerability
 
