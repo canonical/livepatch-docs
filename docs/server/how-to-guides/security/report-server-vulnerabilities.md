@@ -13,7 +13,6 @@ To report a security issue, file a [Private/Embargoed Security Bug](https://bugs
 
 The Livepatch team is notified of the issue and works to determine whether the issue qualifies as a security issue. The team then handles identifying a fix, getting a CVE assigned, and coordinating the release of the fix.
 
-
 ## Report a Livepatch Server administration tool vulnerability
 
 Reporting a security issue in the [Livepatch Server administration tool](/server/how-to-guides/security/setup-administration-tool.md) follows the same process as for the Livepatch Server: file a [Private/Embargoed Security Bug](https://bugs.launchpad.net/livepatch-onprem/+filebug) on Launchpad with a description of the issue, the steps taken to reproduce the issue, affected versions, and, if known, mitigations for the issue.
