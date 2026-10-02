@@ -95,6 +95,7 @@ PNG
 postgres
 PPAs
 PR
+PRs
 preconfigured
 proxying
 Pygments
