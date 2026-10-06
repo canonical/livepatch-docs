@@ -18,7 +18,7 @@ Several other software components can require a system reboot, including:
 
 Enabling the Livepatch service does not turn on automatic installation of security updates in APT. For best security, you should:
 
-- [Enable security updates using APT](https://help.ubuntu.com/community/AutomaticSecurityUpdates)
+- [Enable security updates using APT](https://documentation.ubuntu.com/server/how-to/software/automatic-updates/)
 - Subscribe to the [security announcement mailing list](https://lists.ubuntu.com/mailman/listinfo/ubuntu-security-announce)
 - Follow all advised security updates and reboot at your earliest convenience when any software component requires it
 
