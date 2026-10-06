@@ -144,7 +144,13 @@ To migrate the PostgreSQL database from the machine charm environment to the K8s
 sudo apt install postgresql-client postgresql-client-common
 ```
 
-Next, retrieve the `operator` user's password. The PostgreSQL charm stores its internal system-user passwords in a [Juju secret](https://canonical-charmed-postgresql-single-kernel.readthedocs-hosted.com/16/how-to/authentication/manage-passwords/). List the model's secrets to find the one owned by the `postgresql` application, then reveal its contents:
+Next, retrieve the `operator` user's password. First, switch back to the machine charm model:
+
+```bash
+juju switch <machine-charm-model>
+```
+
+The PostgreSQL charm stores its internal system-user passwords in a [Juju secret](https://canonical-charmed-postgresql-single-kernel.readthedocs-hosted.com/16/how-to/authentication/manage-passwords/). List the model's secrets to find the one owned by the `postgresql` application, then reveal its contents:
 
 ```bash
 juju secrets
