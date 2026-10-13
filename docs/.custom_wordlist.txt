@@ -9,6 +9,7 @@ Autoscaling
 aws
 backend
 backends
+backoff
 backport
 bcrypt
 blocklisted
@@ -28,6 +29,7 @@ Diátaxis
 docstrings?
 downloader
 Downloader
+downscoped
 dvipng
 enablement
 Enablement
@@ -82,6 +84,7 @@ Multipass
 MyST
 npm
 Numpy
+OAuth
 oem
 OCI
 Open Graph
@@ -97,6 +100,8 @@ PPAs
 PR
 PRs
 preconfigured
+presigned
+Presigned
 proxying
 Pygments
 pymarkdown
@@ -139,6 +144,7 @@ TOC
 toctree
 triages
 txt
+uploader
 ulwazi
 unapplied
 uncomment(ing)?
