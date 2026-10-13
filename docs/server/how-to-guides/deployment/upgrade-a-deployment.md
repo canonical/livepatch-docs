@@ -40,11 +40,11 @@ sudo snap refresh canonical-livepatch-server
 
 ## Step 2: Apply database schema upgrades
 
-When upgrading across major or minor Livepatch Server releases, new database migrations may be required.
+When upgrading across Livepatch Server releases, database schema migrations run automatically during service startup for both charmed and snap deployments. The migration runner acquires an advisory lock on PostgreSQL to ensure that multi-unit or clustered deployments upgrade safely without race conditions.
 
 ### Charmed deployments
 
-When a schema upgrade is required, the Livepatch application enters a blocked status visible in `juju status`. Run the `schema-upgrade` action on the leader unit:
+In charmed deployments, database migrations run automatically during service startup after a refresh. If the Livepatch application enters a blocked status requiring manual intervention, run the `schema-upgrade` action on the leader unit:
 
 ```bash
 juju run livepatch/leader schema-upgrade --wait
@@ -62,13 +62,7 @@ juju run livepatch/<desired-unit> restart --wait
 
 ### Snap deployments
 
-For snap deployments, database migrations run automatically during service startup when the updated snap starts. The migration runner acquires an advisory lock on PostgreSQL to ensure that multi-unit or clustered deployments upgrade safely without race conditions.
-
-You can also run schema migrations manually using the snap command:
-
-```bash
-sudo canonical-livepatch-server.schema-upgrade upgrade
-```
+For snap deployments, database migrations also run automatically during service startup when the updated snap starts.
 
 ## Step 3: Backfill publish timestamps with metadata-only sync
 

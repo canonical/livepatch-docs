@@ -58,6 +58,8 @@ livepatch-admin patch download --patch-dir /tmp/livepatch-export --tier stable
 Optional download flags include:
 
 - `--patch-dir <path>`: Destination directory for downloaded patches (required).
+- `--metadata-file <filename>`: Name of the metadata manifest file written inside `--patch-dir` (defaults to `canonical-livepatch-patch-metadata.json`).
+- `--metadata-only`: Download only the metadata manifest file without downloading patch files.
 - `--kernel <version>`: Download patches for kernels matching or newer than the specified version prefix (for example, `5.15.0`).
 - `--arch <architecture>`: Restrict downloads to a specific CPU architecture.
 - `--flavor <flavor>`: Restrict downloads to a specific kernel flavour.
