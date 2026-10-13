@@ -17,7 +17,7 @@ Livepatch on-premises deployments can operate in fully air-gapped environments w
 ## Prerequisites
 
 - **On the internet-connected system:**
-  - An installation of the Livepatch administration tool (`livepatch-admin`).
+  - An installation of the Livepatch administration tool with the `livepatch-admin` alias configured as described in the [administration tool setup guide](/server/how-to-guides/security/setup-administration-tool.md).
   - An Ubuntu Pro token entitled to Livepatch, attached to the system or available as a machine token.
   - Outbound HTTPS network access to `https://livepatch.canonical.com`.
 
@@ -93,7 +93,8 @@ Mount or copy the directory onto a workstation or bastion system with network co
 Log in to your on-premises Livepatch Server with administrator credentials:
 
 ```bash
-livepatch-admin login https://livepatch.internal.example.com
+ export LIVEPATCH_URL=https://livepatch.internal.example.com
+ livepatch-admin login --auth <username>:<password>
 ```
 
 ### Run the upload command

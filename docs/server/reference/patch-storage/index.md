@@ -13,12 +13,12 @@ Livepatch Server supports several different drivers for storing patch files down
 
 1. **Local filesystem**: Stores patch files directly on disk. Ideal for single-unit deployments.
 2. **PostgreSQL**: Stores patch files as Large Objects directly inside the PostgreSQL database. Suitable for multi-unit clusters without external cloud dependencies.
-3. **AWS S3**: Highly scalable object storage for AWS or S3-compatible environments (such as MinIO or Ceph).
-4. **Google Cloud Storage (GCS)**: Scalable object storage for Google Cloud Platform.
-5. **Azure Blob Storage**: Durable container storage for Microsoft Azure.
-6. **IBM Cloud Object Storage (COS)**: Resilient bucket storage for IBM Cloud.
-7. **Oracle Cloud Infrastructure (OCI) Object Storage**: High-performance object storage for OCI.
-8. **OpenStack Swift**: Scalable object storage for OpenStack environments.
+3. **AWS S3**: Object storage for AWS or S3-compatible environments (such as MinIO or Ceph).
+4. **Google Cloud Storage (GCS)**: Object storage for Google Cloud Platform.
+5. **Azure Blob Storage**: Container storage for Microsoft Azure.
+6. **IBM Cloud Object Storage (COS)**: Bucket storage for IBM Cloud.
+7. **Oracle Cloud Infrastructure (OCI) Object Storage**: Object storage for OCI.
+8. **OpenStack Swift**: Object storage for OpenStack environments.
 
 The filesystem patch store is easiest to deploy and suits single-unit configurations. However, when scaling out the Livepatch Server across multiple load-balanced units, use PostgreSQL or one of the object storage backends (S3, GCS, Azure, IBM COS, OCI, Swift).
 

@@ -19,7 +19,7 @@ Depending on whether your deployment uses Juju charms or standalone snaps, follo
 In charmed deployments, upgrade each component application using `juju refresh`:
 
 ```bash
-juju refresh livepatch
+juju refresh canonical-livepatch-server-k8s --channel=<channel> --revision=<revision>
 ```
 
 If you manage supporting infrastructure services via Juju, upgrade them as required:
@@ -67,21 +67,8 @@ For snap deployments, database migrations run automatically during service start
 You can also run schema migrations manually using the snap command:
 
 ```bash
-sudo canonical-livepatch-server.schema-upgrade
+sudo canonical-livepatch-server.schema-upgrade upgrade
 ```
-
-Check the service logs to verify successful migration:
-
-```bash
-sudo journalctl -u snap.canonical-livepatch-server.* -n 100 --no-pager
-```
-
-### Key schema migrations
-
-Recent Livepatch Server releases introduce database improvements that support the patch uploader and offline distribution workflows:
-
-- **Migration 086 (`patch_file_tier.publish_time`)**: Adds `publish_time` and `sync_time` tracking to patch tiers, recording the exact point in time when each patch was made available.
-- **Migration 088 (`patch_file_filename_index`)**: Adds a dedicated B-tree index on `patch_file.filename` to significantly accelerate duplicate detection and batch lookups during patch uploads.
 
 ## Step 3: Backfill publish timestamps with metadata-only sync
 

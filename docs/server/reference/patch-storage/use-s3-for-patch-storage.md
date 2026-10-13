@@ -53,7 +53,7 @@ To generate valid upload grants:
 
 ## Direct patch delivery from S3
 
-To serve patches directly to clients from S3 rather than proxying bytes through the Livepatch Server, set your server's [URL template config](/server/reference/platform/configuration.md) to:
+ To serve patches directly to clients from S3 rather than proxying bytes through the Livepatch Server, enable `server.redirect_downloads` and set your server's [URL template config](/server/reference/platform/configuration.md) to a client-readable endpoint. This static template cannot sign requests: a private S3 bucket needs an authenticated delivery mechanism, or client downloads will fail with 403. For publicly readable objects, use:
 
 ```
 https://<bucket>.s3.<region>.amazonaws.com/{filename}

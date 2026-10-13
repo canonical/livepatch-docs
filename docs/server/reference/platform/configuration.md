@@ -161,7 +161,7 @@ The following values configure how the server manages patch storage. See the [pa
 | `patch-storage.s3-access-key` | AWS access key (optional; defaults to the VM's ambient credentials, e.g. an EC2 instance role). | `string` |
 | `patch-storage.s3-secret-key` | AWS secret key (optional; see `patch-storage.s3-access-key`). | `string` |
 | `patch-storage.s3-assume-role-arn` | IAM role ARN to assume via STS, using the resolved credentials above (optional). | `string` |
-| `patch-storage.s3-assume-role-duration` | How long an assumed role's STS session (and any upload credentials issued from it) stays valid before it must be refreshed; only applies when `patch-storage.s3-assume-role-arn` is set. Defaults to the AWS SDK's 15-minute default when unset. AWS STS rejects requests exceeding the target IAM role's own `MaxSessionDuration` setting (AWS default is 1 hour, and can be raised up to 12 hours), so that role setting must independently permit any configured value (optional). | `string` |
+| `patch-storage.s3-assume-role-duration` | How long an assumed role's STS session stays valid before it must be refreshed; only applies when `patch-storage.s3-assume-role-arn` is set. Defaults to `15m` when unset. AWS STS rejects requests exceeding the target IAM role's `MaxSessionDuration` (1 hour by default, configurable up to 12 hours). | `string` |
 | `patch-storage.gcs-bucket` | Google Cloud Storage bucket for storing patches. | `string` |
 | `patch-storage.gcs-credentials-file` | Path to a service account JSON key file (optional; defaults to Application Default Credentials). | `string` |
 | `patch-storage.gcs-credentials-json` | Inline service account JSON key (optional; see `patch-storage.gcs-credentials-file`). | `string` |
@@ -215,8 +215,8 @@ The following values configure how the server synchronises patches from an upstr
 | `patch-sync.send-machine-reports` | Whether to send machine reports during synchronisation. | `bool` |
 | `patch-sync.token` | Token for authenticating with an upstream Livepatch Server. | `string` |
 | `patch-sync.upstream-url` | URL of the upstream server to pull patches from. | `string` |
-| `patch-sync.sync-tiers` | Whether to mirror the entire upstream tier structure locally instead of synchronising a single tier. Mutually exclusive with `patch-sync.upstream-tier` and `patch-sync.ingress-tier`; when enabled, both are ignored: patches are downloaded from (and synced to) the stable tier, which upstream always holds as the superset of every lower tier's patches, and the already-mirrored tier structure makes each one visible in whichever lower local tiers it belongs to. | `bool` |
-| `patch-sync.upstream-tier` | The tier requested from the upstream server. Only used when `patch-sync.sync-tiers` is `false`; defaults to `stable` when unset, since on-prem sync is only available to paid tokens, which upstream always serves from the stable tier. | `string` |
+ | `patch-sync.sync-tiers` | Whether to mirror the upstream tier structure and patch-to-tier assignments locally instead of synchronising a single tier. Enabling this removes existing local tiers and disables local tier management. When enabled, `patch-sync.upstream-tier` and `patch-sync.ingress-tier` are ignored. | `bool` |
+ | `patch-sync.upstream-tier` | The tier requested from the upstream server when `patch-sync.sync-tiers` is `false`; defaults to `stable` when unset. For on-premises upstream servers, the sync token may restrict the tier that can be retrieved. | `string` |
 | `patch-sync.ingress-tier` | The local tier into which synced patches are stored and served. Only used when `patch-sync.sync-tiers` is `false`; defaults to the first locally configured tier (for example `edge` or `stable`) when unset. | `string` |
 | `patch-sync.proxy.enabled` | Whether to use a proxy when synchronising patches. | `bool` |
 | `patch-sync.proxy.http` | HTTP proxy URL. | `string` |
