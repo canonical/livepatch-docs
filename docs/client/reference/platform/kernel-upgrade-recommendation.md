@@ -71,7 +71,7 @@ The information about the newest kernel is only informational. It never changes 
 
 ### Protected
 
-When Livepatch covers the running kernel, the message lists up to three of the CVEs fixed by the applied live patches:
+When the recommendation says the reboot can wait because the applied Livepatches cover the CVEs fixed by the next boot kernel, the message lists up to three of the CVEs fixed by the applied live patches:
 
 ```text
 *** Canonical Livepatch has protected this system against CVE-2024-1, CVE-2024-2 and CVE-2024-3 (and 2 more). Upgrade to the latest secure kernel before 2025-06-01 ***

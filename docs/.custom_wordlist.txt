@@ -167,3 +167,4 @@ xml
 yaml
 YouTube
 yq
+Severities

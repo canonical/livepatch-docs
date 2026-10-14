@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added a how-to guide for configuring the reboot notification policy of the Livepatch Client.
+- Added a reference page for the kernel upgrade recommendation, covering its results, messages, message of the day rules, and status output.
+- Added an explanation of how kernel upgrade recommendations work.
+- Added an explanation of how the Livepatch Client removes the pending reboot notice after a kernel update, and the effect on other tools.
+
+### Changed
+
+- Documented the `reboot-notification-policy` option in the Livepatch Client configuration options.
+- Added a "Livepatch reboot recommendation" section to the "When to reboot" explanation.
+- Noted in the CVE service deployment guide that both `lp.cve-lookup.enabled` and `lp.cve-sync.enabled` are required for clients to receive kernel upgrade information, and linked to the new explanation.
+
 ## [1.0.0] - 2026-06-18
 
 ### Added
