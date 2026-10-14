@@ -20,4 +20,6 @@ Updates not provided by Livepatch <what-kind-of-updates-are-not-provided-by-live
 Livepatch tiers <what-are-livepatch-tiers.md>
 When to expect new updates <when-should-i-expect-new-updates.md>
 Content caching <content-caching.md>
+Kernel upgrade recommendations <how-kernel-upgrade-recommendations-work.md>
+Reboot notice removal <reboot-marker-suppression.md>
 ```

@@ -129,7 +129,7 @@ The `canonical-livepatch status` command accepts flags that change the output fo
 
 * `--summary` shows a concise summary (similar to default output).
 
-* `--verbose` shows extended details such as client version, architecture, boot time, and applied CVEs.
+* `--verbose` shows extended details such as client version, architecture, boot time, applied CVEs, applied CVEs fixed in the kernels installed in the system, and CVEs fixed by the next boot kernel that are not yet fixed in the running kernel.
 
 * `--show-secrets` shows sensitive machine tokens (requires sudo).
 
