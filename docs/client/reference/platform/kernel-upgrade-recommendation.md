@@ -25,7 +25,7 @@ The recommendation is the exit status of `canonical-livepatch kernel-upgrade-req
 | Exit status | Meaning |
 | --- | --- |
 | `0` | A reboot is recommended because of an unpatchable or uncovered vulnerability, an expired Livepatch SRU window, or the end of kernel series support. |
-| `1` | Livepatch covers the CVEs that matter for the running kernel. The reboot can wait for a maintenance window. |
+| `1` | The applied live patches cover all the CVEs that the next boot kernel fixes and the running kernel doesn't. The reboot can wait for a maintenance window. |
 | `2` | The client doesn't have enough information to make a recommendation. |
 | `3` | An error prevented the client from determining a result. |
 
