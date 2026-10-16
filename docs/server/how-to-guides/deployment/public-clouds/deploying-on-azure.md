@@ -163,6 +163,7 @@ runcmd:
     lp.server.url-template=$URLTEMPLATE \
     lp.patch-storage.azure-account-name=$STORAGE_ACCOUNT_NAME \
     lp.patch-storage.azure-container=$STORAGE_CONTAINER \
+    lp.patch-storage.azure-managed-identity-client-id="$AZURE_MANAGED_IDENTITY_CLIENT_ID" \
     lp.auth.basic.enabled=true \
     lp.patch-sync.enabled=true \
     lp.patch-sync.interval=12h \
