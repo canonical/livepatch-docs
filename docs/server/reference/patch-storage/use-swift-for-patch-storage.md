@@ -12,7 +12,7 @@ In OpenStack cloud environments or deployments with existing Swift object storag
 
 To configure this, follow these steps:
 
-- Create a Swift container for Livepatch patches. Ensure the container is not publicly readable or writable.
+- Create a Swift container for Livepatch patches. Ensure the container is not publicly writable.
 - Configure Keystone credentials for the Livepatch service account.
 - Provision a TempURL key on the Swift account or container if using the patch uploader.
 - Configure the relevant Swift [config options](/server/reference/platform/configuration.md).

@@ -32,7 +32,7 @@ Legacy S3-compatible HMAC credentials (access key and secret key pairs) are unsu
 
 ## Required IAM access policies and trusted profiles
 
-Configure IBM Cloud IAM roles for regular patch operations and offline patch uploads:
+Configure IBM Cloud IAM roles for regular patch operations:
 
 ### Standard server operations
 
@@ -41,18 +41,7 @@ For synchronising and serving patches, the Livepatch Server identity (API key or
 - **Reader** (to retrieve objects and list bucket contents)
 - **Writer** (or **ObjectWriter**, to write and delete patch files)
 
-### Temporary upload credentials for the patch uploader
-
-When an administrator runs `livepatch-admin patch upload`, the Livepatch Server uses the IBM Cloud IAM "assume" grant to exchange its primary identity for a temporary bearer token bound to a dedicated upload trusted profile.
-
-To configure this:
-
-1. Create a dedicated IAM Trusted Profile in IBM Cloud.
-2. Assign the profile the **Writer** or **ObjectWriter** role scoped to the target COS bucket.
-3. Configure trust rules allowing the Livepatch Server identity (the server's API key or its VPC VSI compute identity) to assume the profile.
-4. Set `patch-storage.ibm-upload-trusted-profile-id` in your server configuration with the profile ID.
-
 ```{note}
-**Upload token lifetime:** Bearer tokens issued via the IBM Cloud IAM assume grant have a fixed session lifetime (typically 1 hour / 3600 seconds) governed by account-level IAM session settings. Configuring `patch-storage.upload-credential-ttl` does not alter this cloud-enforced duration.
+Admin-tool-facilitated patch upload (`livepatch-admin patch upload`) is not supported for IBM Cloud Object Storage just yet.
 ```
 

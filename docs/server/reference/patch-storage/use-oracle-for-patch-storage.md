@@ -38,12 +38,7 @@ For synchronising patches and delivering them to clients, the identity requires 
 allow dynamic-group <livepatch-instance-group> to manage objects in compartment <compartment-name> where target.bucket.name = '<bucket-name>'
 ```
 
-### Temporary upload credentials for the patch uploader
-
-When an administrator runs `livepatch-admin patch upload`, the Livepatch Server creates Pre-Authenticated Requests (PAR) with `AnyObjectWrite` permissions scoped to the `livepatch-` prefix.
-
-To permit PAR creation and subsequent uploads:
-
-- The IAM policy above (`manage objects`) covers the required permissions: `PAR_CREATE`, `OBJECT_CREATE`, and `OBJECT_INSPECT`.
-- Upload credential lifetimes are bounded by `patch-storage.upload-credential-ttl` (defaults to 15 minutes).
+```{note}
+Admin-tool-facilitated patch upload (`livepatch-admin patch upload`) is not supported for OCI Object Storage just yet.
+```
 

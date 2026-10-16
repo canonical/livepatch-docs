@@ -180,14 +180,14 @@ The following values configure how the server manages patch storage. See the [pa
 | `patch-storage.ibm-api-key` | IBM Cloud IAM API key (optional; defaults to the ambient VPC Instance Metadata Service). | `string` |
 | `patch-storage.ibm-service-instance-id` | IBM COS resource instance ID, required when using `patch-storage.ibm-api-key`. | `string` |
 | `patch-storage.ibm-trusted-profile-id` | Trusted profile ID to assume via the ambient VPC Instance Metadata Service (optional; defaults to the instance's default trusted profile). | `string` |
-| `patch-storage.ibm-upload-trusted-profile-id` | Dedicated IAM Trusted Profile ID to assume when issuing temporary upload credentials for `livepatch-admin patch upload` (optional). | `string` |
+| `patch-storage.ibm-upload-trusted-profile-id` | Dedicated IAM Trusted Profile ID to assume when issuing temporary upload credentials for `livepatch-admin patch upload` (optional). Admin-tool-facilitated patch upload is not yet supported for IBM Cloud Object Storage. | `string` |
 | `patch-storage.oracle-bucket` | OCI Object Storage bucket for storing patches. | `string` |
 | `patch-storage.oracle-namespace` | OCI Object Storage namespace. | `string` |
 | `patch-storage.oracle-region` | OCI region. | `string` |
 | `patch-storage.oracle-config-file` | Path to an OCI config file (optional; defaults to instance principal authentication). | `string` |
 | `patch-storage.oracle-profile` | Profile to use within `patch-storage.oracle-config-file` (optional). | `string` |
 | `patch-storage.swift-temp-url-key` | OpenStack Swift account or container TempURL key, used to sign scoped, time-limited upload credentials for `livepatch-admin patch upload`. Because Swift never returns a previously set key, it must be provisioned out-of-band and configured here with the identical secret key (optional). | `string` |
-| `patch-storage.upload-credential-ttl` | Duration that temporary, upload-only credentials issued by the server remain valid for cloud storage backends (`s3`, `gcs`, `azure`, `ibm`, `oracle`, `swift`) during `livepatch-admin patch upload` (optional; defaults to `15m`). Has no effect for `filesystem` and `postgres`, which route uploads through the authenticated server API. Note that GCS and IBM COS issue bearer tokens with a cloud-enforced fixed duration of ~1 hour regardless of this setting. | `string` |
+| `patch-storage.upload-credential-ttl` | Duration that temporary, upload-only credentials issued by the server remain valid for cloud storage backends (`s3`, `gcs`, `azure`, `swift`) during `livepatch-admin patch upload` (optional; defaults to `15m`). Has no effect for `filesystem` and `postgres`, which route uploads through the authenticated server API. Admin-tool-facilitated patch upload is not yet supported for `ibm` and `oracle`. Note that GCS issues bearer tokens with a cloud-enforced fixed duration of ~1 hour regardless of this setting. | `string` |
 
 ### Patch cache
 

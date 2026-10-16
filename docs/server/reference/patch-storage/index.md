@@ -43,9 +43,10 @@ Livepatch Server supports native, modern authentication mechanisms for each clou
 
 When administrators use `livepatch-admin patch upload` to distribute patches to an on-premises server across an air gap, the server authorizes uploads depending on the storage driver:
 
-- **Cloud object storage (S3, GCS, Azure, IBM COS, OCI, Swift):** The Livepatch Server acts as a credential issuer, generating temporary, scoped, upload-only credentials or presigned URLs. The `livepatch-admin` CLI uploads binary archives directly to cloud storage, bypassing the Livepatch Server API for high-bandwidth file transfers.
+- **Cloud object storage (S3, GCS, Azure, Swift):** The Livepatch Server acts as a credential issuer, generating temporary, scoped, upload-only credentials or presigned URLs. The `livepatch-admin` CLI uploads binary archives directly to cloud storage, bypassing the Livepatch Server API for high-bandwidth file transfers.
 - **Server-mediated storage (Local Filesystem, PostgreSQL):** The CLI streams files directly to the Livepatch Server API endpoint (`PUT /v1/admin/patches/file/{filename}`) authenticated by the administrator's login token.
-- **Upload credential lifetime:** For cloud backends, the duration of temporary upload credentials is configurable via `patch-storage.upload-credential-ttl` (defaults to 15 minutes). Note that Google Cloud STS (GCS) and IBM Cloud IAM issue tokens with a cloud-enforced fixed duration of ~1 hour.
+- **IBM COS and OCI Object Storage:** Admin-tool-facilitated patch upload is not supported for these backends just yet.
+- **Upload credential lifetime:** For supported cloud backends, the duration of temporary upload credentials is configurable via `patch-storage.upload-credential-ttl` (defaults to 15 minutes). Note that Google Cloud STS (GCS) issues tokens with a cloud-enforced fixed duration of ~1 hour.
 
 See the [platform configuration reference](/server/reference/platform/configuration.md) for all available parameters.
 
