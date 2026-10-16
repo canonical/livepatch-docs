@@ -21,6 +21,7 @@ The following configuration options are available for the Livepatch Client. See 
 | `check-interval` | integer | Interval in minutes between patch checks. Minimum `60`. Set to `0` to disable automatic checks. | `60` |
 | `log-level` | string | Log verbosity. One of `debug`, `info`, `notice`, `warning`, `error`. | `warning` |
 | `tls-patch-download` | boolean | Require TLS for all patch downloads. | `false` |
+| `reboot-notification-policy` | string | Controls whether the client removes a pending reboot notice after a kernel update. `livepatch-aware` removes it when Livepatch covers the next boot kernel's CVEs. `livepatch-agnostic` never removes it. See [how to configure the reboot notification policy](/client/how-to-guides/configuration/configure-reboot-notification-policy.md). | `livepatch-aware` |
 | `cutoff-date` <sup>1</sup> | string | RFC 3339 date in the past. Patches released after this date are not installed. | Empty |
 | `patch-delay` <sup>1</sup> | string | Duration to wait before a newly released patch is applied. Allowed units: `s`, `m`, `h`, `d`, `w`. | `0` |
 
