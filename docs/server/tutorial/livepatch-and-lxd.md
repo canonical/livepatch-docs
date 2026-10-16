@@ -210,16 +210,10 @@ Create a convenient alias:
 sudo snap alias canonical-livepatch-server-admin.livepatch-admin livepatch-admin
 ```
 
-Export the Livepatch Server URL (pointing to the HAProxy address you retrieved earlier):
-
-```bash
-export LIVEPATCH_URL="http://$HAPROXY_ADDRESS"
-```
-
 Log in with one of your administrator credentials:
 
 ```bash
-sudo livepatch-admin login -a admin:admin123
+sudo livepatch-admin --url http://$HAPROXY_ADDRESS login -a admin:admin123
 ```
 
 ## Sync patches

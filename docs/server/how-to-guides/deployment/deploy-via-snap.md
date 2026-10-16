@@ -88,11 +88,7 @@ To manage Livepatch, an administrator tool is available as a snap. Install it wi
 sudo snap install canonical-livepatch-server-admin
 ```
 
-The administrator tool needs to know where the Livepatch Server is hosted. In an all-in-one setup on a single machine, this is `http://localhost:8080`. Export an environment variable as follows:
-
-```
-export LIVEPATCH_URL=http://localhost:8080
-```
+The administrator tool needs to know where the Livepatch Server is hosted. In an all-in-one setup on a single machine, this is `http://localhost:8080`. Use the `--url` flag in the command to specify the address.
 
 ## Set up authentication
 
@@ -160,11 +156,7 @@ To listen for all incoming connections on a different port, run:
 sudo snap set canonical-livepatch-server lp.server.server-address=0.0.0.0:<port>
 ```
 
-Update the `LIVEPATCH_URL` environment variable to ensure the admin tool can still access the server. To access the server from a remote machine, replace `localhost` with the IP address of the machine running the Livepatch Server:
-
-```
-export LIVEPATCH_URL=http://localhost:<port>
-```
+Be sure to include the correct server endpoint with the `livepatch-admin` commands using the `--url` flag.
 
 ## Next steps
 

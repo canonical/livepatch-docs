@@ -78,9 +78,7 @@ juju config livepatch auth_basic_users="<user1>:<password1,<user2>:<password2>"
 When logging in with the client, provide the username and password:
 
 ```
-export LIVEPATCH_URL={haproxy URL or unit IP}
-
-sudo livepatch-admin login --auth <username>:<password>
+sudo livepatch-admin --url <haproxy URL or unit IP> login --auth <username>:<password>
 ```
 
 ## Ubuntu SSO authentication (removed)

@@ -47,7 +47,7 @@ When upgrading across Livepatch Server releases, database schema migrations run 
 In charmed deployments, database migrations run automatically during service startup after a refresh. If the Livepatch application enters a blocked status requiring manual intervention, run the `schema-upgrade` action on the leader unit:
 
 ```bash
-juju run livepatch/leader schema-upgrade --wait
+juju run canonical-livepatch-server-k8s/leader schema-upgrade --wait
 ```
 
 ```{note}
@@ -57,7 +57,7 @@ In Juju v3, `juju run-action` was renamed to `juju run`. See the [Juju documenta
 If needed, restart units after the schema upgrade completes:
 
 ```bash
-juju run livepatch/<desired-unit> restart --wait
+juju run canonical-livepatch-server-k8s/<desired-unit> restart --wait
 ```
 
 ### Snap deployments

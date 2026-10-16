@@ -127,9 +127,7 @@ See the [Administration Tool guide](/server/how-to-guides/security/setup-adminis
 Once this has been done, the Livepatch admin tool can be used to authenticate:
 
 ```
-export LIVEPATCH_URL=http(s)://{haproxy url}
-
-sudo livepatch-admin login -a [username:password]
+sudo livepatch-admin --url http(s)://{haproxy url} login -a [username:password]
 ```
 
 ### 5. Download patches

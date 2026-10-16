@@ -17,6 +17,7 @@ To set up the Livepatch Server on Azure using an Azure Blob Storage container fo
 
 * A VNet with subnets for VMSS, Application Gateway, and PostgreSQL DB.
 * An Azure Key Vault with access enabled for the VMSS subnet of the VNet.
+* An Azure Storage account and Blob store container with access enabled for the VMSS subnet of the VNet.
 * An Azure-managed PostgreSQL instance with PostgreSQL 14 or above using password authentication. The username and password stored in Azure Key Vault as a JSON object.
 * A Virtual Machine Scale Set (VMSS) with an instance type with at least two vCPUs and 4 GB RAM, with a cloud-init configuration file as custom data.
 * An Ubuntu Pro token stored as a secret in Azure Key Vault.
@@ -76,6 +77,10 @@ write_files:
       export DB_PORT=5432
       export DB_SECRET_ID=<db secret id>
       export DB_NAME=<db name>
+
+      # patch store
+      export STORAGE_ACCOUNT_NAME=<account name>
+      export STORAGE_CONTAINER=<container>
 
       # pro token variables
       export TOKEN_SECRET_ID=<token secret id>
@@ -154,9 +159,10 @@ runcmd:
     snap set canonical-livepatch-server \
     token="$(cat /etc/livepatch/pro_token)" \
     lp.database.connection-string="$(cat /etc/livepatch/database_url)" \
-    lp.patch-storage.type=postgres \
+    lp.patch-storage.type=azure \
     lp.server.url-template=$URLTEMPLATE \
-    lp.patch-storage.postgres-connection-string="$(cat /etc/livepatch/database_url)" \
+    lp.patch-storage.azure-account-name=$STORAGE_ACCOUNT_NAME \
+    lp.patch-storage.azure-container=$STORAGE_CONTAINER \
     lp.auth.basic.enabled=true \
     lp.patch-sync.enabled=true \
     lp.patch-sync.interval=12h \

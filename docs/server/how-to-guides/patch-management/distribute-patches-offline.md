@@ -95,8 +95,7 @@ Mount or copy the directory onto a workstation or bastion system with network co
 Log in to your on-premises Livepatch Server with administrator credentials:
 
 ```bash
- export LIVEPATCH_URL=https://livepatch.internal.example.com
- sudo livepatch-admin login --auth <username>:<password>
+ sudo livepatch-admin --url https://livepatch.internal.example.com login --auth <username>:<password>
 ```
 
 ### Run the upload command

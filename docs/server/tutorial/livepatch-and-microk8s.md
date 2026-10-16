@@ -246,8 +246,7 @@ sudo snap alias canonical-livepatch-server-admin.livepatch-admin livepatch-admin
 Export the Livepatch Server URL and log in:
 
 ```bash
-export LIVEPATCH_URL="http://livepatch.test.com"
-sudo livepatch-admin login -a username:password
+sudo livepatch-admin --url http://livepatch.test.com login -a username:password
 ```
 
 ## Sync patches
