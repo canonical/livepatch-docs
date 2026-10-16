@@ -66,7 +66,7 @@ For snap deployments, database migrations also run automatically during service 
 
 ## Step 3: Backfill publish timestamps with metadata-only sync
 
-In earlier Livepatch Server releases, patch tiers did not record the original upstream publish timestamp from Canonical (or initialized it to the local database insertion time).
+In earlier Livepatch Server releases (v2.6.x and below), patch tiers did not record the original upstream publish timestamp from Canonical (or initialized it to the local database insertion time).
 
 If your server has an active upstream connection (`patch-sync.enabled=true`) and you want your on-premises patch catalog to reflect accurate Canonical publish dates (for client queries, KPI reporting, and `patch list` filtering), trigger a **metadata-only sync**.
 
