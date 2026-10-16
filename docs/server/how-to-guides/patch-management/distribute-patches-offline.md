@@ -142,11 +142,11 @@ This deletes the contents of `$SNAP_COMMON/patches/`, including the downloaded p
 
 `livepatch-admin patch upload` works across the following storage backends:
 
-- **Cloud object storage (AWS S3, Google Cloud Storage, Azure Blob Storage, OpenStack Swift):** The Livepatch Server issues temporary, scoped upload credentials to the administrator client. The client transfers binary payloads directly to cloud object storage using presigned POST policies, SAS tokens, or Pre-Authenticated Requests. Background workers automatically refresh credentials during large batch uploads before expiry.
+- **Cloud object storage (AWS S3, Google Cloud Storage, Azure Blob Storage, Oracle Cloud Infrastructure, OpenStack Swift):** The Livepatch Server issues temporary, scoped upload credentials to the administrator client. The client transfers binary payloads directly to cloud object storage using presigned POST policies, SAS tokens, or Pre-Authenticated Requests. Background workers automatically refresh credentials during large batch uploads before expiry.
 - **Server-mediated storage (Local Filesystem, PostgreSQL):** The administrator client streams binary payloads directly through the Livepatch Server API (`PUT /v1/admin/patches/file/{filename}`) authenticated by the administrator's session token.
 
 ```{note}
-Admin-tool-facilitated patch upload is not yet supported for IBM Cloud Object Storage and OCI Object Storage.
+Admin-tool-facilitated patch upload is not yet supported for IBM Cloud Object Storage.
 ```
 
 For details on configuring cloud permissions so your server can generate upload credentials, see the [Patch storage reference](/server/reference/patch-storage/index.md).

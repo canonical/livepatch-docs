@@ -28,17 +28,23 @@ Livepatch supports two authentication methods for OCI Object Storage:
 
 ## Required OCI IAM policies
 
-Configure OCI IAM policies for your instance dynamic group (when using instance principals) or user group (when using a config file):
+Configure OCI IAM policies for your instance dynamic group (when using instance principals) or user group (when using a config file). Two policies are required:
 
 ### Standard server operations
 
 For synchronising patches and delivering them to clients, the identity requires object read, write, and delete permissions. Add a policy statement such as:
 
 ```text
-allow dynamic-group <livepatch-instance-group> to manage objects in compartment <compartment-name> where target.bucket.name = '<bucket-name>'
+allow dynamic-group <dynamic-group> to manage objects in compartment <compartment> where target.bucket.name = '<bucket-name>'
 ```
 
-```{note}
-Admin-tool-facilitated patch upload (`livepatch-admin patch upload`) is not supported for OCI Object Storage just yet.
+### Temporary upload credentials for the patch uploader
+
+When an administrator runs `livepatch-admin patch upload`, the Livepatch Server creates Pre-Authenticated Requests (PAR) with `AnyObjectWrite` permissions scoped to the `livepatch-` prefix. To permit PAR creation and subsequent uploads, add a policy statement such as:
+
+```text
+allow dynamic-group <dynamic-group> to manage buckets in compartment <compartment> where all {target.bucket.name = '<bucket-name>', request.permission = 'PAR_MANAGE'}
 ```
+
+Upload credential lifetimes are bounded by `patch-storage.upload-credential-ttl` (defaults to 15 minutes).
 

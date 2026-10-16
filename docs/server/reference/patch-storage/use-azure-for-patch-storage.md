@@ -45,7 +45,7 @@ For synchronising and serving patches, the identity must have blob read, write, 
 
 ### Temporary upload credentials for the patch uploader
 
-When an administrator runs `livepatch-admin patch upload`, the Livepatch Server generates container-level Shared Access Signature (SAS) tokens scoped to the `livepatch-` object prefix within the container, granting write and create capabilities for patch uploads:
+When an administrator runs `livepatch-admin patch upload`, the Livepatch Server generates container-level Shared Access Signature (SAS) tokens granting write and create capabilities throughout the container:
 
 - **When using Account Key or Connection String:** Livepatch signs the SAS token directly using the storage account Shared Key.
 - **When using Microsoft Entra ID (Service Principal or Managed Identity):** Livepatch requests a User Delegation Key from Microsoft Entra ID to sign a User Delegation SAS. To enable this, assign:

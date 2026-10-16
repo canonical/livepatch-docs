@@ -32,7 +32,7 @@ Legacy S3-compatible HMAC credentials (access key and secret key pairs) are unsu
 
 ## Required IAM access policies and trusted profiles
 
-Configure IBM Cloud IAM roles for regular patch operations and offline patch uploads:
+Configure IBM Cloud IAM roles for regular patch operations:
 
 ### Standard server operations
 
