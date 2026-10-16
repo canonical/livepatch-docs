@@ -142,7 +142,7 @@ This deletes the contents of `$SNAP_COMMON/patches/`, including the downloaded p
 
 `livepatch-admin patch upload` works across the following storage backends:
 
-- **Cloud object storage (AWS S3, Google Cloud Storage, Azure Blob Storage, Oracle Cloud Infrastructure, OpenStack Swift):** The Livepatch Server issues temporary, scoped upload credentials to the administrator client. The client transfers binary payloads directly to cloud object storage using presigned POST policies, SAS tokens, or Pre-Authenticated Requests. Background workers automatically refresh credentials during large batch uploads before expiry.
+- **Cloud object storage (AWS S3, Google Cloud Storage, Azure Blob Storage, Oracle Cloud Infrastructure, OpenStack Swift):** The Livepatch Server issues temporary, scoped upload credentials to the administrator client. The client transfers binary payloads directly to cloud object storage using presigned POST policies, SAS tokens, Swift TempURLs or Pre-Authenticated Requests. Background workers automatically refresh credentials during large batch uploads before expiry.
 - **Server-mediated storage (Local Filesystem, PostgreSQL):** The administrator client streams binary payloads directly through the Livepatch Server API (`PUT /v1/admin/patches/file/{filename}`) authenticated by the administrator's session token.
 
 ```{note}
