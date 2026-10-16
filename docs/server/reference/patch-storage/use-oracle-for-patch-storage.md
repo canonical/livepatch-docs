@@ -8,12 +8,43 @@ myst:
 
 # Livepatch on-prem with Oracle Cloud Infrastructure Object Storage patch storage
 
+In Oracle Cloud Infrastructure (OCI) deployments, OCI Object Storage provides durable and scalable storage for Livepatch on-prem patches.
+
 To configure this, follow these steps:
 
-- Create an Object Storage bucket in the preferred region (best if the region is the same as the deployment's). Care needs to be taken to make the bucket not publicly writable, as this would pose a significant security risk.
-- Choose an authentication method: an OCI config file/profile, or instance principal authentication if the compute instance is granted the required IAM policies.
+- Create an Object Storage bucket in your preferred region and tenancy (ideally the same region as the Livepatch deployment). Ensure the bucket access tier is private.
+- Choose an authentication method for the Livepatch Server.
+- Grant the required OCI IAM policies to the instance dynamic group or user group.
 - Configure the relevant OCI [config options](/server/reference/platform/configuration.md).
 
-Once this is configured, Livepatch will store and retrieve patch files from the OCI Object Storage bucket.
+Once configured, Livepatch will store and retrieve patch files from the OCI Object Storage bucket.
 
-`patch-storage.oracle-config-file` (and `patch-storage.oracle-profile`) are optional; when omitted, instance principal authentication is used instead, bound to the OCI compute instance the server runs on.
+## Supported authentication mechanisms
+
+Livepatch supports two authentication methods for OCI Object Storage:
+
+1. **Instance principal authentication (recommended for OCI):** When running on an OCI compute instance, omit `patch-storage.oracle-config-file`. Livepatch automatically uses the ambient instance principal identity bound to the compute instance.
+2. **OCI configuration file:** Set `patch-storage.oracle-config-file` to point to a valid OCI SDK/CLI configuration file containing user credentials, key path, tenancy OCID, and fingerprint. You can optionally specify `patch-storage.oracle-profile` to select a non-default profile within that file.
+
+## Required OCI IAM policies
+
+Configure OCI IAM policies for your instance dynamic group (when using instance principals) or user group (when using a config file). Two policies are required:
+
+### Standard server operations
+
+For synchronising patches and delivering them to clients, the identity requires object read, write, and delete permissions. Add a policy statement such as:
+
+```text
+allow dynamic-group <dynamic-group> to manage objects in compartment <compartment> where target.bucket.name = '<bucket-name>'
+```
+
+### Temporary upload credentials for the patch uploader
+
+When an administrator runs `livepatch-admin patch upload`, the Livepatch Server creates Pre-Authenticated Requests (PAR) with `AnyObjectWrite` permissions scoped to the `livepatch-` prefix. To permit PAR creation and subsequent uploads, add a policy statement such as:
+
+```text
+allow dynamic-group <dynamic-group> to manage buckets in compartment <compartment> where all {target.bucket.name = '<bucket-name>', request.permission = 'PAR_MANAGE'}
+```
+
+Upload credential lifetimes are bounded by `patch-storage.upload-credential-ttl` (defaults to 15 minutes).
+

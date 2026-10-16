@@ -22,7 +22,7 @@ In addition, machines require access to the Canonical Snap Store to install the 
 To configure the Livepatch Client to pull patches from the on-premises Livepatch Server, an authorization token is required. To issue one, run:
 
 ```
-livepatch-admin auth-token <id> <tier>
+sudo livepatch-admin auth-token <id> <tier>
 ```
 
 The tier parameter is one of the tiers available on the server. The client downloads patches as they become available in that tier. See [Patch management](/server/reference/patch-management/patch-management.md) for details on managing tiers and patches in the on-premises server.

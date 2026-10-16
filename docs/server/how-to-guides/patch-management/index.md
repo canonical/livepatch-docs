@@ -14,6 +14,7 @@ Fetch, download, proxy, and chain patches across servers.
 ## In this section
 
 - [Fetch patches](/server/how-to-guides/patch-management/fetch-patches.md)
+- [Distribute patches across an air gap](/server/how-to-guides/patch-management/distribute-patches-offline.md)
 - [Use the patch downloader tool](/server/how-to-guides/patch-management/use-the-patch-downloader-tool.md)
 - [Configure proxy for fetching patches](/server/how-to-guides/patch-management/configure-proxy-for-fetching-patches.md)
 - [Chain Livepatch Servers](/server/how-to-guides/patch-management/chain-livepatch-servers.md)
@@ -24,6 +25,7 @@ Fetch, download, proxy, and chain patches across servers.
 :hidden:
 
 Fetch patches <fetch-patches.md>
+Distribute patches across an air gap <distribute-patches-offline.md>
 Use the patch downloader tool <use-the-patch-downloader-tool.md>
 Configure proxy for fetching patches <configure-proxy-for-fetching-patches.md>
 Chain Livepatch Servers <chain-livepatch-servers.md>

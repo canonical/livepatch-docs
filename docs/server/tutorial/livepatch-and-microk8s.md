@@ -246,8 +246,7 @@ sudo snap alias canonical-livepatch-server-admin.livepatch-admin livepatch-admin
 Export the Livepatch Server URL and log in:
 
 ```bash
-export LIVEPATCH_URL="http://livepatch.test.com"
-livepatch-admin login -a username:password
+sudo livepatch-admin --url http://livepatch.test.com login -a username:password
 ```
 
 ## Sync patches
@@ -255,19 +254,19 @@ livepatch-admin login -a username:password
 Download patches from Canonical's hosted Livepatch Server to your on-prem instance:
 
 ```bash
-livepatch-admin sync trigger --wait
+sudo livepatch-admin sync trigger --wait
 ```
 
 To verify synced patches:
 
 ```bash
-livepatch-admin storage patches
+sudo livepatch-admin storage patches
 ```
 
 To check for sync failures:
 
 ```bash
-livepatch-admin sync report
+sudo livepatch-admin sync report
 ```
 
 To limit which patches are downloaded, see the [patch sync filters reference](/server/reference/patch-management/patch-sync-filters).
