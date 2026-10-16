@@ -23,7 +23,7 @@ Canonical Livepatch supports live kernel patching on Ubuntu Core machines. Livep
    sudo snap install jq curl
    ```
 
-3. Obtain a contract resource token using the Ubuntu Pro token from the [ubuntu.com/pro](http://ubuntu.com/pro) dashboard.
+3. Obtain a contract resource token using the Ubuntu Pro token from the [ubuntu.com/pro](https://ubuntu.com/pro) dashboard.
 
    ```shell
    export pro_token=<pro_token>
@@ -32,7 +32,7 @@ Canonical Livepatch supports live kernel patching on Ubuntu Core machines. Livep
 
    ```
 
-   Replace `<pro_token>` with the Ubuntu Pro token obtained from the [ubuntu.com/pro](http://ubuntu.com/pro) dashboard.
+   Replace `<pro_token>` with the Ubuntu Pro token obtained from the [ubuntu.com/pro](https://ubuntu.com/pro) dashboard.
 
    The following output is expected:
 
