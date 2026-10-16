@@ -37,7 +37,7 @@ Newer releases of LTS Ubuntu Desktop default to the HWE kernel, meaning your mac
 
 Livepatch supports the GA kernel and the HWE kernel that you settle on with the next LTS. It does not fully support the interim kernels released every 6 months. This is why a machine running an LTS Ubuntu Desktop release may still display Livepatch messaging indicating that the kernel is not supported.
 
-You can switch from an HWE kernel to the GA kernel by following the [LTS Enablement Stack instructions](https://wiki.ubuntu.com/Kernel/LTSEnablementStack). Back up your data and important information before making system-level changes.
+You can switch from an HWE kernel to the GA kernel by following the [LTS Enablement Stack instructions](https://ubuntu.com/kernel/docs/reference/hwe-kernels/). Back up your data and important information before making system-level changes.
 
 Prior to Ubuntu 22.04 LTS, Livepatch offered no support for interim kernel versions. Livepatch has since added support for some flavours of interim HWE kernels. Desktop user kernels are the "generic" flavour, while public cloud kernels have their own unique flavours supporting cloud-specific functionality. Livepatch is now supported on interim HWE kernels for various public cloud flavours. Check your kernel flavour with `uname -r`.
 

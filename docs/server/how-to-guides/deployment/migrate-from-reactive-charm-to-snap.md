@@ -131,11 +131,14 @@ This setup can differ on a case by case basis and would result in slightly diffe
    |------|----------|--------------|----------------------|--------|------------|
    |postgresql/0\*| active| 1 | 10.239.140.105| 5432/tcp | Primary
 
-3. Get the system user's password for the PostgreSQL database charm unit. The password is obtained by using the [`get-password` action](https://charmhub.io/postgresql/actions#get-password) defined by the PostgreSQL machine charm. The action gets the password for the `operator` username by default. The action must be run for the unit configured to be the primary database.
+3. Get the system user's password for the PostgreSQL database charm unit. The PostgreSQL machine charm stores its internal system-user passwords in a [Juju secret](https://canonical-charmed-postgresql-single-kernel.readthedocs-hosted.com/16/how-to/authentication/manage-passwords/). List the model's secrets to find the one owned by the `postgresql` application, then reveal its contents to obtain the `operator` user's password:
 
    ```shell
-   juju run postgresql/0 get-password
+   juju secrets
+   juju show-secret <secret-id> --reveal
    ```
+
+   The revealed secret includes the `operator-password` field.
 
 4. Dump the database data from the PostgreSQL unit, using the [pg_dump tool](https://www.postgresql.org/docs/14/app-pgdump.html). The command below will prompt the `operator` user for a password, at which point the password obtained from the previous step needs to be entered.
 
