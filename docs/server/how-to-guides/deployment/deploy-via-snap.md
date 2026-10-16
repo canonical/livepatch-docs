@@ -121,7 +121,7 @@ sudo snap set canonical-livepatch-server lp.auth.basic.enabled=true
 Finally, log in with the administrator tool, assuming the example username and password have been used:
 
 ```
-canonical-livepatch-server-admin.livepatch-admin login -a admin:admin123
+sudo canonical-livepatch-server-admin.livepatch-admin login -a admin:admin123
 ```
 
 ## Synchronize with hosted Livepatch
@@ -129,7 +129,7 @@ canonical-livepatch-server-admin.livepatch-admin login -a admin:admin123
 Once the on-premises Livepatch Server is running and fully configured, synchronize patches from hosted Livepatch into the server. Run the following within the administrator tool:
 
 ```
-canonical-livepatch-server-admin.livepatch-admin sync trigger
+sudo canonical-livepatch-server-admin.livepatch-admin sync trigger
 ```
 
 To set the server to automatically sync patches from Canonical's servers every 12 hours, run:

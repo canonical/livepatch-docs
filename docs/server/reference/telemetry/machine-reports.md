@@ -21,5 +21,5 @@ Machine reports are generated using the Livepatch Admin Tool. See the [admin too
 Generate a machine report by querying machines by their tier, last applied patch version, or patch state:
 
 ```
-livepatch-admin report machines <tier> [<patch version> [<patch state>]]
+sudo livepatch-admin report machines <tier> [<patch version> [<patch state>]]
 ```

@@ -34,7 +34,7 @@ On the internet-connected workstation, list the patches available from Canonical
 Use `livepatch-admin patch list` to inspect available patches before downloading:
 
 ```bash
-livepatch-admin patch list --tier stable
+sudo livepatch-admin patch list --tier stable
 ```
 
 You can narrow the results using filters:
@@ -49,16 +49,16 @@ You can narrow the results using filters:
 
 ### Download patches to disk
 
-Once you identify the required patches, download them to a dedicated directory:
+Once you identify the required patches, download them:
 
 ```bash
-livepatch-admin patch download --patch-dir /tmp/livepatch-export --tier stable
+sudo livepatch-admin patch download --tier stable
 ```
+
+Patches are downloaded to the admin snap's common directory at `$SNAP_COMMON/patches/` (for example, `/var/snap/canonical-livepatch-server-admin/common/patches/`). The metadata manifest is written to `$SNAP_COMMON/patches/canonical-livepatch-patch-metadata.json`. These locations are fixed and cannot be changed.
 
 Optional download flags include:
 
-- `--patch-dir <path>`: Destination directory for downloaded patches (required).
-- `--metadata-file <filename>`: Name of the metadata manifest file written inside `--patch-dir` (defaults to `canonical-livepatch-patch-metadata.json`).
 - `--metadata-only`: Download only the metadata manifest file without downloading patch files.
 - `--kernel <version>`: Download patches for kernels matching or newer than the specified version prefix (for example, `5.15.0`).
 - `--arch <architecture>`: Restrict downloads to a specific CPU architecture.
@@ -71,7 +71,7 @@ Optional download flags include:
 The destination directory contains two types of artifacts:
 
 ```text
-/tmp/livepatch-export/
+$SNAP_COMMON/patches/
 ├── livepatch-5.15.0-107.117-generic-107.1-amd64.tar.bz2
 ├── livepatch-5.15.0-107.117-generic-106.1-amd64.tar.bz2
 └── canonical-livepatch-patch-metadata.json
@@ -86,9 +86,9 @@ Do not alter or delete `canonical-livepatch-patch-metadata.json`. The upload com
 
 ## Step 2: Transfer the directory across the air gap
 
-Copy the entire export directory—including all `.tar.bz2` archive files and `canonical-livepatch-patch-metadata.json`—to removable media (such as an encrypted USB drive or write-once optical media) or transfer it through your organisation's secure data diode or staging gateway.
+Copy the entire `$SNAP_COMMON/patches/` directory—including all `.tar.bz2` archive files and `canonical-livepatch-patch-metadata.json`—to removable media (such as an encrypted USB drive or write-once optical media) or transfer it through your organisation's secure data diode or staging gateway.
 
-Mount or copy the directory onto a workstation or bastion system with network connectivity to your on-premises Livepatch Server.
+Mount or copy the directory onto a workstation or bastion system with network connectivity to your on-premises Livepatch Server, placing it in that system's `$SNAP_COMMON/patches/` directory.
 
 ## Step 3: Upload patches to the on-premises server
 
@@ -96,24 +96,26 @@ Log in to your on-premises Livepatch Server with administrator credentials:
 
 ```bash
  export LIVEPATCH_URL=https://livepatch.internal.example.com
- livepatch-admin login --auth <username>:<password>
+ sudo livepatch-admin login --auth <username>:<password>
 ```
 
 ### Run the upload command
 
-Navigate to the location of the transferred directory and upload the patches:
+Upload the patches placed in `$SNAP_COMMON/patches/`:
 
 ```bash
-livepatch-admin patch upload --patch-dir /media/transfer/livepatch-export
+sudo livepatch-admin patch upload
 ```
 
 ### Command options and flags
 
-- `--patch-dir <path>`: Local path to the directory containing patch archives (required).
-- `--metadata-file <path>`: Path to the metadata manifest. Defaults to `canonical-livepatch-patch-metadata.json` inside `--patch-dir`.
-  - When the default manifest is present, `livepatch-admin` automatically reads it to register patches with their original upstream publish timestamps and supported kernel lists.
-  - If the default manifest is absent, `livepatch-admin` scans `--patch-dir`, parses filenames, and generates metadata dynamically, assigning the current system time as the publish timestamp.
-  - If you pass an explicit `--metadata-file` path and the file is missing, the command immediately terminates with a fatal error.
+`livepatch-admin patch upload` reads the patch archives and metadata manifest from `$SNAP_COMMON/patches/`:
+
+- When the metadata manifest (`canonical-livepatch-patch-metadata.json`) is present, `livepatch-admin` automatically reads it to register patches with their original upstream publish timestamps and supported kernel lists.
+- If the manifest is absent, `livepatch-admin` scans the directory, parses filenames, and generates metadata dynamically, assigning the current system time as the publish timestamp.
+
+Available flags:
+
 - `--tier <tier>`: Destination tier for the uploaded patches. Defaults to the on-premises server's configured sync tier or the first configured tier (for example, `edge` or `stable`).
 - `--concurrency <int>`: Number of parallel file uploads (defaults to `2`).
 - `--overwrite`: Unconditionally overwrite existing patches on the server even if filenames or checksums already exist.
@@ -124,8 +126,18 @@ livepatch-admin patch upload --patch-dir /media/transfer/livepatch-export
 Before uploading, `livepatch-admin` inspects the server's existing patch catalog to prevent redundant transfers or accidental collisions:
 
 - **Matching checksum**: If the on-premises server already has a patch with an identical filename and matching SHA-256 checksum, the file is automatically skipped.
-- **Checksum mismatch**: If a patch file has the same filename as an existing server patch but a differing SHA-256 checksum, the uploader halts processing for that file without modifying storage. It records the mismatch in `<patch-dir>/canonical-livepatch-patch-duplicates.json` for administrator review.
+- **Checksum mismatch**: If a patch file has the same filename as an existing server patch but a differing SHA-256 checksum, the uploader halts processing for that file without modifying storage. It records the mismatch in `$SNAP_COMMON/patches/canonical-livepatch-patch-duplicates.json` for administrator review.
 - **Force overwrite**: If you intentionally need to replace a mismatched patch, pass the `--overwrite` flag.
+
+## Clean up the downloaded patches
+
+After the patches have been uploaded, remove their local copies with:
+
+```bash
+sudo livepatch-admin patch cleanup
+```
+
+This deletes the contents of `$SNAP_COMMON/patches/`, including the downloaded patch archives and the metadata manifest.
 
 ## Storage backend behavior
 

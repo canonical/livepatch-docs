@@ -16,6 +16,7 @@ blocklisted
 blocklisting
 boolean
 bugfixes
+burstable
 Canonical('s)?
 Charmcraft
 charmstore
@@ -30,6 +31,7 @@ docstrings?
 downloader
 Downloader
 downscoped
+downscoping
 dvipng
 enablement
 Enablement
@@ -92,6 +94,7 @@ openapi
 otf
 patchstore
 PDF
+permissionless
 plaintext
 plantuml
 PNG

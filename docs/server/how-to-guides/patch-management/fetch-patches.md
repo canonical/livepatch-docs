@@ -13,7 +13,7 @@ The Livepatch application is configured to fetch patch updates every 24 hours. T
 Patch snapshot downloads can also be manually triggered:
 
 ```
-livepatch-admin sync trigger --wait
+sudo livepatch-admin sync trigger --wait
 ```
 
 It is recommended to trigger a patch snapshot download once the server is successfully set up.
@@ -23,5 +23,5 @@ It is recommended to trigger a patch snapshot download once the server is succes
 To verify that the server is receiving the latest patches from the Livepatch Server hosted by Canonical, use the following command.
 
 ```
-livepatch-admin sync reports
+sudo livepatch-admin sync reports
 ```

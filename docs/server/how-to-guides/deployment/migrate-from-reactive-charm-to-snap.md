@@ -233,8 +233,8 @@ The `livepatch-admin` tool is useful for syncing patches from the upstream Livep
 1. [Set up the livepatch-admin tool](/server/how-to-guides/security/setup-administration-tool.md)
 2. [Fetch patches from the hosted Livepatch Server](/server/how-to-guides/patch-management/fetch-patches.md)
 
-Once the patches have been downloaded, run `livepatch-admin storage refresh` to sync the patch storage and patch data in the database.
+Once the patches have been downloaded, run `sudo livepatch-admin storage refresh` to sync the patch storage and patch data in the database.
 
 ```{note}
-It is recommended to run `livepatch-admin storage refresh` after the database and patch migration, irrespective of the type of patch storage and how the migration was done, as it helps confirm that both the patch data in the database and the patches in the storage are in sync.
+It is recommended to run `sudo livepatch-admin storage refresh` after the database and patch migration, irrespective of the type of patch storage and how the migration was done, as it helps confirm that both the patch data in the database and the patches in the storage are in sync.
 ```

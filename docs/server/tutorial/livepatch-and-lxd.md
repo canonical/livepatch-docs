@@ -219,7 +219,7 @@ export LIVEPATCH_URL="http://$HAPROXY_ADDRESS"
 Log in with one of your administrator credentials:
 
 ```bash
-livepatch-admin login -a admin:admin123
+sudo livepatch-admin login -a admin:admin123
 ```
 
 ## Sync patches
@@ -227,7 +227,7 @@ livepatch-admin login -a admin:admin123
 Download patches from Canonical's hosted Livepatch Server to your on-prem instance:
 
 ```bash
-livepatch-admin sync trigger --wait
+sudo livepatch-admin sync trigger --wait
 ```
 
 For more information on the admin tool, see the [administration tool setup guide](/server/how-to-guides/security/setup-administration-tool). To limit which patches are downloaded, see the [patch sync filters reference](/server/reference/patch-management/patch-sync-filters).

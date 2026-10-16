@@ -23,6 +23,10 @@ Once configured, Livepatch will store and retrieve patch files from the Azure Bl
 
 Livepatch supports several authentication methods for Azure Blob Storage:
 
+```{note}
+**`patch-storage.azure-account-name` is required in all authentication modes except when using a connection string** (which already carries the account name). This includes managed identity and service principal modes.
+```
+
 1. **Storage account key:** Set `patch-storage.azure-account-name` and `patch-storage.azure-account-key`.
 2. **Storage connection string:** Set `patch-storage.azure-connection-string`. This option supersedes individual account name and key settings.
 3. **Microsoft Entra ID service principal:** Configure `patch-storage.azure-tenant-id`, `patch-storage.azure-client-id`, and `patch-storage.azure-client-secret`.
@@ -41,7 +45,7 @@ For synchronising and serving patches, the identity must have blob read, write, 
 
 ### Temporary upload credentials for the patch uploader
 
-When an administrator runs `livepatch-admin patch upload`, the Livepatch Server generates container-level Shared Access Signature (SAS) tokens granting write and create capabilities:
+When an administrator runs `livepatch-admin patch upload`, the Livepatch Server generates container-level Shared Access Signature (SAS) tokens scoped to the `livepatch-` object prefix within the container, granting write and create capabilities for patch uploads:
 
 - **When using Account Key or Connection String:** Livepatch signs the SAS token directly using the storage account Shared Key.
 - **When using Microsoft Entra ID (Service Principal or Managed Identity):** Livepatch requests a User Delegation Key from Microsoft Entra ID to sign a User Delegation SAS. To enable this, assign:
@@ -49,4 +53,17 @@ When an administrator runs `livepatch-admin patch upload`, the Livepatch Server 
   2. **Storage Blob Data Contributor** scoped at the storage account or target container level.
 
 Upload credential lifetimes are governed by `patch-storage.upload-credential-ttl` (defaults to 15 minutes).
+
+The `Storage Blob Delegator` role grants the `Microsoft.Storage/storageAccounts/blobServices/generateUserDelegationKey/action` permission, which the server needs to sign User Delegation SAS tokens when authenticating via Microsoft Entra ID. Without it, `livepatch-admin patch upload` fails with a 403 when using managed identity or service principal auth.
+
+### Assigning roles per authentication mechanism
+
+The identity that must hold the roles above depends on the authentication mechanism:
+
+| Auth mechanism | Identity to assign roles to |
+|----------------|-----------------------------|
+| Account key / connection string | None (shared-key auth — no RBAC needed) |
+| Service principal | The service principal's app ID |
+| System-assigned managed identity | The VM/VMSS system-assigned principal ID |
+| User-assigned managed identity | The user-assigned identity's principal ID |
 

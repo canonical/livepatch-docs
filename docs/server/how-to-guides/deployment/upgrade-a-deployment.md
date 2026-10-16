@@ -84,7 +84,7 @@ Unlike a full patch synchronisation, which downloads multi-gigabyte kernel patch
 Trigger the metadata synchronisation job using `livepatch-admin`:
 
 ```bash
-livepatch-admin sync trigger --metadata-only --wait
+sudo livepatch-admin sync trigger --metadata-only --wait
 ```
 
 Flags:
@@ -96,13 +96,13 @@ Flags:
 If you run without `--wait`, retrieve the job status using the returned job ID:
 
 ```bash
-livepatch-admin job-status <job-id>
+sudo livepatch-admin job-status <job-id>
 ```
 
 Or view recent sync reports:
 
 ```bash
-livepatch-admin sync reports --all
+sudo livepatch-admin sync reports --all
 ```
 
 ## Step 4: Review patch sync tier configuration
@@ -114,5 +114,5 @@ If your deployment synchronises patches from an upstream server, review how tier
   - `patch-sync.upstream-tier`: Specifies which tier to request from upstream (defaults to `stable`).
   - `patch-sync.ingress-tier`: Specifies the local tier into which synced patches are stored and served (defaults to your first configured tier, such as `edge` or `stable`).
 
-Run `livepatch-admin tier list` to verify your local tiers and confirm where patches land.
+Run `sudo livepatch-admin tier list` to verify your local tiers and confirm where patches land.
 

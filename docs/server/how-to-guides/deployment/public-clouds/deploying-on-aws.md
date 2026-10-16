@@ -20,8 +20,13 @@ To set up the Livepatch Server on AWS using an S3 bucket for patch storage, the 
 * An Ubuntu Pro token stored in the AWS Secrets Vault.
 * An S3 bucket with the `s3:GetObject` policy. The bucket must be public for clients to download patches, but the policy can be restricted to a range of IP addresses.
 * An IAM role with the `AWSSecretsManagerClientReadOnlyAccess` role and `AmazonS3ReadOnlyAccess` role.
-* An IAM user with Allow effects for the actions `s3:PutObject`, `s3:ListBucket`, and `s3:GetObject` roles for the S3 bucket.
+* An IAM user with Allow effects for the actions `s3:PutObject`, `s3:ListBucket`, `s3:GetObject`, and `s3:DeleteObject` roles for the S3 bucket. `s3:DeleteObject` is required for patch removal and uploader rollback.
 * A secret entry for the IAM user with key-value pairs `S3AccessKey` (for the S3 access key) and `SecretAccessKey` (for the S3 secret key).
+
+```{note}
+The cloud-init template below uses static IAM access keys for the S3 bucket. As an alternative, the server can use the EC2 instance profile attached to the launch template (recommended) or STS AssumeRole. See the [authentication mechanisms](/server/reference/patch-storage/use-s3-for-patch-storage.md#supported-authentication-mechanisms) in the S3 reference for details.
+```
+
 * A load balancer set to internet-facing.
 * An auto-scaling group using the launch template.
 * A security group to allow all internet access for HTTP and HTTPS.
@@ -66,9 +71,8 @@ write_files:
       # S3 variables
       export S3_SECRET_ID=<s3 secret id>
       export S3BUCKET=<bucket name>
-      export S3ENDPOINT=<bucket endpoint>
-      export S3REGION=<region> 
-      export URLTEMPLATE=https://<bucket name>.s3-<region>.amazonaws.com/{filename}
+      export S3REGION=<region>
+      export URLTEMPLATE=https://<bucket name>.s3.<region>.amazonaws.com/{filename}
   - path: /etc/livepatch/database_url
     permissions: "0600"
     owner: root:root
@@ -135,7 +139,6 @@ runcmd:
     lp.patch-storage.type=s3 \
     lp.server.url-template=$URLTEMPLATE \
     lp.patch-storage.s3-bucket="$S3BUCKET" \
-    lp.patch-storage.s3-endpoint="$S3ENDPOINT" \
     lp.patch-storage.s3-region="$S3REGION" \
     lp.patch-storage.s3-secure=true \
     lp.patch-storage.s3-access-key="$(cat /etc/livepatch/s3 | jq -r '.S3AccessKey' )" \

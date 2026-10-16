@@ -251,7 +251,7 @@ If the same database is being used for patch storage as for the main Livepatch S
 After migrating the database, ensure access to the patches by querying for available patches via the admin tool:
 
 ```bash
-canonical-livepatch-server-admin.livepatch-admin storage patches
+sudo canonical-livepatch-server-admin.livepatch-admin storage patches
 ```
 
 If the migration was successful, a list of patch payloads for each patch version will be displayed.
@@ -263,7 +263,7 @@ The `swift` and `s3` patch storage types imply that the patches are stored in a 
 When using object storage, such as AWS S3 or a Swift bucket, relevant connection parameters have been copied over with the configuration migration. The only required action is to refresh the patch storage:
 
 ```bash
-canonical-livepatch-server-admin.livepatch-admin storage refresh
+sudo canonical-livepatch-server-admin.livepatch-admin storage refresh
 ```
 
 This adds patches found in storage to the distribution records in the Livepatch database.

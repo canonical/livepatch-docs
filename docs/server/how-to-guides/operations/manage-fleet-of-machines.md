@@ -11,7 +11,7 @@ myst:
 The Livepatch Server stores information about the status of machines attached to it. This information can be used to identify machines that failed to apply patches.
 
 ```
-livepatch-admin report machines <tier> [<patch-version>] [<patch-state>]
+sudo livepatch-admin report machines <tier> [<patch-version>] [<patch-state>]
 ```
 
 The output of this command contains a list of machines, along with their machine IDs and additional information.

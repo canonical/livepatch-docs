@@ -17,7 +17,7 @@ The tiers form an ordered list. When the on-premises server pulls patches from C
 To view the current tier order:
 
 ```
-livepatch-admin tier list
+sudo livepatch-admin tier list
 ```
 
 The output resembles:
@@ -43,7 +43,7 @@ If validation or a staggered rollout of patches is required, use the patch tiers
 To promote an individual patch to a different tier:
 
 ```
-livepatch-admin patch promote <patch-version> <tier>
+sudo livepatch-admin patch promote <patch-version> <tier>
 ```
 
 The `patch-version` is the numerical patch version (for example, `57.1`).
@@ -53,13 +53,13 @@ The `patch-version` is the numerical patch version (for example, `57.1`).
 To promote all patches from one tier to another, use the `promote-all` shortcut:
 
 ```
-livepatch-admin patch promote-all <from-tier> <to-tier>
+sudo livepatch-admin patch promote-all <from-tier> <to-tier>
 ```
 
 This command is useful during initial setup of Livepatch on-prem, when all patches are imported into the `edge` tier and other tiers are empty. For example:
 
 ```text
-livepatch-admin patch promote-all edge stable
+sudo livepatch-admin patch promote-all edge stable
 ```
 
 This makes the contents of all tiers from `edge` to `stable` identical.
