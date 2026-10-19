@@ -94,7 +94,7 @@ Known obsolete keys appear in `removed-keys`; other unsupported keys appear in `
 
 | Options | Migration requirement |
 | --- | --- |
-| `auth.sso.*` | SSO logins are deprecated, use http basic auth. |
+| `auth.sso.*` | SSO logins have been removed; use Basic Auth. |
 | `cloud-delay.enabled`, `cloud-delay.default-delay-hours` | Resolve dependencies on cloud-based rollout delays; there are no equivalent charm options. |
 | `machine-reports.event-bus.*` | Kafka/event-bus reporting is not migrated. Database-backed reports do not replace downstream consumers. |
 
