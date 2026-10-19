@@ -20,6 +20,7 @@ Deploy, upgrade, and migrate a Livepatch Server installation.
 * [Migrate from Reactive charm to snap](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-snap.md)
 * [Migrate from Reactive charm to Operator charm](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-operator-charm.md)
 * [Migrate from Reactive Charm to K8s Operator charm](/server/how-to-guides/deployment/migrate-from-reactive-charm-to-k8s-operator-charm.md)
+* [Migrate to the new Livepatch Server machine charm](/server/how-to-guides/deployment/migrate-to-the-new-machine-charm.md)
 * [Deploy on public clouds](/server/how-to-guides/deployment/public-clouds/index.md)
 
 ```{toctree}
@@ -34,5 +35,6 @@ Upgrade a deployment <upgrade-a-deployment.md>
 Migrate from reactive charm to snap <migrate-from-reactive-charm-to-snap.md>
 Migrate from reactive charm to operator charm <migrate-from-reactive-charm-to-operator-charm.md>
 Migrate from reactive charm to k8s operator charm <migrate-from-reactive-charm-to-k8s-operator-charm.md>
+Migrate to the new machine charm <migrate-to-the-new-machine-charm.md>
 Public clouds <public-clouds/index.md>
 ```
