@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a reference page for the kernel upgrade recommendation, covering its results, messages, message of the day rules, and status output.
 - Added an explanation of how kernel upgrade recommendations work.
 - Added an explanation of how the Livepatch Client removes the pending reboot notice after a kernel update, and the effect on other tools.
+- Added a how-to guide for migrating to the new Livepatch Server machine charm.
 
 ### Changed
 
