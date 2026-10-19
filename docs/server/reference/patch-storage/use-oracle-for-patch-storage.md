@@ -32,19 +32,31 @@ Configure OCI IAM policies for your instance dynamic group (when using instance 
 
 ### Standard server operations
 
-For synchronising patches and delivering them to clients, the identity requires object read, write, and delete permissions. Add a policy statement such as:
+For synchronising patches and delivering them to clients, the identity requires object read, write, and delete permissions. For instance principal authentication, add:
 
-```text
+~~~text
 allow dynamic-group <dynamic-group> to manage objects in compartment <compartment> where target.bucket.name = '<bucket-name>'
-```
+~~~
+
+For config-file authentication, grant the same permissions to the group containing the configured user instead:
+
+~~~text
+allow group <group> to manage objects in compartment <compartment> where target.bucket.name = '<bucket-name>'
+~~~
 
 ### Temporary upload credentials for the patch uploader
 
-When an administrator runs `livepatch-admin patch upload`, the Livepatch Server creates Pre-Authenticated Requests (PAR) with `AnyObjectWrite` permissions scoped to the `livepatch-` prefix. To permit PAR creation and subsequent uploads, add a policy statement such as:
+When an administrator runs `livepatch-admin patch upload`, the Livepatch Server creates Pre-Authenticated Requests (PAR) with `AnyObjectWrite` permissions scoped to the `livepatch-` prefix. To permit PAR creation and subsequent uploads, add the following policy for instance principal authentication:
 
-```text
+~~~text
 allow dynamic-group <dynamic-group> to manage buckets in compartment <compartment> where all {target.bucket.name = '<bucket-name>', request.permission = 'PAR_MANAGE'}
-```
+~~~
+
+For config-file authentication, use the corresponding user-group policy instead:
+
+~~~text
+allow group <group> to manage buckets in compartment <compartment> where all {target.bucket.name = '<bucket-name>', request.permission = 'PAR_MANAGE'}
+~~~
 
 Upload credential lifetimes are bounded by `patch-storage.upload-credential-ttl` (defaults to 15 minutes).
 

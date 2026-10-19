@@ -243,7 +243,7 @@ sudo snap install canonical-livepatch-server-admin
 sudo snap alias canonical-livepatch-server-admin.livepatch-admin livepatch-admin
 ```
 
-Export the Livepatch Server URL and log in:
+Log in with the admin tool, supplying the Livepatch Server URL with `--url`:
 
 ```bash
 sudo livepatch-admin --url http://livepatch.test.com login -a username:password
