@@ -176,3 +176,5 @@ xml
 yaml
 YouTube
 yq
+Severities
+Livepatches
