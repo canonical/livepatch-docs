@@ -61,11 +61,11 @@ If a self-signed certificate is used, the administration tool must be configured
 The command line option for the Livepatch admin tool accepts either the path to a certificate chain PEM file, or the contents of the certificate chain:
 
 ```
-livepatch-admin --ca ./cert.pem login -a (...)
+sudo livepatch-admin --ca ./cert.pem login -a (...)
 ```
 
 ```
-livepatch-admin --ca "$(cat ./cert.pem)" login -a (...)
+sudo livepatch-admin --ca "$(cat ./cert.pem)" login -a (...)
 ```
 
 ### Environment variable

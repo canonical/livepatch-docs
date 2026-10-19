@@ -161,12 +161,13 @@ The following values configure how the server manages patch storage. See the [pa
 | `patch-storage.s3-access-key` | AWS access key (optional; defaults to the VM's ambient credentials, e.g. an EC2 instance role). | `string` |
 | `patch-storage.s3-secret-key` | AWS secret key (optional; see `patch-storage.s3-access-key`). | `string` |
 | `patch-storage.s3-assume-role-arn` | IAM role ARN to assume via STS, using the resolved credentials above (optional). | `string` |
+| `patch-storage.s3-assume-role-duration` | How long an assumed role's STS session stays valid before it must be refreshed; only applies when `patch-storage.s3-assume-role-arn` is set. Defaults to `15m` when unset, which is AWS's minimum for `AssumeRole` (900 seconds). AWS STS rejects requests below this minimum or exceeding the target IAM role's `MaxSessionDuration` (1 hour by default, configurable up to 12 hours). | `string` |
 | `patch-storage.gcs-bucket` | Google Cloud Storage bucket for storing patches. | `string` |
-| `patch-storage.gcs-credentials-file` | Path to a service account JSON key file (optional; defaults to Application Default Credentials). | `string` |
-| `patch-storage.gcs-credentials-json` | Inline service account JSON key (optional; see `patch-storage.gcs-credentials-file`). | `string` |
+| `patch-storage.gcs-credentials-file` | Path to a service account JSON key file (optional; defaults to Application Default Credentials). When using the snap, the file must live inside the snap's common directory, for example `/var/snap/canonical-livepatch-server/common/gcs-key.json`. | `string` |
+| `patch-storage.gcs-credentials-json` | Inline service account JSON key (optional; see `patch-storage.gcs-credentials-file`). When using the snap, pass the key JSON as a JSON-encoded string (for example `"$(jq -c . gcs-key.json)"`), since `snap set` otherwise parses it into an object. | `string` |
 | `patch-storage.gcs-impersonate-service-account` | Email of a service account to impersonate, using the resolved credentials above (optional). | `string` |
 | `patch-storage.azure-container` | Azure Blob Storage container for storing patches. | `string` |
-| `patch-storage.azure-account-name` | Azure storage account name (not required when `patch-storage.azure-connection-string` is set, which already carries the account name). | `string` |
+| `patch-storage.azure-account-name` | Azure storage account name. Required in all authentication modes except when `patch-storage.azure-connection-string` is set (which already carries the account name). | `string` |
 | `patch-storage.azure-account-key` | Azure storage account key (optional; defaults to a managed identity bound to the VM). | `string` |
 | `patch-storage.azure-connection-string` | Azure storage connection string (optional alternative to account name/key). | `string` |
 | `patch-storage.azure-tenant-id` | Entra ID tenant ID, for explicit service principal auth (optional; requires `patch-storage.azure-client-id` and `patch-storage.azure-client-secret`). | `string` |
@@ -179,11 +180,14 @@ The following values configure how the server manages patch storage. See the [pa
 | `patch-storage.ibm-api-key` | IBM Cloud IAM API key (optional; defaults to the ambient VPC Instance Metadata Service). | `string` |
 | `patch-storage.ibm-service-instance-id` | IBM COS resource instance ID, required when using `patch-storage.ibm-api-key`. | `string` |
 | `patch-storage.ibm-trusted-profile-id` | Trusted profile ID to assume via the ambient VPC Instance Metadata Service (optional; defaults to the instance's default trusted profile). | `string` |
+| `patch-storage.ibm-upload-trusted-profile-id` | Dedicated IAM Trusted Profile ID to assume when issuing temporary upload credentials for `livepatch-admin patch upload` (optional). Admin-tool-facilitated patch upload is not yet supported for IBM Cloud Object Storage. | `string` |
 | `patch-storage.oracle-bucket` | OCI Object Storage bucket for storing patches. | `string` |
 | `patch-storage.oracle-namespace` | OCI Object Storage namespace. | `string` |
 | `patch-storage.oracle-region` | OCI region. | `string` |
 | `patch-storage.oracle-config-file` | Path to an OCI config file (optional; defaults to instance principal authentication). | `string` |
 | `patch-storage.oracle-profile` | Profile to use within `patch-storage.oracle-config-file` (optional). | `string` |
+| `patch-storage.swift-temp-url-key` | OpenStack Swift account or container TempURL key, used to sign scoped, time-limited upload credentials for `livepatch-admin patch upload`. Because Swift never returns a previously set key, it must be provisioned out-of-band and configured here with the identical secret key (optional). | `string` |
+| `patch-storage.upload-credential-ttl` | Duration that temporary, upload-only credentials issued by the server remain valid for cloud storage backends (`s3`, `gcs`, `azure`, `oracle`, `swift`) during `livepatch-admin patch upload` (optional; defaults to `15m`). Has no effect for `filesystem` and `postgres`, which route uploads through the authenticated server API. Admin-tool-facilitated patch upload is not yet supported for `ibm`. Note that GCS issues bearer tokens with a cloud-enforced fixed duration of ~1 hour regardless of this setting. | `string` |
 
 ### Patch cache
 
@@ -211,7 +215,9 @@ The following values configure how the server synchronises patches from an upstr
 | `patch-sync.send-machine-reports` | Whether to send machine reports during synchronisation. | `bool` |
 | `patch-sync.token` | Token for authenticating with an upstream Livepatch Server. | `string` |
 | `patch-sync.upstream-url` | URL of the upstream server to pull patches from. | `string` |
-| `patch-sync.sync-tiers` | Whether to synchronise tiers from the upstream server. | `bool` |
+ | `patch-sync.sync-tiers` | Whether to mirror the upstream tier structure and patch-to-tier assignments locally instead of synchronising a single tier. Enabling this removes existing local tiers and disables local tier management. When enabled, `patch-sync.upstream-tier` and `patch-sync.ingress-tier` are ignored. | `bool` |
+ | `patch-sync.upstream-tier` | The tier requested from the upstream server when `patch-sync.sync-tiers` is `false`; defaults to `stable` when unset. For on-premises upstream servers, the sync token may restrict the tier that can be retrieved. | `string` |
+| `patch-sync.ingress-tier` | The local tier into which synced patches are stored and served. Only used when `patch-sync.sync-tiers` is `false`; defaults to the first locally configured tier (for example `edge` or `stable`) when unset. | `string` |
 | `patch-sync.proxy.enabled` | Whether to use a proxy when synchronising patches. | `bool` |
 | `patch-sync.proxy.http` | HTTP proxy URL. | `string` |
 | `patch-sync.proxy.https` | HTTPS proxy URL. | `string` |

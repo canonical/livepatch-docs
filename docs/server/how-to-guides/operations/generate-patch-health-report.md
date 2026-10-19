@@ -11,5 +11,5 @@ myst:
 To generate a report of how many machines applied (or failed to apply) a specific patch, run:
 
 ```
-livepatch-admin report patch-health <tier> <patch-version>
+sudo livepatch-admin report patch-health <tier> <patch-version>
 ```

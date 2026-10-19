@@ -35,7 +35,7 @@ Below, the "upstream" server is referred to as the original Livepatch Server and
 Using the admin tool:
 
 ```
-livepatch-admin sync-tokens add edge my-token
+sudo livepatch-admin sync-tokens add edge my-token
 ```
 
 This will return a token that another on-premises server can use to sync patches.

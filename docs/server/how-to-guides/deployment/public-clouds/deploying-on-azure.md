@@ -13,15 +13,16 @@ This section details how to deploy the Livepatch Server snap in auto-scaling con
 
 ## Required resources
 
-To set up the Livepatch Server on Azure using a filesystem or PostgreSQL (Azure Blob Storage is not yet supported) for patch storage, the following are required:
+To set up the Livepatch Server on Azure using an Azure Blob Storage container for patch storage, the following are required. For Blob Storage configuration, see [Use Azure for patch storage](/server/reference/patch-storage/use-azure-for-patch-storage.md).
 
 * A VNet with subnets for VMSS, Application Gateway, and PostgreSQL DB.
 * An Azure Key Vault with access enabled for the VMSS subnet of the VNet.
+* An Azure Storage account and Blob store container with access enabled for the VMSS subnet of the VNet.
 * An Azure-managed PostgreSQL instance with PostgreSQL 14 or above using password authentication. The username and password stored in Azure Key Vault as a JSON object.
 * A Virtual Machine Scale Set (VMSS) with an instance type with at least two vCPUs and 4 GB RAM, with a cloud-init configuration file as custom data.
 * An Ubuntu Pro token stored as a secret in Azure Key Vault.
 * Livepatch Server admin credentials stored in Azure Key Vault Secrets in `<username>:<hashedpassword>` format.
-* A Managed Identity with the `Key Vault Secrets User` role in Azure Key Vault.
+* A Managed Identity with the `Key Vault Secrets User` role in Azure Key Vault. For using Azure Blob Storage for patch storage, also assign it the `Storage Blob Data Contributor` and `Storage Blob Delegator` roles on the storage account.
 * An Application Gateway with a public IP address as an entry point for accessing the Livepatch Server.
 * A VMSS as a backend pool with the corresponding Managed Identity attached.
 
@@ -39,7 +40,7 @@ Create an Azure-managed PostgreSQL DB with PostgreSQL password authentication. D
 
 ### Create the Managed Identity
 
-Create a Managed Identity. This will be assigned to the VMSS to allow access to Azure Key Vault.
+Create a Managed Identity. This will be assigned to the VMSS to allow access to Azure Key Vault. To use Azure Blob Storage for patch storage, the same identity is used for storage access — assign the **Storage Blob Data Contributor** and **Storage Blob Delegator** roles on the storage account to it (see the [reference](/server/reference/patch-storage/use-azure-for-patch-storage.md)).
 
 ### Create the Azure Key Vault
 
@@ -47,7 +48,7 @@ Create an Azure Key Vault with public access disabled. Allow access from the VMS
 
 ### Configure the VMSS
 
-For VMSS, select an instance type with sufficient CPU and memory capacity. The minimum resources required for the Livepatch Server to run efficiently are two vCPUs and 4 GB memory. Avoid using B-series instances. For storage options, the default volume size of 30 GB is sufficient. Assign the Managed Identity to the VMSS to allow access to Azure Key Vault.
+For VMSS, select an instance type with sufficient CPU and memory capacity. The minimum resources required for the Livepatch Server to run efficiently are two vCPUs and 4 GB memory. For storage options, the default volume size of 30 GB is sufficient. Assign the Managed Identity to the VMSS to allow access to Azure Key Vault.
 
 Configure the VMSS NSG to allow traffic on port 80 from within the VNet. It is recommended not to have public IP addresses assigned to the VMSS VMs. This ensures that VMs can be accessed only through the Application Gateway. Provision a jumpbox in the same VNet with a public IP to access VMs when required.
 
@@ -76,6 +77,10 @@ write_files:
       export DB_PORT=5432
       export DB_SECRET_ID=<db secret id>
       export DB_NAME=<db name>
+
+      # patch store
+      export STORAGE_ACCOUNT_NAME=<account name>
+      export STORAGE_CONTAINER=<container>
 
       # pro token variables
       export TOKEN_SECRET_ID=<token secret id>
@@ -154,9 +159,11 @@ runcmd:
     snap set canonical-livepatch-server \
     token="$(cat /etc/livepatch/pro_token)" \
     lp.database.connection-string="$(cat /etc/livepatch/database_url)" \
-    lp.patch-storage.type=postgres \
+    lp.patch-storage.type=azure \
     lp.server.url-template=$URLTEMPLATE \
-    lp.patch-storage.postgres-connection-string="$(cat /etc/livepatch/database_url)" \
+    lp.patch-storage.azure-account-name=$STORAGE_ACCOUNT_NAME \
+    lp.patch-storage.azure-container=$STORAGE_CONTAINER \
+    lp.patch-storage.azure-managed-identity-client-id="$AZURE_MANAGED_IDENTITY_CLIENT_ID" \
     lp.auth.basic.enabled=true \
     lp.patch-sync.enabled=true \
     lp.patch-sync.interval=12h \
@@ -171,6 +178,17 @@ final_message: The system is up, up to date, and Livepatch Server is active afte
 ```
 
 Ensure the correct environment variable values are filled in the `write_files` section of the configuration.
+
+### Use Azure Blob Storage
+
+To use Azure Blob Storage for patch storage, grant the Managed Identity the storage roles as described in [Create the Managed Identity](#create-the-managed-identity), then set the patch storage type to `azure` in the `snap set` command. When using a system-assigned managed identity, no `azure-account-key`, `azure-connection-string`, or service-principal keys are set — the server uses the ambient identity. Note that `patch-storage.azure-account-name` is still required:
+
+```bash
+sudo snap set canonical-livepatch-server \
+  lp.patch-storage.type=azure \
+  lp.patch-storage.azure-container=<container-name> \
+  lp.patch-storage.azure-account-name=<storage-account-name>
+```
 
 ### Provision the Application Gateway
 
