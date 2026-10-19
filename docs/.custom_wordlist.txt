@@ -36,6 +36,7 @@ dvipng
 enablement
 Enablement
 Entra
+enums
 eTags
 filepath
 firewalled
@@ -84,6 +85,7 @@ minio
 mitigations
 Multipass
 MyST
+noninteractive
 npm
 Numpy
 OAuth
@@ -151,6 +153,7 @@ uploader
 ulwazi
 unapplied
 uncomment(ing)?
+unencoded
 unmount(s)?
 unpatchable
 unpatched
