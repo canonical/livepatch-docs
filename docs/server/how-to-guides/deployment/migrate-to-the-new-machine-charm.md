@@ -19,7 +19,7 @@ Run `juju status --relations` and identify the source charm:
 | Reactive machine charm | `canonical-livepatch-server` | `latest/*` | Underscore-style options, such as `patch_sync_enabled` |
 | Original Operator machine charm | `canonical-livepatch-server` | `ops1.x/*` | Dotted options, such as `patch-sync.enabled` |
 
-The new machine charm provides actions to emit migrated configurations: `migrate-reactive-config` for reactive exports and `migrate-ops-config` for original Operator exports. Choose the action matching the source charm. The previous `emit-updated-config` action has been removed; update existing automation to use `migrate-reactive-config`.
+The previous `emit-updated-config` action has been removed; update existing automation to use `migrate-reactive-config` for reactive sources or `migrate-ops-config` for original Operator sources.
 
 The examples use `livepatch` for the old application, `canonical-livepatch` for the new application, `postgresql` for the existing database application, and `haproxy` for the proxy. Replace names, unit numbers, and placeholders with your deployment's values. Run commands in the intended Juju model. The new charm will be in the `latest` channel, with the `ops` channel being deprecated.
 
