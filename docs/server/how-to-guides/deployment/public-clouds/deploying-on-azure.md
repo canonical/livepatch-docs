@@ -28,7 +28,7 @@ To set up the Livepatch Server on Azure using an Azure Blob Storage container fo
 
 ## Create the deployment
 
-In Azure, Livepatch can be deployed on VMSS behind an Application Gateway with autoscaling configured on VMSS instances. The VMSS instances can be configured to auto-install the Livepatch Server snap at startup using a cloud-init configuration file in a Standard Ubuntu Server image. This guide uses a PostgreSQL server for patch storage.
+In Azure, Livepatch can be deployed on VMSS behind an Application Gateway with autoscaling configured on VMSS instances. The VMSS instances can be configured to auto-install the Livepatch Server snap at startup using a cloud-init configuration file in a Standard Ubuntu Server image. This guide uses Azure Blob store for patch storage.
 
 ### Configure the VNet
 
