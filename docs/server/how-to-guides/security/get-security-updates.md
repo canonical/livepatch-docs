@@ -24,7 +24,7 @@ The store-based procedures below require access to the relevant artifact stores 
 
 ## Update a Juju-managed deployment
 
-Use this procedure for both the machine charm and the Kubernetes charm.
+Use this procedure for the current machine charm and the Kubernetes charm. For a legacy reactive machine charm or the original Operator machine charm on `ops1.x/*`, first follow {ref}`Migrate to the new machine charm <server-how-to-guides-migrate-to-the-new-machine-charm>` rather than switching directly to `latest/stable` with `juju refresh`.
 
 Check the deployed charm revision and channel:
 
