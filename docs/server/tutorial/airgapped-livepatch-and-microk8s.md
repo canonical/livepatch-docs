@@ -219,7 +219,7 @@ juju integrate livepatch pro-offer
 When the integration completes, the status message on the `livepatch` application changes to *"url-template not set"*. Configure the URL template:
 
 ```bash
-juju config livepatch server.url-template="http://livepatch.test.com/v1/patches/{filename}"
+juju config livepatch server.url-template="http://livepatch.test.com/{filename}"
 ```
 
 ```{note}
@@ -234,6 +234,34 @@ curl http://livepatch.test.com
 ```
 
 Your Livepatch on-prem server is now operating in airgapped mode, with no communication to the upstream Livepatch Server.
+
+## Set up administrator authentication
+
+For this tutorial, create an administrator username and bcrypt password hash:
+
+```bash
+sudo apt-get install apache2-utils
+htpasswd -nBC 10 admin
+```
+
+Store the username-and-hash list in a Juju secret rather than in plain application configuration:
+
+```yaml
+value: 'admin:<bcrypt-hash>'
+```
+
+Save that content as `admin-users.secret.yaml`, create and grant the secret, then configure Livepatch:
+
+```bash
+chmod 0600 admin-users.secret.yaml
+juju add-secret livepatch-admin-users --file admin-users.secret.yaml
+juju grant-secret livepatch-admin-users livepatch
+juju config livepatch \
+  auth.basic.enabled=true \
+  auth.basic.users-secret='<secret-uri>'
+```
+
+Use the secret URI returned by `juju add-secret`. Remove the local secret file after it is stored. See {ref}`password authentication <server-how-to-guides-password-authentication>` for account and credential procedures.
 
 ## Set up the Livepatch Client
 
