@@ -14,12 +14,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added an explanation of how kernel upgrade recommendations work.
 - Added an explanation of how the Livepatch Client removes the pending reboot notice after a kernel update, and the effect on other tools.
 - Added a how-to guide for migrating to the new Livepatch Server machine charm.
+- Added Livepatch Server release notes through version 2.6.0.
+- Added patch storage guides for Google Cloud Storage, Azure Blob Storage, IBM Cloud Object Storage, Oracle Cloud Infrastructure Object Storage, and OpenStack Swift, plus a guide for migrating between file-based storage backends.
+- Added an offline patch distribution guide covering the patch downloader and patch uploader tools.
+- Added security guides for server updates and support, secure configuration and resets, service integrations, and data-at-rest management.
+- Added a logging schema reference covering structured log fields and security-event identifiers.
+- Added a server security architecture diagram.
 
 ### Changed
 
 - Documented the `reboot-notification-policy` option in the Livepatch Client configuration options.
 - Added a "Livepatch reboot recommendation" section to the "When to reboot" explanation.
 - Noted in the CVE service deployment guide that both `lp.cve-lookup.enabled` and `lp.cve-sync.enabled` are required for clients to receive kernel upgrade information, and linked to the new explanation.
+- Expanded cloud patch storage setup instructions, authentication and permissions guidance, and the server configuration reference.
+- Updated deployment and upgrade procedures, including automatic database schema migrations and cloud storage configuration for AWS and Azure.
+- Marked Ubuntu SSO administrator login and its configuration options as removed.
+- Expanded server security architecture and lifecycle explanations, authentication guidance, network access requirements, and upstream data exchange documentation.
+- Revised deployment hardening, TLS setup, administrator tooling, logging and monitoring, and secure decommissioning procedures.
+- Added administrator-tool vulnerability reporting guidance.
+- Updated migration guides to retrieve credentials through Juju secrets and clarify which model to use for commands.
+- Configured canonical documentation URLs, sitemap generation, and link rewriting for Read the Docs hosting under `ubuntu.com/security/livepatch/docs/`.
+
+### Fixed
+
+- Corrected the Azure deployment guide to identify Azure Blob Storage as its patch storage backend.
+- Replaced broken kernel documentation, automatic update, and other documentation links.
+- Added redirects for legacy supported-kernel, on-premises, and live patching explanation URLs.
+- Excluded generated documentation build files from Markdown linting.
 
 ## [1.0.0] - 2026-06-18
 
