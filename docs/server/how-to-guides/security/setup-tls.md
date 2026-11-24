@@ -44,7 +44,7 @@ Use [HAProxy](https://charmhub.io/haproxy) as the frontend. Deploy or select an 
 For an application named `haproxy`, connect its `website` endpoint to Livepatch:
 
 ```shell
-juju integrate livepatch:website haproxy:website
+juju integrate livepatch:website haproxy:reverseproxy
 ```
 
 The relation connects the HTTP backend; it does not by itself configure a TLS certificate or guarantee an HTTPS listener. Confirm that the frontend serves HTTPS before directing clients to it.
