@@ -139,10 +139,10 @@ First, find the IP address of the Livepatch Server pod. Run `juju status` and lo
 juju status --format json | jq -r '.applications.livepatch.units[]."address"'
 ```
 
-Set the URL template using the externally reachable patch-download base URL. Replace `<hosted url>` with that URL, including its scheme and any required path prefix, without a trailing slash. Keep `{filename}` literal:
+Set the URL template using the externally reachable base URL. Replace `<hosted url>` with that URL, including its scheme and host, without a trailing slash. Keep `/v1/patches/{filename}` literal:
 
 ```bash
-juju config livepatch server.url-template="<hosted url>/{filename}"
+juju config livepatch server.url-template="<hosted url>/v1/patches/{filename}"
 ```
 
 Verify the server is running:

@@ -54,7 +54,7 @@ The script creates or overwrites the output file specified by the `-o` parameter
 | :---------------------------------: | :----------------------------------------: | :------------------------------------------------------------------------------------------------------------: |
 | **Old config** | **New config** | **Notes** |
 | log_level | server.log-level | Possible values:'debug', 'info', 'warn', 'error'.Default is 'info' |
-| url_template | server.url-template | Use `<hosted url>/{filename}`, where `<hosted url>` is the patch-download base URL, including its scheme and any required path prefix, without a trailing slash. Keep `{filename}` literal. |
+| url_template | server.url-template | Use `<hosted url>/v1/patches/{filename}`, where `<hosted url>` is the externally reachable base URL, including its scheme and host, without a trailing slash. Keep `/v1/patches/{filename}` literal. |
 | psql_dbname | **NA** | |
 | psql_roles | **NA** | |
 | blocklist_cache_refresh | patch-blocklist.refresh-interval | Make sure that patch-blocklist.enabled is set to true |

@@ -130,13 +130,13 @@ A successful action returns an output confirming that Livepatch is enabled.
 The `server.url-template` option specifies the URL where Livepatch Clients download patch files. The template must include the `{filename}` placeholder, which Livepatch replaces with the actual file name at runtime:
 
 ```
-<hosted url>/{filename}
+<hosted url>/v1/patches/{filename}
 ```
 
-Replace `<hosted url>` with the externally reachable patch-download base URL, including its scheme and any required path prefix, without a trailing slash. Keep `{filename}` literal:
+Replace `<hosted url>` with the externally reachable base URL, including its scheme and host, without a trailing slash. Keep `/v1/patches/{filename}` literal:
 
 ```bash
-juju config livepatch server.url-template="<hosted url>/{filename}"
+juju config livepatch server.url-template="<hosted url>/v1/patches/{filename}"
 ```
 
 Confirm the configuration was applied:

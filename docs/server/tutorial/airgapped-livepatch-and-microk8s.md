@@ -219,7 +219,7 @@ juju integrate livepatch pro-offer
 When the integration completes, the status message on the `livepatch` application changes to *"url-template not set"*. Configure the URL template:
 
 ```bash
-juju config livepatch server.url-template="http://livepatch.test.com/{filename}"
+juju config livepatch server.url-template="http://livepatch.test.com/v1/patches/{filename}"
 ```
 
 ```{note}

@@ -59,18 +59,18 @@ If the proxy runs on another host, bind the backend to an appropriate private ad
 
 Use the HTTPS frontend address for client registration and administration. If patch downloads are served through this frontend, configure the patch URL template to use it too.
 
-Use `<hosted-url>` for the externally reachable patch-download base URL, including its scheme and any required path prefix, without a trailing slash. Keep `{filename}` literal.
+Use `<hosted-url>` for the externally reachable base URL, including its scheme and host, without a trailing slash. Keep `/v1/patches/{filename}` literal.
 
 For either charm:
 
 ```shell
-juju config livepatch server.url-template='<hosted-url>/{filename}'
+juju config livepatch server.url-template='<hosted-url>/v1/patches/{filename}'
 ```
 
 For the standalone snap:
 
 ```shell
-sudo snap set canonical-livepatch-server lp.server.url-template='<hosted-url>/{filename}'
+sudo snap set canonical-livepatch-server lp.server.url-template='<hosted-url>/v1/patches/{filename}'
 ```
 
 If your deployment uses a separate patch-download service, retain its intended URL and configure HTTPS and certificate trust for that service separately.
