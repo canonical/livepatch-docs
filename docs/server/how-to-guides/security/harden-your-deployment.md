@@ -24,7 +24,7 @@ Choose the frontend for your deployment:
 | Machine charm | HAProxy connected through the Livepatch charm's `website` relation. |
 | Standalone snap | A separately configured reverse proxy or load balancer, such as Nginx or HAProxy. |
 
-Follow the [TLS configuration guide](/server/how-to-guides/security/setup-tls.md) to connect the frontend and configure certificate trust. Restrict direct access to the HTTP backend so that clients cannot bypass the frontend's access controls. Frontend TLS does not encrypt the separate proxy-to-server hop; keep that hop within a trusted network or protect it at the network layer.
+Follow the [TLS configuration guide](/server/how-to-guides/security/setup-tls.md) to connect the frontend and configure certificate trust. Restrict direct access to the HTTP backend so that clients cannot bypass the frontend access controls. Frontend TLS does not encrypt the separate proxy-to-server hop; keep that hop within a trusted network or protect it at the network layer.
 
 For [chained servers](/server/how-to-guides/patch-management/chain-livepatch-servers.md), configure TLS termination on the upstream server and use its HTTPS address for synchronization across untrusted networks.
 

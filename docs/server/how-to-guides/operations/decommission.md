@@ -130,4 +130,4 @@ Snap application logs are held in the host's systemd journal. Manage their expir
 
 Record which resources were deleted and which copies remain, together with their retention period and owner. Confirm that the application is gone and that no unintended database, patch-storage, credential, or snapshot resources remain.
 
-Application removal and logical deletion do not guarantee physical erasure from underlying media or provider replicas. Where sanitization is required, use the infrastructure or storage provider's supported media-sanitization procedures.
+Application removal and logical deletion do not guarantee physical erasure from underlying media or provider replicas. Where secure erasure is required, use the infrastructure or storage provider's supported media-sanitization procedures.

@@ -16,7 +16,7 @@ The Juju examples assume that your Livepatch application is named `livepatch`. R
 
 Choose a hostname that clients and administrators can resolve. Obtain a certificate for that hostname and configure its certificate chain and private key on the frontend using the frontend provider's supported procedure. Protect the private key and arrange certificate renewal.
 
-For a private CA, obtain the issuing CA certificate chain for distribution to clients and administrators. Distribute certificates, not the frontend's private key.
+For a private CA, obtain the issuing CA certificate chain for distribution to clients and administrators. Distribute certificates, not the provider's private key.
 
 Restrict administrator endpoints to trusted administration networks. Restrict direct access to the HTTP backend so that clients cannot bypass frontend controls. TLS on the public frontend does not encrypt its HTTP connection to Livepatch; keep that connection on a trusted network or protect it at the network layer.
 

@@ -77,7 +77,7 @@ Disabling synchronization is not a complete write freeze. Finish or stop outstan
 
 Use your deployment's maintenance procedure to stop application writers or isolate their database and storage access. For charms, keep changes under Juju and provider control rather than changing the managed snap or container directly. Removing ingress alone does not stop background tasks or direct access to units.
 
-Verify that writers are stopped or denied access before the final backup or copy. Keep that restriction in place through cutover. A PostgreSQL dump provides a consistent view of one database, but separate database and object-store backups do not automatically share a recovery point.
+Verify that writers are stopped or denied access before the final backup or copy. Keep that restriction in place through the transition. A PostgreSQL dump provides a consistent view of one database, but separate database and object-store backups do not automatically share a recovery point.
 
 For a machine-charm migration, the [migration guide](/server/how-to-guides/deployment/migrate-to-the-new-machine-charm.md) includes deployment-specific writer-disconnection and database-ownership checks. Do not remove database relations merely to take a routine backup.
 

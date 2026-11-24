@@ -1,17 +1,21 @@
 # Leave a blank line at the end of this file to support concatenation
 ABIs
 addons
+affordance
 affordances
 airgapped
 Airgapped
 autoscaling
 Autoscaling
 aws
+authorizers
 backend
 backends
 backoff
 backport
 bcrypt
+systemd
+unhold
 blocklisted
 blocklisting
 boolean

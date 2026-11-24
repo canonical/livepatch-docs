@@ -54,7 +54,7 @@ htpasswd -nBC 10 '<username>'
 username:$2y$10$74ZpDgHaxnUQo.AJZk1cMuSRfef5oK5xq5o/GLbUH/Bbw6W2bmctm
 ```
 
-Multiple pairs can be provided as a comma-separated list of hashes, not cleartext passwords:
+Multiple pairs can be provided as a comma-separated list of hashes, not plaintext passwords:
 
 ```
 <user1>:<bcrypt-hash1>,<user2>:<bcrypt-hash2>
