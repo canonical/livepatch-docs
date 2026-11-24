@@ -177,7 +177,7 @@ echo '127.0.0.1 livepatch.test.com' | sudo tee -a /etc/hosts
 If the patch-download base URL changes after configuring ingress, update the URL template:
 
 ```bash
-juju config livepatch server.url-template="<hosted url>/{filename}"
+juju config livepatch server.url-template="http://livepatch.test.com/v1/patches/{filename}"
 ```
 
 Verify the server is accessible through the ingress:
