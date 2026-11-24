@@ -60,7 +60,7 @@ The following sections describe the available configuration values.
 | `server.url-template` | Template URL for redirecting clients for patch downloads. Example: `https://my-file-server.com/{filename}`. | `string` |
 | `server.server-address` | Listen address for the server. | `url` |
 | `server.concurrency-limit` | Maximum number of requests processed simultaneously. Configured default: `1000` for both charms, `200` for the standalone snap. | `integer` |
-| `server.burst-limit` | Maximum number of concurrently incoming requests; additional requests are queued up to `server.concurrency-limit - server.burst-limit`. Configured default: `500` for both charms and the standalone snap. See [request-limit guidance](/server/how-to-guides/security/harden-your-deployment.md#configure-request-limits). | `integer` |
+| `server.burst-limit` | Maximum total number of requests being processed or waiting to be processed; when this exceeds `server.concurrency-limit`, the queue size is the difference between the two limits. Configured default: `500` for both charms and the standalone snap. See [request-limit guidance](/server/how-to-guides/security/harden-your-deployment.md#configure-request-limits). | `integer` |
 | `server.is-leader` | In multi-server deployments, determines whether this unit is the leader. Not available for charmed deployments. | `bool` |
 | `server.is-hosted` | Enable configuration blocks specific to Canonical's hosted Livepatch configuration. | `bool` |
 

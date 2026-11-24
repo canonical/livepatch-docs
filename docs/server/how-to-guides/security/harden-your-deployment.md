@@ -145,7 +145,7 @@ The packaged configuration defaults differ:
 | Machine and Kubernetes charms | 1000 | 500 |
 | Standalone snap | 200 | 500 |
 
-For example, a processing limit of 200 and a total limit of 500 allow up to 300 waiting requests. To configure that example for either charm:
+For example, a processing limit of 200 and a total limit of 500 allow up to 300 waiting requests (500 total - 200 processing). To configure that example for either charm:
 
 ```shell
 juju config livepatch server.concurrency-limit=200 server.burst-limit=500
