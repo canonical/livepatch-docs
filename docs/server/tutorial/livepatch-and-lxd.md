@@ -130,13 +130,20 @@ A successful action returns an output confirming that Livepatch is enabled.
 The `server.url-template` option specifies the URL where Livepatch Clients download patch files. The template must include the `{filename}` placeholder, which Livepatch replaces with the actual file name at runtime:
 
 ```
-<hosted url>/v1/patches/{filename}
+http(s)://domain/{filename}
 ```
 
-Replace `<hosted url>` with the externally reachable base URL, including its scheme and host, without a trailing slash. Keep `/v1/patches/{filename}` literal:
+For this tutorial, you'll use the Livepatch Server itself to serve patches. The server exposes a dedicated endpoint at:
+
+```
+/v1/patches/:patch_name
+```
+
+The bundle includes HAProxy, which acts as a load balancer and reverse proxy. Use the HAProxy unit's address to construct the URL template. Run the following to set it automatically:
 
 ```bash
-juju config livepatch server.url-template="<hosted url>/v1/patches/{filename}"
+HAPROXY_ADDRESS=$(juju status --format json | jq -r '.applications.haproxy.units["haproxy/0"]["public-address"]') && echo $HAPROXY_ADDRESS
+juju config livepatch server.url-template="http://$HAPROXY_ADDRESS/v1/patches/{filename}"
 ```
 
 Confirm the configuration was applied:

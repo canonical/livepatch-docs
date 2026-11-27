@@ -59,8 +59,8 @@ The following sections describe the available configuration values.
 | `server.redirect_downloads` | Whether to redirect patch download requests to the URL specified in `server.url-template`. | `bool` |
 | `server.url-template` | Template URL for redirecting clients for patch downloads. Example: `https://my-file-server.com/{filename}`. | `string` |
 | `server.server-address` | Listen address for the server. | `url` |
-| `server.concurrency-limit` | Maximum number of requests processed simultaneously. Configured default: `1000` for both charms, `200` for the standalone snap. | `integer` |
-| `server.burst-limit` | Maximum total number of requests being processed or waiting to be processed; when this exceeds `server.concurrency-limit`, the queue size is the difference between the two limits. Configured default: `500` for both charms and the standalone snap. See [request-limit guidance](/server/how-to-guides/security/harden-your-deployment.md#configure-request-limits). | `integer` |
+| `server.concurrency-limit` | Maximum number of requests processed at once. `0` disables request limiting. Default: `1000` for both charms, `200` for the standalone snap. | `integer` |
+| `server.burst-limit` | Maximum number of requests being processed or queued. Takes effect only when greater than `server.concurrency-limit`: up to `burst-limit - concurrency-limit` requests then queue for at most 10 seconds. Otherwise, requests over `server.concurrency-limit` are rejected immediately with HTTP 503. Default: `500`. See [request-limit guidance](/server/how-to-guides/security/harden-your-deployment.md#configure-request-limits). | `integer` |
 | `server.is-leader` | In multi-server deployments, determines whether this unit is the leader. Not available for charmed deployments. | `bool` |
 | `server.is-hosted` | Enable configuration blocks specific to Canonical's hosted Livepatch configuration. | `bool` |
 
@@ -93,7 +93,7 @@ Ubuntu SSO authentication has been removed. Use Basic Auth instead.
 
 ### Ubuntu Pro
 
-The following values configure how the server interacts with the Ubuntu Pro backend (also referred to as the contracts server). These are relevant for Canonical's hosted Livepatch Server and deployments that use resource-token validation.
+The following values configure how the server interacts with the Ubuntu Pro backend (also referred to as the contracts server) for client authentication. These are relevant for Canonical's hosted Livepatch Server and airgapped deployments.
 
 | Name | Description | Values |
 | ---- | ----------- | ------ |

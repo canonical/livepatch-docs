@@ -26,10 +26,10 @@ Installing and updating the client snap requires access to the Snap Store or you
 From an administration host authenticated to your on-premises server, request an authorization token:
 
 ```
-sudo livepatch-admin --url '<hosted url>' auth-token '<id>' '<tier>'
+sudo livepatch-admin --url 'http://<server-ip>' auth-token '<id>' '<tier>'
 ```
 
-Replace `<hosted url>` with your server's complete frontend URL, including its scheme. See [administration tool setup](/server/how-to-guides/security/setup-administration-tool.md) for login and credential configuration.
+Replace `<server-ip>` with the IP address or hostname of your Livepatch frontend, and use `https://` if it terminates TLS. See [administration tool setup](/server/how-to-guides/security/setup-administration-tool.md) for login and credential configuration.
 
 The tier parameter is one of the tiers available on the server. The client downloads patches as they become available in that tier. See [Patch management](/server/reference/patch-management/patch-management.md) for details on managing tiers and patches in the on-premises server.
 
@@ -50,7 +50,7 @@ For offline installations, use your approved local snap-delivery process instead
 Configure the client to use the on-premises frontend:
 
 ```
-sudo canonical-livepatch config remote-server='<hosted url>'
+sudo canonical-livepatch config remote-server='http://<server-ip>'
 ```
 
 Register the machine with the authorization token:

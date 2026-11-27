@@ -10,7 +10,7 @@ myst:
 
 Use this guide to place a TLS-terminating frontend in front of an existing Livepatch Server. The server itself serves HTTP. TLS is optional within a fully trusted internal network, but recommended when clients or administrators connect across untrusted networks.
 
-The Juju examples assume that your Livepatch application is named `livepatch`. Replace application names with your deployment's values. Use `<hosted url>` for your deployment's complete HTTPS frontend URL, without a trailing slash.
+The Juju examples assume that your Livepatch application is named `livepatch`. Replace application names with your deployment's values. Replace `<server-ip>` with the hostname or IP address of the frontend, matching a name on its TLS certificate.
 
 ## Prepare the frontend
 
@@ -57,20 +57,18 @@ If the proxy runs on another host, bind the backend to an appropriate private ad
 
 ## Configure client-facing addresses
 
-Use the HTTPS frontend address for client registration and administration. If patch downloads are served through this frontend, configure the patch URL template to use it too.
-
-Use `<hosted-url>` for the externally reachable base URL, including its scheme and host, without a trailing slash. Keep `/v1/patches/{filename}` literal.
+Use the HTTPS frontend address for client registration and administration. If patch downloads are served through this frontend, configure the patch URL template to use it too. Keep `/v1/patches/{filename}` literal.
 
 For either charm:
 
 ```shell
-juju config livepatch server.url-template='<hosted-url>/v1/patches/{filename}'
+juju config livepatch server.url-template='https://<server-ip>/v1/patches/{filename}'
 ```
 
 For the standalone snap:
 
 ```shell
-sudo snap set canonical-livepatch-server lp.server.url-template='<hosted-url>/v1/patches/{filename}'
+sudo snap set canonical-livepatch-server lp.server.url-template='https://<server-ip>/v1/patches/{filename}'
 ```
 
 If your deployment uses a separate patch-download service, retain its intended URL and configure HTTPS and certificate trust for that service separately.
@@ -81,14 +79,14 @@ If your deployment uses a separate patch-download service, retain its intended U
 
 If the frontend certificate chains to a CA trusted by the administration tool's system, no additional CA configuration is required. Use the HTTPS URL when [logging in](/server/how-to-guides/security/setup-administration-tool.md#password-authentication).
 
-For a private CA or self-signed certificate, supply the appropriate trust certificate. Do not disable certificate verification to bypass a trust or hostname error.
+For a private CA or self-signed certificate, supply the appropriate trust certificate. Do not disable certificate verification to bypass a trust or hostname error. When a CA is supplied with either method below, the admin tool requires TLS 1.3, so the frontend must accept TLS 1.3 connections.
 
 ### Command line option
 
 The `--ca` option accepts a path to a PEM certificate chain file or its PEM contents. For example:
 
 ```shell
-sudo livepatch-admin --url '<hosted url>' --ca ./ca-chain.pem login --auth '<username>:<password>'
+sudo livepatch-admin --url 'https://<server-ip>' --ca ./ca-chain.pem login --auth '<username>:<password>'
 ```
 
 ### Environment variable
@@ -97,7 +95,7 @@ Alternatively, set `LIVEPATCH_CA_CRT` to the certificate file's absolute path or
 
 ```shell
 sudo env LIVEPATCH_CA_CRT=/absolute/path/ca-chain.pem \
-    livepatch-admin --url '<hosted url>' login --auth '<username>:<password>'
+    livepatch-admin --url 'https://<server-ip>' login --auth '<username>:<password>'
 ```
 
 Run login commands on a trusted administration host. Password arguments can be exposed through shell history and process listings; do not save populated login commands in scripts or shared history.

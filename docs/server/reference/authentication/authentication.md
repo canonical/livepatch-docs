@@ -30,6 +30,7 @@ Client APIs are consumed by Livepatch Client instances.
 
 - **Authorization token (auth token)**: A UUIDv4 credential issued by an administrator of your server for a client group and tier. Clients use it to register with that server. Multiple clients can share one authorization token.
 - **Machine token**: A credential issued after successful local registration, used by that client for subsequent requests. Your server validates auth and machine tokens against your deployment's database.
+- **Resource token**: A macaroon that the Ubuntu Pro client provides to the Livepatch Client when enabling Livepatch. Your server accepts resource tokens only when the contracts service is enabled, either with `contracts.enabled` or through the Kubernetes charm's `pro-airgapped-server` integration, and validates each token against that service.
 
 The auth-token workflow works in connected and air-gapped deployments. Clients register with and send subsequent requests to the local Livepatch Server, not to Canonical's hosted Livepatch service. Patch availability is governed by the client's assigned tier and kernel compatibility.
 
@@ -50,9 +51,13 @@ An air-gapped server can receive patches through offline imports instead of exte
 
 ### Basic Auth
 
-HTTP Basic Authentication encodes `username:password` in Base64 in the HTTP `Authorization` header. Base64 is encoding, not encryption. The server verifies the supplied password against the configured bcrypt hash.
+HTTP Basic Authentication using a username and Base64-encoded password. The authentication process extracts credentials from the HTTP `Authorization` header, decodes them, and compares the provided password against a stored bcrypt hash using constant-time comparison.
 
-Use a [TLS frontend](/server/how-to-guides/security/setup-tls.md) to protect credentials crossing untrusted networks.
+Go packages used:
+
+- [`encoding/base64`](https://pkg.go.dev/encoding/base64)
+- [`crypto/subtle`](https://pkg.go.dev/crypto/subtle)
+- [`golang.org/x/crypto/bcrypt`](http://golang.org/x/crypto/bcrypt)
 
 (server-reference-macaroons)=
 
@@ -60,10 +65,25 @@ Use a [TLS frontend](/server/how-to-guides/security/setup-tls.md) to protect cre
 
 Macaroons are decentralized authentication tokens that use HMAC for cryptographic signatures and symmetric encryption to encode the scope (caveats) of entitlements.
 
-Macaroon mechanisms use HMAC-SHA256 and XSalsa20-Poly1305. Macaroon Bakery mechanisms also use Ed25519 public key cryptography.
+Operations are performed using `HMAC-SHA256` and `XSalsa20-Poly1305`. Go packages used by the [macaroon package](https://gopkg.in/macaroon.v2):
+
+- [`crypto/hmac`](https://pkg.go.dev/crypto/hmac)
+- [`crypto/sha256`](https://pkg.go.dev/crypto/sha256)
+- [`golang.org/x/crypto/nacl/secretbox`](http://golang.org/x/crypto/nacl/secretbox)
+
+The higher-level [Macaroon Bakery package](https://github.com/go-macaroon-bakery/macaroon-bakery) adds public key cryptography for macaroon operations.
+
+Operations are performed using `Ed25519` and `XSalsa20-Poly1305`. Go packages used:
+
+- [`golang.org/x/crypto/nacl/box`](http://golang.org/x/crypto/nacl/box)
+- [`golang.org/x/crypto/curve25519`](http://golang.org/x/crypto/curve25519)
 
 Macaroon root keys are stored in PostgreSQL with a 24-hour expiry policy. Macaroons themselves expire after 240 hours.
 
 ### UUID
 
-UUIDv4 is a randomly generated 128-bit identifier, represented as hexadecimal digits in 8-4-4-4-12 groups. It is used for authorization tokens, locally issued machine tokens, and sync tokens. Treat token values as secrets even though they have the same textual format as ordinary identifiers.
+UUIDv4 is a 128-bit identifier generated using random number generation, represented as 32 hexadecimal digits in 8-4-4-4-12 format. Used for auth tokens, machine tokens, sync tokens, and request trace IDs.
+
+Go packages used:
+
+- [`github.com/google/uuid`](http://github.com/google/uuid)

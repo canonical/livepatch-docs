@@ -31,7 +31,7 @@ Detailed machine-report forwarding is disabled by default. Enable `patch-sync.se
 juju config livepatch patch-sync.send-machine-reports=true
 ```
 
-When enabled, forwarded reports include machine identifiers, architecture, CPU model, kernel and Livepatch Client versions, boot time, uptime, last-check time, and patch state and version.
+When enabled, forwarded reports include architecture, CPU model, kernel and Livepatch Client versions, boot time, uptime, last-check time, and patch state and version. Machine IDs are replaced with an HMAC-SHA256 hash before forwarding. The hash is stable for each machine, so the upstream can correlate reports from the same machine without receiving its raw ID.
 
 Disabling this option prevents detailed machine-report forwarding; it does not stop deployment IDs, machine counts, and patch-selection information being sent during upstream synchronization. Local report storage and upstream report forwarding are separate settings.
 

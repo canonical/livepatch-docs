@@ -35,10 +35,10 @@ Below, the "upstream" server is referred to as the original Livepatch Server and
 Using the admin tool:
 
 ```
-sudo livepatch-admin --url '<hosted url>' sync-tokens add edge my-token
+sudo livepatch-admin --url 'http://<server-ip>' sync-tokens add edge my-token
 ```
 
-Replace `<hosted url>` with the upstream server's complete frontend URL, including its scheme. Use HTTPS across untrusted networks and configure {ref}`certificate trust <server-how-to-guides-configuring-livepatch-admin-tool-with-tls>` if its certificate uses a private CA.
+Replace `<server-ip>` with the IP address or hostname of the upstream server's frontend. Use `https://` across untrusted networks and configure {ref}`certificate trust <server-how-to-guides-configuring-livepatch-admin-tool-with-tls>` if its certificate uses a private CA.
 
 This will return a token that another on-premises server can use to sync patches.
 Sync tokens, by default, do not expire but the `--valid-until` flag can be used to set an expiry date.

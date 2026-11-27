@@ -115,10 +115,10 @@ Remove deployment-specific Juju secrets and grants, storage access credentials, 
 On each administrator workstation, remove saved login records for this server:
 
 ```shell
-sudo livepatch-admin --url '<hosted url>' logout
+sudo livepatch-admin --url 'http://<server-ip>' logout
 ```
 
-Replace `<hosted url>` with the retired server's complete frontend URL, including its scheme. Repeat for other URLs used to access the same deployment. Run the command as each user who logged in, omitting `sudo` for records created without it.
+Replace `<server-ip>` with the IP address or hostname of the retired server's frontend, and use the same scheme as when you logged in. Repeat for other addresses used to access the same deployment. Run the command as each user who logged in, omitting `sudo` for records created without it.
 
 The logout command targets the selected server's saved login. Do not delete the whole administrator token store to clean up one deployment.
 

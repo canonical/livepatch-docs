@@ -161,7 +161,7 @@ The reviewed file should have this structure:
 
 ```yaml
 canonical-livepatch:
-  server.url-template: "<hosted-url>/v1/patches/{filename}"
+  server.url-template: "https://<server-ip>/v1/patches/{filename}"
   server.server-address: "0.0.0.0:8080"
   server.is-hosted: false
   patch-storage.type: postgres
@@ -170,7 +170,7 @@ canonical-livepatch:
   auth.basic.users-secret: "secret:<SECRET_ID>"
 ```
 
-Replace `<hosted-url>` with your externally reachable base URL, including its scheme and host, without a trailing slash. Keep `/v1/patches/{filename}` literal. This example is only a subset. Retain other applicable settings. Do not apply the file until database and storage checks are complete.
+Replace `<server-ip>` with the IP address or hostname of your HAProxy frontend. Keep `/v1/patches/{filename}` literal. This example is only a subset. Retain other applicable settings. Do not apply the file until database and storage checks are complete.
 
 ## Migrate database access
 

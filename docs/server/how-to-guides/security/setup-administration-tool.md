@@ -72,13 +72,13 @@ Treat password hashes as sensitive and protect configuration and any exported co
 
 Use individual administrator accounts. When setting the username-and-hash list, include every account that should remain configured: setting this option replaces the entire list.
 
-When logging in with the administration tool, provide the username and original password, not the hash. Use the HTTPS frontend URL when connecting across an untrusted network, and configure [certificate trust](/server/how-to-guides/security/setup-tls.md#configure-the-livepatch-admin-tool-with-tls) if needed:
+When logging in with the administration tool, provide the username and original password, not the hash. Use `https://` when connecting across an untrusted network, and configure [certificate trust](/server/how-to-guides/security/setup-tls.md#configure-the-livepatch-admin-tool-with-tls) if needed:
 
 ```
-sudo livepatch-admin --url '<hosted url>' login --auth '<username>:<password>'
+sudo livepatch-admin --url 'http://<server-ip>' login --auth '<username>:<password>'
 ```
 
-Replace `<hosted url>` with your deployment's complete frontend URL, including its scheme. Use the same `--url` on subsequent administration commands to select the intended server.
+Replace `<server-ip>` with the IP address or hostname of your Livepatch frontend, such as the HAProxy unit or ingress. Use the same `--url` on subsequent administration commands to select the intended server.
 
 Run login commands on a trusted administration host. Password arguments can be exposed through shell history and process listings; do not save populated login commands in scripts or shared history.
 

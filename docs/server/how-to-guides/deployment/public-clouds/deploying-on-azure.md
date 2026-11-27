@@ -52,7 +52,7 @@ For VMSS, select an instance type with sufficient CPU and memory capacity. The m
 
 Configure the VMSS NSG to allow traffic on port 80 from within the VNet. It is recommended not to have public IP addresses assigned to the VMSS VMs. This ensures that VMs can be accessed only through the Application Gateway. Provision a jumpbox in the same VNet with a public IP to access VMs when required.
 
-Add the following cloud-init configuration file to the Custom Data field. Replace `<hosted url>` with the externally reachable base URL, including its scheme and host, without a trailing slash. Keep `/v1/patches/{filename}` literal:
+Add the following cloud-init configuration file to the Custom Data field. Replace `<server-ip>` with the IP address or hostname of the Application Gateway, and keep `/v1/patches/{filename}` literal:
 
 ```yaml
 #cloud-config
@@ -87,7 +87,7 @@ write_files:
       export ADMIN_USER_SECRET_ID=<admin user secret id>
 
       # storage variables
-      export URLTEMPLATE="<hosted url>/v1/patches/{filename}"
+      export URLTEMPLATE="https://<server-ip>/v1/patches/{filename}"
 
       # managed identity variable
       export AZURE_MANAGED_IDENTITY_CLIENT_ID=<azure managed identity client-id>

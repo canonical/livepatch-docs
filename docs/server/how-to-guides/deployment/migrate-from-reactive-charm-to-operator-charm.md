@@ -54,7 +54,7 @@ The script creates or overwrites the output file specified by the `-o` parameter
 | :---------------------------------: | :----------------------------------------: | :------------------------------------------------------------------------------------------------------------: |
 | **Old config** | **New config** | **Notes** |
 | log_level | server.log-level | Possible values:'debug', 'info', 'warn', 'error'.Default is 'info' |
-| url_template | server.url-template | Use `<hosted url>/v1/patches/{filename}`, where `<hosted url>` is the externally reachable base URL, including its scheme and host, without a trailing slash. Keep `/v1/patches/{filename}` literal. |
+| url_template | server.url-template | Use `http(s)://<server-ip>/v1/patches/{filename}`, where `<server-ip>` is the IP address or hostname (and port, if non-default) of the Livepatch frontend. Keep `/v1/patches/{filename}` literal. |
 | psql_dbname | **NA** | |
 | psql_roles | **NA** | |
 | blocklist_cache_refresh | patch-blocklist.refresh-interval | Make sure that patch-blocklist.enabled is set to true |

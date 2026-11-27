@@ -139,16 +139,16 @@ First, find the IP address of the Livepatch Server pod. Run `juju status` and lo
 juju status --format json | jq -r '.applications.livepatch.units[]."address"'
 ```
 
-Set the URL template using the externally reachable base URL. Replace `<hosted url>` with that URL, including its scheme and host, without a trailing slash. Keep `/v1/patches/{filename}` literal:
+Set the URL template using the pod's IP address. Replace `<server-ip>` with the value you retrieved:
 
 ```bash
-juju config livepatch server.url-template="<hosted url>/v1/patches/{filename}"
+juju config livepatch server.url-template="http://<server-ip>:8080/v1/patches/{filename}"
 ```
 
 Verify the server is running:
 
 ```bash
-curl <ip-address>:8080
+curl <server-ip>:8080
 # Canonical Livepatch Health service, version v1.13.1
 ```
 
@@ -174,7 +174,7 @@ The output shows the IP address where the ingress is accessible with the `livepa
 echo '127.0.0.1 livepatch.test.com' | sudo tee -a /etc/hosts
 ```
 
-If the patch-download base URL changes after configuring ingress, update the URL template:
+Update the URL template to use the domain name:
 
 ```bash
 juju config livepatch server.url-template="http://livepatch.test.com/v1/patches/{filename}"

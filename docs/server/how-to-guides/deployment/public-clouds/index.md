@@ -28,7 +28,7 @@ Sensitive data such as connection strings and the Pro token should be stored in 
 
 ## Install Livepatch Server with cloud-init
 
-VMs can be created and Livepatch can be initialized with [cloud-init](https://docs.cloud-init.io/en/latest/). Create a `cloud-config.yaml` file with the following template, including setup steps to install the Livepatch Server. Replace `<hosted url>` with the externally reachable base URL, including its scheme and host, without a trailing slash. Keep `/v1/patches/{filename}` literal:
+VMs can be created and Livepatch can be initialized with [cloud-init](https://docs.cloud-init.io/en/latest/). Create a `cloud-config.yaml` file with the following template, including setup steps to install the Livepatch Server. Replace `<server-ip>` with the externally reachable IP address or hostname of the server, and keep `/v1/patches/{filename}` literal:
 
 ```yaml
 #cloud-config
@@ -43,7 +43,7 @@ write_files:
     permissions: "0600"
     owner: root:root
     content: |
-      export URLTEMPLATE="<hosted url>/v1/patches/{filename}"
+      export URLTEMPLATE="http://<server-ip>/v1/patches/{filename}"
   - path: /etc/livepatch/database_url
     permissions: "0600"
     owner: root:root

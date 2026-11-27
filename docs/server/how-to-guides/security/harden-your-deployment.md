@@ -133,19 +133,19 @@ See the [administration tool setup guide](/server/how-to-guides/security/setup-a
 
 ## Configure request limits
 
-The server's request-admission controls limit simultaneous work:
+The server limits how many requests it handles at once:
 
-* `server.concurrency-limit`: Maximum number of requests being processed at once.
-* `server.burst-limit`: Maximum total number of requests being processed or waiting to be processed.
+* `server.concurrency-limit`: Maximum number of requests processed at once.
+* `server.burst-limit`: Maximum number of requests processed or queued.
 
-The packaged configuration defaults differ:
+A queue exists only when `server.burst-limit` is greater than `server.concurrency-limit`. Queued requests wait at most 10 seconds for a free slot. Requests beyond the limits, or that time out in the queue, are rejected with HTTP 503.
 
-| Deployment | `server.concurrency-limit` | `server.burst-limit` |
-| ---------- | -------------------------- | -------------------- |
-| Machine and Kubernetes charms | 1000 | 500 |
-| Standalone snap | 200 | 500 |
+| Deployment | `server.concurrency-limit` | `server.burst-limit` | Effect |
+| ---------- | -------------------------- | -------------------- | ------ |
+| Machine and Kubernetes charms | 1000 | 500 | No queue. Requests over 1000 are rejected immediately. |
+| Standalone snap | 200 | 500 | Up to 300 requests queue. |
 
-For example, a processing limit of 200 and a total limit of 500 allow up to 300 waiting requests (500 total - 200 processing). To configure that example for either charm:
+For example, to process up to 200 requests and queue up to 300 more on either charm:
 
 ```shell
 juju config livepatch server.concurrency-limit=200 server.burst-limit=500
@@ -157,9 +157,7 @@ For the standalone snap:
 sudo snap set canonical-livepatch-server lp.server.concurrency-limit=200 lp.server.burst-limit=500
 ```
 
-Tune the values for your workload, memory, CPU, and database capacity; these example values are not a sizing recommendation. Monitor latency, resource use, and HTTP 503 responses when admission limits reject excess work. Use [centralized logging and monitoring](/server/how-to-guides/operations/configure-logging-and-monitoring.md) to detect sustained overload.
-
-These are concurrency limits, not requests-per-second limits or complete denial-of-service protection. Configure appropriate connection limits, request-rate limits, and timeouts at your ingress or reverse proxy, and bound client retries so that overload does not generate an increasing retry load.
+Tune the values for your workload and resources, and monitor HTTP 503 responses using [logging and monitoring](/server/how-to-guides/operations/configure-logging-and-monitoring.md). These are concurrency limits, not rate limits. Configure connection limits, rate limits, and timeouts at your ingress or reverse proxy as well.
 
 ## Restrict network access
 
