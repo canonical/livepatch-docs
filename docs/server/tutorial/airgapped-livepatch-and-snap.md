@@ -71,22 +71,22 @@ sudo apt update
 sudo apt install pro-airgapped
 ```
 
-Create a configuration override file with your Ubuntu Pro token. Replace `<TOKEN>` with your token. Set the `remoteServer` value to the hostname you intend to use for your Livepatch on-prem server:
+Create a configuration override file with your Ubuntu Pro token. Replace `<TOKEN>` with your token. Set the `remoteServer` value to the address that clients will use to reach your Livepatch on-prem server:
 
 ```bash
 cat <<EOF > override.yml
 <TOKEN>:
   livepatch:
     directives:
-      remoteServer: http://livepatch.test.com:8080
+      remoteServer: http://127.0.0.1:8080
   livepatch-onprem:
     directives:
-      remoteServer: http://livepatch.test.com:8080
+      remoteServer: http://127.0.0.1:8080
 EOF
 ```
 
 ```{note}
-The hostname `livepatch.test.com` is used throughout this tutorial. You can substitute a different hostname, but remember to use it consistently in all subsequent steps.
+This tutorial runs the Livepatch Client on the same VM as the server, so it uses `http://127.0.0.1:8080`. In a real deployment, use an address that your clients can reach, and use it consistently in all subsequent steps.
 ```
 
 The `pro-airgapped` tool requires Internet access to communicate with upstream Canonical services and fetch your subscription details. Run the following to generate the final configuration file (`server-ready.yml`):
@@ -209,12 +209,6 @@ Refresh the Ubuntu Pro client's internal state:
 sudo pro refresh
 ```
 
-Map the Livepatch on-prem hostname to the loopback address:
-
-```bash
-echo "127.0.0.1 livepatch.test.com" | sudo tee -a /etc/hosts
-```
-
 Install the Livepatch Client:
 
 ```bash
@@ -224,7 +218,7 @@ sudo snap install canonical-livepatch
 Configure the Livepatch Client to communicate with your on-prem server instead of the upstream service:
 
 ```bash
-sudo canonical-livepatch config remote-server='http://livepatch.test.com'
+sudo canonical-livepatch config remote-server='http://127.0.0.1:8080'
 ```
 
 Attach your Ubuntu Pro subscription. Replace `<TOKEN>` with your Ubuntu Pro token:

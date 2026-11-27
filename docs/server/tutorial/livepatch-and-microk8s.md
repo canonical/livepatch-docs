@@ -10,7 +10,7 @@ myst:
 
 > See also: {ref}`server`
 
-This tutorial guides you through the process of deploying Livepatch on-prem as a Kubernetes application using MicroK8s and Juju. You'll bootstrap a Juju controller on MicroK8s, deploy the Livepatch Server bundle, configure the URL template and ingress, set up authentication, sync patches, and verify that the server is ready to serve clients.
+This tutorial guides you through the process of deploying Livepatch on-prem as a Kubernetes application using MicroK8s and Juju. You'll bootstrap a Juju controller on MicroK8s, deploy the Livepatch Server bundle, configure the URL template, set up authentication, sync patches, and verify that the server is ready to serve clients.
 
 Completing this tutorial should take approximately 45 minutes.
 
@@ -152,43 +152,8 @@ curl <server-ip>:8080
 # Canonical Livepatch Health service, version v1.13.1
 ```
 
-### Configure the ingress
-
-For production deployments, referencing pods by IP address is unreliable. Use a Kubernetes ingress to expose the Livepatch Server through a stable domain name.
-
-Configure the `service-hostname` on the nginx ingress integrator charm:
-
-```bash
-juju config ingress service-hostname=livepatch.test.com
-```
-
-After a short delay, verify the ingress was created:
-
-```bash
-kubectl get ingress -n livepatch
-```
-
-The output shows the IP address where the ingress is accessible with the `livepatch.test.com` domain name. Add an entry to your `/etc/hosts` file to resolve this domain locally:
-
-```bash
-echo '127.0.0.1 livepatch.test.com' | sudo tee -a /etc/hosts
-```
-
-Update the URL template to use the domain name:
-
-```bash
-juju config livepatch server.url-template="http://livepatch.test.com/v1/patches/{filename}"
-```
-
-Verify the server is accessible through the ingress:
-
-```bash
-curl livepatch.test.com
-# Canonical Livepatch Health service, version v1.13.1
-```
-
 ```{note}
-To run this in a production environment, you must expose the MicroK8s cluster publicly.
+Pod IP addresses can change when pods are rescheduled. For production deployments, expose the server through an ingress with TLS. See [Set up TLS](/server/how-to-guides/security/setup-tls.md).
 ```
 
 ### Deploy with a bundle overlay (optional)
@@ -246,7 +211,7 @@ sudo snap alias canonical-livepatch-server-admin.livepatch-admin livepatch-admin
 Log in with the admin tool, supplying the Livepatch Server URL with `--url`:
 
 ```bash
-sudo livepatch-admin --url http://livepatch.test.com login -a username:password
+sudo livepatch-admin --url http://<server-ip>:8080 login -a username:password
 ```
 
 ## Sync patches
@@ -313,7 +278,7 @@ multipass delete --purge livepatch-deploy
 
 ## Summary
 
-In this tutorial, you deployed Livepatch on-prem on MicroK8s using Juju, configured an ingress for stable access, set up administrator authentication, and synchronised patches from the upstream Livepatch service. Your Livepatch on-prem server is now ready to serve clients.
+In this tutorial, you deployed Livepatch on-prem on MicroK8s using Juju, set up administrator authentication, and synchronised patches from the upstream Livepatch service. Your Livepatch on-prem server is now ready to serve clients.
 
 From here, you have several options:
 
