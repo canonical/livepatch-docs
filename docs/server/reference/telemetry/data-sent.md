@@ -21,7 +21,7 @@ Clients send their requests and reports to your on-premises server, not directly
 juju config livepatch patch-sync.send-machine-reports=true
 ```
 
-When enabled, forwarded reports include architecture, CPU model, kernel and Livepatch Client versions, boot time, uptime, last-check time, and patch state and version. Machine IDs are replaced with an HMAC-SHA256 hash before forwarding. The hash is stable for each machine, so the upstream can correlate reports from the same machine without receiving its raw ID. Disabling this option does not stop the deployment ID, machine counts, and patch-selection information being sent during upstream synchronization.
+When enabled, forwarded reports include architecture, CPU model, kernel and Livepatch Client versions, boot time, uptime, last-check time, and patch state and version. Machine IDs are pseudonymized, not anonymized: before forwarding, each is replaced with an HMAC-SHA256 hash computed with a fixed key built into the server. The hash is stable for each machine, so the upstream can correlate reports from the same machine without receiving its raw ID, but anyone who knows a machine ID can compute its hash. Disabling this option does not stop the deployment ID, machine counts, and patch-selection information being sent during upstream synchronization.
 
 ## Air-gapped deployments
 

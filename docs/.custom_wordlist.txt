@@ -5,6 +5,7 @@ affordance
 affordances
 airgapped
 Airgapped
+anonymized
 autoscaling
 Autoscaling
 aws
@@ -112,6 +113,8 @@ preconfigured
 presigned
 Presigned
 proxying
+pseudonymization
+pseudonymized
 Pygments
 pymarkdown
 pymarkdownlnt

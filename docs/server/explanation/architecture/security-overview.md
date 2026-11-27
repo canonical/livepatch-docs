@@ -124,11 +124,11 @@ The following cryptographic technologies are used by the Livepatch Server:
 
 | Mechanism | Algorithm | Go packages |
 | :---- | :---- | :---- |
-| Machine ID hashing in forwarded machine reports | HMAC-SHA256 | `crypto/hmac`, `crypto/sha256` |
+| Machine ID pseudonymization in forwarded machine reports | HMAC-SHA256 with a fixed key | `crypto/hmac`, `crypto/sha256` |
 | S3 upload credentials (presigned POST policies) | AWS Signature Version 4 (HMAC-SHA256) | `crypto/hmac`, `crypto/sha256` |
 | Swift upload credentials (TempURLs) | HMAC-SHA1, the Swift TempURL default | `crypto/hmac`, `crypto/sha1` |
-| Server outbound TLS, and admin tool TLS without a custom CA | TLS 1.2 or later (Go default) | `crypto/tls`, `crypto/x509` |
-| Admin tool TLS with a custom CA (`--ca` or `LIVEPATCH_CA_CRT`) | TLS 1.3 or later | `crypto/tls`, `crypto/x509` |
+| Server outbound TLS, and admin tool TLS without a custom CA or `--skip-tls-verify` | TLS 1.2 or later (Go default) | `crypto/tls`, `crypto/x509` |
+| Admin tool TLS with a custom CA (`--ca` or `LIVEPATCH_CA_CRT`) or `--skip-tls-verify` | TLS 1.3 or later | `crypto/tls`, `crypto/x509` |
 
 **External packages providing cryptographic functionality:**
 
