@@ -237,31 +237,16 @@ Your Livepatch on-prem server is now operating in airgapped mode, with no commun
 
 ## Set up administrator authentication
 
-For this tutorial, create an administrator username and bcrypt password hash:
-
-```bash
-sudo apt-get install apache2-utils
-htpasswd -nBC 10 admin
-```
-
-Store the username-and-hash list in a Juju secret rather than in plain application configuration:
-
-```yaml
-value: 'admin:<bcrypt-hash>'
-```
-
-Save that content as `admin-users.secret.yaml`, create and grant the secret, then configure Livepatch:
+Install `apache2-utils` and run `htpasswd -nBC 10 admin` to create a bcrypt password hash for an `admin` user. Save the output in `admin-users.secret.yaml` as `value: 'admin:<bcrypt-hash>'`. Store it in a Juju secret, then configure Livepatch with the secret URI returned by `juju add-secret`:
 
 ```bash
 chmod 0600 admin-users.secret.yaml
 juju add-secret livepatch-admin-users --file admin-users.secret.yaml
 juju grant-secret livepatch-admin-users livepatch
-juju config livepatch \
-  auth.basic.enabled=true \
-  auth.basic.users-secret='<secret-uri>'
+juju config livepatch auth.basic.enabled=true auth.basic.users-secret='<secret-uri>'
 ```
 
-Use the secret URI returned by `juju add-secret`. Remove the local secret file after it is stored. See {ref}`password authentication <server-how-to-guides-password-authentication>` for account and credential procedures.
+Remove the local secret file after it is stored. See {ref}`password authentication <server-how-to-guides-password-authentication>` for account and credential procedures.
 
 ## Set up the Livepatch Client
 

@@ -8,133 +8,46 @@ myst:
 
 # Get security updates and support
 
-Keep the Livepatch Server on the current `latest/stable` charm revision or standalone snap revision. This guide covers updates to the server application, not the kernel patches that it distributes to clients. Synchronizing or importing kernel patches does not update the server itself.
+This guide covers updates to the Livepatch Server application, not the kernel patches that it distributes to clients. Offline patch imports do not update the server; deployments without store access need to deliver server updates through their offline deployment process. The Juju examples assume that the application is named `livepatch`.
 
-The Juju examples assume that the Livepatch application is named `livepatch`. Replace it with your application name.
-
-## Prepare for an update
-
-Review the [server release notes](/release-notes/server/index.md) and any release-specific upgrade instructions before applying an update. Plan for service restarts and possible database migrations.
-
-Take protected backups of the database, deployment configuration, and any patch data required by your recovery plan. Confirm that you can restore them. Restrict access to backups because they can contain credentials and fleet data.
-
-Arrange a maintenance window appropriate to your availability requirements. Updates can apply database migrations automatically; reverting a charm or snap alone might not restore a compatible database.
-
-The store-based procedures below require access to the relevant artifact stores and container registries through your approved network path. For a deployment without store access, arrange delivery of the required server artifacts through your offline deployment process before the maintenance window. Offline kernel-patch imports are not a substitute for server updates.
+Before updating, review the release notes, plan for service restarts, and back up the database, deployment configuration, and any patch data that your recovery plan requires. Updates can apply database migrations automatically; do not assume that reverting the charm or snap reverses them. After updating, check that the expected revision is installed, the application is healthy, an administrator can authenticate, and a test client can download patches. If the update fails, check the status and logs and follow your recovery plan.
 
 ## Update a Juju-managed deployment
 
-Use this procedure for the current machine charm and the Kubernetes charm. For a legacy reactive machine charm or the original Operator machine charm on `ops1.x/*`, first follow {ref}`Migrate to the new machine charm <server-how-to-guides-migrate-to-the-new-machine-charm>` rather than switching directly to `latest/stable` with `juju refresh`.
+This procedure applies to the current machine charm and the Kubernetes charm. For a legacy reactive machine charm or the original Operator machine charm on `ops1.x/*`, first follow {ref}`Migrate to the new machine charm <server-how-to-guides-migrate-to-the-new-machine-charm>` instead of refreshing directly to `latest/stable`.
 
-Check the deployed charm revision and channel:
-
-```shell
-juju status livepatch
-```
-
-Compare the revision with the `latest/stable` channel on the appropriate Charmhub page:
-
-* [Machine charm](https://charmhub.io/canonical-livepatch-server)
-* [Kubernetes charm](https://charmhub.io/canonical-livepatch-server-k8s)
-
-Apply the current stable revision:
+Check the deployed revision with `juju status livepatch` and compare it with `latest/stable` on Charmhub for the [machine charm](https://charmhub.io/canonical-livepatch-server) or [Kubernetes charm](https://charmhub.io/canonical-livepatch-server-k8s). Then apply the current stable revision:
 
 ```shell
 juju refresh livepatch --channel=latest/stable
 ```
 
-Allow the charm to complete its update and inspect the application and unit status again. Follow any release-specific instructions; do not routinely run an additional manual schema-upgrade action after a successful managed update.
-
-Juju does not automatically refresh these charms by default. Schedule regular checks and operator-managed updates. If your organization automates charm refreshes, manage approval, postponement, and suspension in that automation rather than using snapd controls.
-
-The machine charm manages a pinned server snap revision and holds its automatic refreshes. Do not manually refresh or unhold that snap. Update the charm so that it selects the corresponding workload revision. Similarly, update the Kubernetes charm rather than replacing its workload image independently.
+Wait for the charm to finish updating and check its status again. Follow any release-specific instructions, but do not routinely run a manual `schema-upgrade` action after a successful update. The machine charm manages its server snap and holds its automatic refreshes, so do not refresh or unhold that snap manually. Likewise, update the Kubernetes charm rather than replacing its workload image. Juju does not refresh charms automatically by default, so schedule regular checks. If you automate charm refreshes, control postponement in that automation rather than with snapd.
 
 ## Update a standalone snap manually
 
-This procedure is not for the snap managed by the machine charm.
-
-Check the installed revision, tracked channel, and available stable revision:
+This procedure does not apply to the snap managed by the machine charm. Check the installed revision, tracked channel, and available stable revision, then apply the current stable revision:
 
 ```shell
 snap list canonical-livepatch-server
 snap info canonical-livepatch-server
-```
-
-Apply the current stable revision:
-
-```shell
 sudo snap refresh canonical-livepatch-server --channel=latest/stable
 ```
 
-An explicit refresh naming the snap can update it even when its automatic refreshes are held. After updating, check the installed revision again and verify operation as described below.
+## Enable automatic updates
 
-## Manage standalone snap automatic updates
+By default, snapd checks for updates four times a day and applies them automatically. To enable automatic updates for a standalone snap, make sure that it tracks `latest/stable` and remove any hold with `sudo snap refresh --unhold canonical-livepatch-server`.
 
-By default, snapd checks for updates four times a day and applies them automatically. Holds, refresh schedules, and store availability can change this behavior.
+## Postpone or schedule updates
 
-Inspect the refresh schedule and server snap:
+To postpone automatic updates for 24 hours, run `sudo snap refresh --hold=24h canonical-livepatch-server`. To allow refreshes only between 02:00 and 04:00, run `sudo snap set system refresh.timer=02:00-04:00`. This setting affects all snaps on the host. Check the resulting schedule with `snap refresh --time`.
 
-```shell
-snap refresh --time
-snap list canonical-livepatch-server
-```
+## Disable automatic updates
 
-### Enable or resume automatic updates
-
-Ensure that the standalone snap tracks `latest/stable`, using the manual update procedure above if a channel change is needed. Remove its automatic-refresh hold:
-
-```shell
-sudo snap refresh --unhold canonical-livepatch-server
-```
-
-Check the refresh schedule again. Removing a per-snap hold does not remove other system-wide refresh restrictions or restore unavailable store access.
-
-### Schedule update windows
-
-For example, to allow refreshes between 02:00 and 04:00:
-
-```shell
-sudo snap set system refresh.timer=02:00-04:00
-```
-
-This setting affects **all snaps on the host**, not just Livepatch Server. Coordinate it with other services and existing maintenance policies. Confirm the resulting schedule with `snap refresh --time`.
-
-### Postpone an automatic update
-
-To hold automatic refreshes for 24 hours:
-
-```shell
-sudo snap refresh --hold=24h canonical-livepatch-server
-```
-
-Automatic refreshes become eligible again after the hold expires, subject to the refresh schedule and other restrictions. Set a deadline to review and apply the update; a hold can leave known vulnerabilities unpatched.
-
-### Disable automatic updates
-
-To hold automatic refreshes indefinitely:
-
-```shell
-sudo snap refresh --hold=forever canonical-livepatch-server
-```
-
-Use an indefinite hold only with an operator-managed update process. Assign responsibility for checking releases and applying fixes, and remove the hold with `--unhold` when automatic updates should resume. Disabling automatic updates does not remove the need for security updates.
-
-See the [snap update-control documentation](https://snapcraft.io/docs/how-to-guides/manage-snaps/manage-updates/#refresh-update-control) for further scheduling and hold behavior.
-
-## Verify the update
-
-Check that the expected charm or standalone snap revision is installed and that the application is healthy. Confirm that an administrator can authenticate and a representative registered client can check for and download patches. Check logs and monitoring for migration failures, authentication errors, and unexpected service errors.
-
-If the update fails, investigate the reported status and logs before proceeding. Follow your recovery plan; do not assume that downgrading the application reverses database migrations.
-
-Update the host operating system, Juju or Kubernetes infrastructure, TLS frontend, database, and storage services through their own supported update procedures. Updating Livepatch Server does not update those independently managed components.
+To hold automatic updates indefinitely, run `sudo snap refresh --hold=forever canonical-livepatch-server`. Known vulnerabilities then stay unpatched until you update manually, so use this only with an operator-managed process for checking releases and applying fixes. An explicit refresh can still update a held snap. See the [snap update-control documentation](https://snapcraft.io/docs/how-to-guides/manage-snaps/manage-updates/#refresh-update-control) for more on holds and schedules.
 
 ## Monitor releases and get support
 
-Operators are responsible for reviewing the [server release notes](/release-notes/server/index.md) and checking their distribution's `latest/stable` channel regularly. Include these checks in your operational process for identifying and scheduling security updates.
+To learn about new security updates, review the [server release notes](/release-notes/server/index.md) and check the `latest/stable` channel regularly. For the release and security-fix policy, see {ref}`Security lifecycle <server-explanation-security-lifecycle>` and [Security support](/server/explanation/architecture/security-overview.md#security-support).
 
-For the release and security-fix policy, see {ref}`Security lifecycle <server-explanation-security-lifecycle>` and [Security support](/server/explanation/architecture/security-overview.md#security-support).
-
-Canonical customers can obtain technical support through the [Canonical support portal](https://portal.support.canonical.com/). See [Get more help](/support/get-more-help.md) for support-ticket guidance.
-
-Report a suspected vulnerability through the {ref}`private vulnerability-reporting procedure <server-how-to-guides-report-a-livepatch-server-vulnerability>`, not a public issue or support discussion. Do not publish credentials or sensitive deployment data in a vulnerability report.
+Canonical customers can get technical support through the [Canonical support portal](https://portal.support.canonical.com/). See [Get more help](/support/get-more-help.md) for support-ticket guidance. Report suspected vulnerabilities privately through {ref}`Report server vulnerabilities <server-how-to-guides-report-a-livepatch-server-vulnerability>`, not in a public issue.

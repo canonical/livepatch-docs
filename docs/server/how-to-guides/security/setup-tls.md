@@ -8,110 +8,77 @@ myst:
 
 # Set up TLS for Livepatch on-premises
 
-Use this guide to place a TLS-terminating frontend in front of an existing Livepatch Server. The server itself serves HTTP. TLS is optional within a fully trusted internal network, but recommended when clients or administrators connect across untrusted networks.
+The Livepatch Server serves HTTP, so TLS is terminated by a frontend such as an ingress or reverse proxy. TLS is optional within a fully trusted internal network, but recommended when clients or administrators connect across untrusted networks. Obtain a certificate for a hostname that clients and administrators can resolve and configure it on the frontend using the provider's documentation. Protect the private key, arrange renewal, and restrict direct access to the HTTP backend so that clients cannot bypass the frontend. The connection from the frontend to Livepatch is not encrypted, so keep it on a trusted network or protect it at the network layer. The Juju examples assume an application named `livepatch`. Replace `<server-ip>` with the hostname or IP address of the frontend, matching a name on its TLS certificate.
 
-The Juju examples assume that your Livepatch application is named `livepatch`. Replace application names with your deployment's values. Replace `<server-ip>` with the hostname or IP address of the frontend, matching a name on its TLS certificate.
+## Configure a Kubernetes charm frontend
 
-## Prepare the frontend
+For new deployments, use the `ingress` integration with a provider such as [Traefik K8s](https://charmhub.io/traefik-k8s) or [Gateway API Integrator](https://charmhub.io/gateway-api-integrator). Existing deployments can use the `nginx-route` integration with [Nginx Ingress Integrator](https://charmhub.io/nginx-ingress-integrator) and `ingress-interface=legacy-nginx-route`, which remains the default; prepare the replacement provider before switching. To connect an existing Traefik application named `traefik-k8s`:
 
-Choose a hostname that clients and administrators can resolve. Obtain a certificate for that hostname and configure its certificate chain and private key on the frontend using the frontend provider's supported procedure. Protect the private key and arrange certificate renewal.
-
-For a private CA, obtain the issuing CA certificate chain for distribution to clients and administrators. Distribute certificates, not the provider's private key.
-
-Restrict administrator endpoints to trusted administration networks. Restrict direct access to the HTTP backend so that clients cannot bypass frontend controls. TLS on the public frontend does not encrypt its HTTP connection to Livepatch; keep that connection on a trusted network or protect it at the network layer.
-
-## Connect the frontend
-
-### Kubernetes charm
-
-For new deployments, use the `ingress` integration with a supported provider such as [Traefik K8s](https://charmhub.io/traefik-k8s) or [Gateway API Integrator](https://charmhub.io/gateway-api-integrator). Configure the provider's hostname, TLS certificate, and HTTPS listener according to its documentation.
-
-For an existing Traefik application named `traefik-k8s`, connect Livepatch with:
-
-```shell
+```
 juju config livepatch ingress-interface=ingress
 juju integrate livepatch:ingress traefik-k8s
 ```
 
-Existing deployments can use the `nginx-route` integration with [Nginx Ingress Integrator](https://charmhub.io/nginx-ingress-integrator) and `ingress-interface=legacy-nginx-route`. That selector remains the default for backward compatibility. Do not switch an existing deployment's interface without first preparing the replacement provider and planning the traffic change.
-
 (configure-tls-for-haproxy)=
 
-### Machine charm
+## Configure a machine charm frontend
 
-Use [HAProxy](https://charmhub.io/haproxy) as the frontend. Deploy or select an HAProxy application and configure its HTTPS listener, hostname, certificate chain, and private key using the HAProxy charm's documentation.
+Use [HAProxy](https://charmhub.io/haproxy) as the frontend and configure its HTTPS listener and certificate using the HAProxy charm's documentation. The relation below connects only the HTTP backend and does not by itself configure a TLS certificate. For an application named `haproxy`:
 
-For an application named `haproxy`, connect its `website` endpoint to Livepatch:
-
-```shell
+```
 juju integrate livepatch:website haproxy:reverseproxy
 ```
 
-The relation connects the HTTP backend; it does not by itself configure a TLS certificate or guarantee an HTTPS listener. Confirm that the frontend serves HTTPS before directing clients to it.
+## Configure a standalone snap frontend
 
-### Standalone snap
-
-Configure a reverse proxy or load balancer such as Nginx or HAProxy to accept HTTPS and forward requests to the address configured in `lp.server.server-address`. The standalone snap defaults to `localhost:8080`; retain a loopback backend when the proxy runs on the same host.
-
-If the proxy runs on another host, bind the backend to an appropriate private address and restrict access to the proxy and other authorized callers. Configure certificates, renewal, access controls, and timeouts using your proxy's documentation.
+Configure a reverse proxy such as Nginx or HAProxy to accept HTTPS and forward requests to the address in `lp.server.server-address`, which defaults to `localhost:8080`. If the proxy runs on another host, bind the backend to a private address and restrict access to it.
 
 ## Configure client-facing addresses
 
-Use the HTTPS frontend address for client registration and administration. If patch downloads are served through this frontend, configure the patch URL template to use it too. Keep `/v1/patches/{filename}` literal.
+If patch downloads are served through the frontend, configure the patch URL template to use its HTTPS address and keep `/v1/patches/{filename}` literal. A separate patch-download service needs its own HTTPS and certificate trust. For either charm:
 
-For either charm:
-
-```shell
+```
 juju config livepatch server.url-template='https://<server-ip>/v1/patches/{filename}'
 ```
 
 For the standalone snap:
 
-```shell
+```
 sudo snap set canonical-livepatch-server lp.server.url-template='https://<server-ip>/v1/patches/{filename}'
 ```
-
-If your deployment uses a separate patch-download service, retain its intended URL and configure HTTPS and certificate trust for that service separately.
 
 (server-how-to-guides-configuring-livepatch-admin-tool-with-tls)=
 
 ## Configure the Livepatch admin tool with TLS
 
-If the frontend certificate chains to a CA trusted by the administration tool's system, no additional CA configuration is required. Use the HTTPS URL when [logging in](/server/how-to-guides/security/setup-administration-tool.md#password-authentication).
+If the TLS certificate used for Livepatch originates from a trusted CA, no further configuration is required. The Livepatch admin tool uses the configured system certificates to verify the server's responses.
 
-For a private CA or self-signed certificate, supply the appropriate trust certificate. Do not disable certificate verification to bypass a trust or hostname error. When a CA is supplied with either method below, the admin tool requires TLS 1.3, so the frontend must accept TLS 1.3 connections.
+For a private CA or self-signed certificate, supply the trust certificate instead of disabling certificate verification. When a CA is supplied with either method below, the admin tool requires TLS 1.3, so the frontend must accept TLS 1.3 connections.
 
 ### Command line option
 
-The `--ca` option accepts a path to a PEM certificate chain file or its PEM contents. For example:
+The command line option for the Livepatch admin tool accepts either the path to a certificate chain PEM file, or the contents of the certificate chain:
 
-```shell
+```
 sudo livepatch-admin --url 'https://<server-ip>' --ca ./ca-chain.pem login --auth '<username>:<password>'
 ```
 
 ### Environment variable
 
-Alternatively, set `LIVEPATCH_CA_CRT` to the certificate file's absolute path or its PEM contents. When using `sudo`, set the variable for the privileged process rather than relying on the unprivileged shell's environment:
+Alternatively, set `LIVEPATCH_CA_CRT` to the certificate file's absolute path or its PEM contents. With `sudo`, set the variable for the privileged process:
 
-```shell
-sudo env LIVEPATCH_CA_CRT=/absolute/path/ca-chain.pem \
-    livepatch-admin --url 'https://<server-ip>' login --auth '<username>:<password>'
 ```
-
-Run login commands on a trusted administration host. Password arguments can be exposed through shell history and process listings; do not save populated login commands in scripts or shared history.
+sudo env LIVEPATCH_CA_CRT=/absolute/path/ca-chain.pem livepatch-admin --url 'https://<server-ip>' login --auth '<username>:<password>'
+```
 
 (configuring-livepatch-client-with-tls)=
 
 ## Configure the Livepatch Client with TLS
 
-Configure clients to use the HTTPS frontend address following the [client setup guide](/server/how-to-guides/operations/use-livepatch-client-with-on-prem-server.md).
+Configure clients to use the HTTPS frontend address following the [client setup guide](/server/how-to-guides/operations/use-livepatch-client-with-on-prem-server.md). For a private CA or self-signed certificate, also configure the trust certificate on each client:
 
-For a private CA or self-signed certificate, configure the trust certificate on each client:
-
-```shell
+```
 sudo canonical-livepatch config ca-certs=@stdin < ./ca-chain.pem
 ```
 
-After configuration, verify that an administrator can authenticate and a registered client can check for and download patches through the HTTPS frontend with certificate verification enabled. Confirm that direct backend access is restricted as intended.
-
-If clients also use an outbound HTTPS proxy, see the [proxy configuration guide](/client/how-to-guides/configuration/configure-proxy.md).
+For more information on configuring an HTTPS proxy on the Livepatch Client, see the [proxy configuration guide](/client/how-to-guides/configuration/configure-proxy.md).
