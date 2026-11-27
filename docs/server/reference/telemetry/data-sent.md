@@ -8,7 +8,7 @@ myst:
 
 # Data sent to Canonical servers
 
-Livepatch on-prem deployments periodically send synchronization requests to the upstream configured by `patch-sync.upstream-url`, using the credential in `patch-sync.token`. For connected deployments, this upstream is Canonical's hosted Livepatch service or another on-premises server. These requests include the following information:
+Livepatch on-prem deployments periodically send synchronization requests to the upstream configured by `patch-sync.upstream-url`, using the credential configured through `patch-sync.token` or, for charm deployments, the preferred `patch-sync.token-secret`. For connected deployments, this upstream is Canonical's hosted Livepatch service or another on-premises server. These requests include the following information:
 
 - Unique ID of the deployment
 - Machine-count information, according to `patch-sync.machine-count-strategy`
