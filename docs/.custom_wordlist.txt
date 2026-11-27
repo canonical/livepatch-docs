@@ -1,17 +1,22 @@
 # Leave a blank line at the end of this file to support concatenation
 ABIs
 addons
+affordance
 affordances
 airgapped
 Airgapped
+anonymized
 autoscaling
 Autoscaling
 aws
+authorizers
 backend
 backends
 backoff
 backport
 bcrypt
+systemd
+unhold
 blocklisted
 blocklisting
 boolean
@@ -108,6 +113,8 @@ preconfigured
 presigned
 Presigned
 proxying
+pseudonymization
+pseudonymized
 Pygments
 pymarkdown
 pymarkdownlnt

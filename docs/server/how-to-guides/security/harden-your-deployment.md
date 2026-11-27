@@ -1,135 +1,92 @@
 ---
 myst:
   html_meta:
-    description: "How to harden your deployment with Livepatch on-prem."
+    description: "Harden a Livepatch Server deployment with TLS frontends, protected storage, secure credentials, request limits, and restricted network and administrative access."
 ---
-
 
 (server-how-to-guides-harden-your-livepatch-server-deployment)=
 
 # Harden a Livepatch Server deployment
 
-The Livepatch Server is available as a Kubernetes charm and a strict-confinement snap for on-premises deployment. The following sections provide guidance on securing the server in production deployments.
+Use this guide to harden a Livepatch Server deployed with the machine charm, Kubernetes charm, or standalone snap. Start with the {ref}`secure configuration checklist <server-how-to-guides-configure-livepatch-server-securely>` before exposing a new deployment. The Juju examples assume that the Livepatch application is named `livepatch`.
 
 ## Enable TLS termination
 
 The Livepatch Server does not natively terminate TLS. In on-premises deployments where clients and the server are on a trusted internal network, TLS between them is optional. However, if the server is accessible from untrusted networks or admin API endpoints are exposed, a TLS-terminating reverse proxy, Kubernetes ingress controller, or load balancer should be placed in front of the server.
 
-For **charm deployments**, TLS termination is configured through an ingress integration. The charm supports two ingress interfaces:
-
-* **`nginx-route`** (legacy): Integration with the [Nginx Ingress Integrator charm](https://charmhub.io/nginx-ingress-integrator). Set `ingress-interface=legacy-nginx-route` (default).
-* **`ingress`** (modern): Integration with the [Traefik K8s charm](https://charmhub.io/traefik-k8s) or [Gateway API Integrator charm](https://charmhub.io/gateway-api-integrator). Set `ingress-interface=ingress`.
-
-Example using the modern ingress integration:
-
-```shell
-juju config canonical-livepatch-server-k8s ingress-interface=ingress
-juju integrate canonical-livepatch-server-k8s traefik-k8s
-```
-
-For **snap deployments**, a reverse proxy (for example, Nginx or HAProxy) can be configured with TLS certificates to terminate HTTPS before forwarding traffic to the server.
-
-Without TLS termination, all communication -- including authentication credentials -- is transmitted in plaintext. This is acceptable on a fully trusted internal network, but not recommended when any network segment is untrusted.
+| Deployment | TLS frontend |
+| ---------- | ------------ |
+| Kubernetes charm | An ingress provider using the `ingress` integration, or `nginx-route` for existing legacy integrations. |
+| Machine charm | HAProxy connected through the Livepatch charm's `website` relation. |
+| Standalone snap | A separately configured reverse proxy or load balancer, such as Nginx or HAProxy. |
 
 For step-by-step TLS setup instructions, see the [TLS configuration guide](/server/how-to-guides/security/setup-tls.md).
 
-### Federation (chained servers)
-
 In [federated deployments](/server/how-to-guides/patch-management/chain-livepatch-servers.md) where multiple on-premises servers are chained, TLS should also be enabled between them to protect the exchange of tier and patch data. Configure TLS termination on the upstream server just as for client-facing traffic.
 
-## Encrypt database connections
+## Protect database access
 
-TLS for PostgreSQL connections is supported through the connection string. Include `sslmode=verify-full` (or at minimum `sslmode=require`) in the database connection string to encrypt traffic between the server and PostgreSQL.
+Keep PostgreSQL on a trusted, isolated network, restricted to the Livepatch application and authorized database administrators, and use a dedicated database and account. For a standalone snap with a remote database, set `sslmode=verify-full` in the connection string through the [snap configuration interface](/server/reference/platform/configuration.md#snap), use a hostname that matches the database certificate, and provide the issuing CA through `sslrootcert` at a path readable by the confined snap. For the charms, use these `postgresql_client` relation endpoints rather than `database-legacy`, and manage relation-provided credentials through Juju:
 
-For charm deployments, database credentials are obtained through Juju relations (`database` interface with the [PostgreSQL K8s Charm](https://charmhub.io/postgresql-k8s)). TLS for the database connection is managed by the PostgreSQL charm's [TLS integration](https://canonical.com/data/postgresql/docs/16/how-to/network-and-encryption/enable-tls/). The Livepatch charm does not expose separate database credential configuration -- all credentials are exchanged through the Juju relation protocol.
+| Livepatch charm | Livepatch relation endpoint |
+| --------------- | --------------------------- |
+| Kubernetes | `postgresql` |
+| Machine | `database` |
 
-## Encrypt patch storage connections
+## Protect patch storage
 
-* **S3**: Set `patch-storage.s3-secure` to `true` to enforce HTTPS for all S3 communication.
-* **Swift**: Configure `patch-storage.swift-auth-url` to use an HTTPS endpoint.
-* **Filesystem/PostgreSQL**: No additional configuration needed as storage is local to the server or database.
+| Backend | Controls |
+| ------- | -------- |
+| Filesystem | Restrict the patch directory to the workload and authorized administrators, and use host or volume encryption where required. |
+| PostgreSQL | Apply the database access controls above to the patch database as well. |
+| Amazon S3 | Set `patch-storage.s3-secure=true` to use HTTPS, and scope credentials and bucket permissions to the required operations. |
+| OpenStack Swift | Use HTTPS for the authentication URL and the service-catalog endpoints, and scope access to the intended account and container. |
+| Google Cloud Storage | Use HTTPS endpoints, restrict the service identity to the intended bucket, and protect any service-account key material. |
+| Azure Blob Storage | Use HTTPS endpoints, including in custom connection strings, and scope credentials to the required resources. |
 
-## Configure a custom CA certificate for the contracts service
+Do not disable certificate verification to work around trust failures, and check access from clients if they download patches from a separate endpoint. For the charms, prefer secret-backed options over credentials in Juju configuration; see the [configuration reference](/server/reference/platform/configuration.md). Follow {ref}`Manage data at rest <server-how-to-guides-manage-data-at-rest>` for encryption at rest, backups, and storage migration.
 
-When the Ubuntu Pro service uses a certificate issued by a private CA (common in air-gapped or enterprise environments), provide the CA certificate via the `contracts.ca` configuration option.
+## Configure a private CA for an optional Ubuntu Pro service
 
-The certificate must be base64-encoded (base64 of the PEM-encoded certificate, from `-----BEGIN` to `-----END`). In a Juju bundle, use `include-base64://` to include the certificate file:
-
-```
-applications:
-  canonical-livepatch-server-k8s:
-    options:
-      contracts.ca: include-base64://path/to/ca-cert.pem
-```
-
-Or via the Juju CLI:
-
-```shell
-juju config canonical-livepatch-server-k8s contracts.ca="$(base64 -w0 ca-cert.pem)"
-```
-
-The charm decodes the certificate and installs it into the container's system CA trust store at `/usr/local/share/ca-certificates/`, then runs `update-ca-certificates --fresh` to apply it.
+This applies only if you validate Ubuntu Pro resource tokens against a service with a private CA. It is not required for the local auth-token and machine-token workflow. For either charm, set `contracts.ca` to the base64-encoded PEM certificate with `juju config livepatch contracts.ca="$(base64 -w0 ca-cert.pem)"`, or use `contracts.ca: include-base64://path/to/ca-cert.pem` in a Juju bundle. Keep the service URL consistent with the certificate's hostname.
 
 ## Use the latest version
 
-### Charm
-
-Ensure the charm is deployed from the latest stable revision:
-
-```shell
-juju refresh canonical-livepatch-server-k8s --channel=latest/stable
-```
-
-### Snap
-
-The snap is installed from the `latest/stable` channel. To verify the installed version matches the latest stable release:
-
-```shell
-snap info canonical-livepatch-server | grep -E 'installed|latest/stable'
-```
-
-If the versions do not match, update the snap:
-
-```shell
-sudo snap refresh canonical-livepatch-server --channel=latest/stable
-```
-
-By default, the snapd daemon checks for updates four times a day and applies them automatically. Modifying this behavior could leave the system vulnerable to unpatched security issues.
+Keep the charm or standalone snap on the current `latest/stable` revision, as described in {ref}`Get security updates and support <server-how-to-guides-get-security-updates-and-support>`. Update charm-managed deployments through Juju, and do not manually refresh or unhold the snap managed by the machine charm.
 
 ## Secure admin credentials
 
-Admin users are configured with bcrypt-hashed passwords in the server configuration. To generate a bcrypt hash for a new admin password:
+Use individual administrator accounts and strong passwords. Generate each bcrypt username-and-hash pair with `htpasswd -nBC 10 admin` from the `apache2-utils` package, replacing `admin` with the username and entering the password when prompted. Treat the hash as sensitive, because it can be used for offline password guessing. For the standalone snap, set `auth.basic.enabled` and `auth.basic.users` with the `lp.` prefix, as described in the [administration tool setup guide](/server/how-to-guides/security/setup-administration-tool.md#password-authentication).
+
+For the charms, store the complete `htpasswd` output as `value: 'admin:<bcrypt-hash>'` in a file named `admin-users.secret.yaml`, with `0600` permissions and outside version control. Separate multiple pairs with commas in the same value. Create and grant the secret, then enable it with the secret URI returned by `juju add-secret`. The secret takes precedence over `auth.basic.users`; after verifying administrator access, reset that obsolete value. Delete the secret file when finished.
 
 ```shell
-htpasswd -nbBC 10 "" "your-password" | cut -d: -f2
+juju add-secret livepatch-admin-users --file admin-users.secret.yaml
+juju grant-secret livepatch-admin-users livepatch
+juju config livepatch auth.basic.enabled=true auth.basic.users-secret='<secret-uri>'
+juju config livepatch --reset auth.basic.users
 ```
-
-For charm deployments, configure admin credentials through the Juju configuration:
-
-```shell
-juju config canonical-livepatch-server-k8s auth.basic.enabled=true
-juju config canonical-livepatch-server-k8s auth.basic.users="admin:\$2y\$10\$hashedpassword"
-```
-
-The `auth.basic.users` option accepts a comma-separated list of `user:bcrypt-hash` pairs. Juju secrets should be used where possible to avoid exposing credentials in Juju configuration output.
-
-For snap deployments, ensure that the configuration file (typically at `$SNAP_COMMON/config.yaml`) has restrictive file permissions (readable only by the snap's runtime user).
 
 ## Configure request limits
 
-The HTTP governor protects the server from overload. Configure appropriate limits for the deployment:
+`server.concurrency-limit` is the maximum number of requests processed at once, and `server.burst-limit` is the maximum number of requests processed or queued. A queue exists only when `server.burst-limit` is greater than `server.concurrency-limit`. Queued requests wait at most 10 seconds for a free slot. Requests beyond the limits, or that time out in the queue, are rejected with HTTP 503. The defaults are:
 
-* `server.concurrency-limit` (default: 1000): Maximum number of requests processed simultaneously.
-* `server.burst-limit` (default: 500): Maximum number of concurrently incoming requests. Requests exceeding this are queued up to `concurrency-limit - burst-limit` (default: 500), and rejected beyond that.
+| Deployment | `server.concurrency-limit` | `server.burst-limit` | Effect |
+| ---------- | -------------------------- | -------------------- | ------ |
+| Machine and Kubernetes charms | 1000 | 500 | No queue. Requests over 1000 are rejected immediately. |
+| Standalone snap | 200 | 500 | Up to 300 requests queue. |
 
-For charm deployments:
+Tune the values for your workload and resources, and monitor HTTP 503 responses using [logging and monitoring](/server/how-to-guides/operations/configure-logging-and-monitoring.md). These are concurrency limits, not rate limits. Configure connection limits, rate limits, and timeouts at your ingress or reverse proxy as well. For example, to process up to 200 requests and queue up to 300 more on either charm:
 
 ```shell
-juju config canonical-livepatch-server-k8s server.concurrency-limit=1000
-juju config canonical-livepatch-server-k8s server.burst-limit=500
+juju config livepatch server.concurrency-limit=200 server.burst-limit=500
 ```
 
-These values should be tuned based on the expected load and available resources.
+For the standalone snap:
+
+```shell
+sudo snap set canonical-livepatch-server lp.server.concurrency-limit=200 lp.server.burst-limit=500
+```
 
 ## Restrict network access
 
@@ -138,8 +95,11 @@ In production deployments:
 * Admin API endpoints should only be accessible from trusted networks.
 * The `/metrics` endpoint (Prometheus) should be restricted to monitoring infrastructure.
 * Database ports should not be exposed to the public network.
+* The HTTP backend and storage-management endpoints should only be reachable by authorized callers, such as the frontend, and outbound access should be limited to configured dependencies. Keep the proxy-to-server hop on a trusted network, because frontend TLS does not encrypt it.
 
 ## Maintain strict privileged access
+
+For Juju-managed deployments, restrict controller, model, configuration, secret, and action access to authorized operators, because relation data and secrets can contain credentials. For the machine charm, also restrict SSH, `sudo`, and Juju execution access to the managed machines, and manage the workload through the charm rather than changing its snap or generated configuration manually. For the Kubernetes charm, also restrict pod execution, and use a network plugin that enforces `NetworkPolicy` resources.
 
 ### Snap
 
@@ -158,26 +118,6 @@ The charm deploys the server as a container. The server listens on port 8080 int
 * Use `NetworkPolicy` resources to restrict pod-to-pod communication.
 * Use Kubernetes RBAC to limit access to the server's namespace and secrets.
 
-The charm stores its internal state (including the database connection string) in the Juju peer relation data. Access to the Juju controller and model should be restricted to authorized operators.
-
 ## Reset to original state
 
-### Snap
-
-To reset the snap configuration to its default state:
-
-```shell
-sudo snap set canonical-livepatch-server key=
-```
-
-Alternatively, remove and reinstall the snap. See [Decommission](/server/how-to-guides/operations/decommission.md) for details.
-
-### Charm
-
-To reset the charm to its default configuration:
-
-```shell
-juju config canonical-livepatch-server-k8s --reset <key>
-```
-
-To fully reset, remove the application and redeploy.
+Use the secure configuration guide to choose between a {ref}`configuration-only reset <server-how-to-guides-reset-livepatch-server-configuration>`, which preserves stored data, and a {ref}`full reset <server-how-to-guides-fully-reset-livepatch-server>`, which removes application data before a fresh deployment. Removing and redeploying the application alone does not clear an external database or patch store.

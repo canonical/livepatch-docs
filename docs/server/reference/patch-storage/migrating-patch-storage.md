@@ -12,31 +12,30 @@ This guide covers migrating between the file-based patch storage backends (files
 
 The Postgres backend (`patch-storage.postgres-connection-string`) is not covered here, since it stores patches as rows in a database rather than as files, and cannot be migrated with `rsync` in the same way.
 
-The recommended tool for copying patches is `rsync`. If you need checksum-based verification, add `--checksum` (note that this can be slower). Disable patch synchronisation in the config first (so no new patches arrive, and avoid running any manual syncs), then run `rsync` once to copy the existing patches across.
+Preserve every patch's filename, without an added directory prefix. For PostgreSQL backup and restore, see {ref}`Manage data at rest <server-how-to-guides-manage-data-at-rest>`.
+
+Before copying, record the current [patch-storage configuration](/server/reference/platform/configuration.md#patch-storage), back up the application database and source patches, and prepare a dedicated destination with encryption at rest and restricted access. Disable `patch-sync.enabled` through Juju, or `lp.patch-sync.enabled` for the standalone snap, and stop manual synchronization, imports, and uploads, including direct uploads to object storage, until the migration is complete. Use authenticated, encrypted connections, and do not delete source objects or use a copy mode that removes destination data.
 
 ## Filesystem to filesystem
 
-If either the source or destination (or both) is the filesystem backend, `rsync` can be used directly, locally or over SSH:
+Use `rsync`, over SSH for a remote destination. The source path below is the standalone snap default; check `patch-storage.filesystem-path` for your deployment. The trailing slash on the source copies its contents rather than adding a `patches` subdirectory. After copying, compare filenames, sizes, and content checksums between source and destination, and set ownership and permissions for the destination workload. With multiple units using separate filesystem stores, copy and verify the patches on every unit serving downloads.
 
 ```bash
-rsync -avz --progress /var/snap/canonical-livepatch-server/common/patches/ user@remote-host:/path/to/new/patches/
+rsync --archive --no-owner --no-group --checksum --progress --rsh=ssh \
+  /var/snap/canonical-livepatch-server/common/patches/ '<copy-user>@<destination-host>:/protected/patches/'
 ```
 
 ## Migrating to or from object storage
 
-For the object storage backends (S3, GCS, Azure, IBM, Oracle, Swift), mount the bucket or container as a local directory with [rclone](https://rclone.org/), which supports all of these backends (including any S3-compatible endpoint, such as IBM COS or MinIO), then `rsync` into or out of the mount as if it were a normal directory.
+Use [rclone](https://rclone.org/) with a named remote for each object store, configured following [rclone's documentation](https://rclone.org/docs/). A copy does not preserve provider permissions, encryption-key settings, or lifecycle policies; configure them on the destination separately. For object storage to filesystem or between object stores, use `<source-remote>:<source-bucket-or-container>` as the source. For example, copy a filesystem patch store to object storage, then verify the contents by downloading them, which can incur retrieval charges:
 
-1. Disable [`patch-sync`](/server/reference/patch-management/patch-sync-filters.md) in the config so no new patches are synced to the on-prem server, and avoid running any manual syncs, while the migration is in progress.
-2. Install rclone and configure a remote for the bucket/container, following [rclone's documentation](https://rclone.org/docs/) for the relevant backend (`s3`, `google cloud storage`, `azureblob`, `swift`, or `oracle-object-storage`).
-3. Mount the remote:
-   ```bash
-   mkdir -p /mnt/livepatch-patches
-   rclone mount <remote-name>:<bucket-or-container> /mnt/livepatch-patches --daemon
-   ```
-4. Run `rsync` to copy the existing patches across:
-   ```bash
-   rsync -avz --progress /var/snap/canonical-livepatch-server/common/patches/ /mnt/livepatch-patches/
-   ```
-5. Verify the file counts match between source and destination, then update the [patch storage config](/server/reference/platform/configuration.md) to the new backend and re-enable patch-sync.
+```bash
+rclone copy /var/snap/canonical-livepatch-server/common/patches/ \
+  '<destination-remote>:<destination-bucket-or-container>' --progress
+rclone check /var/snap/canonical-livepatch-server/common/patches/ \
+  '<destination-remote>:<destination-bucket-or-container>' --download
+```
 
-The same approach applies in reverse (object storage to filesystem, or between two object storage backends) by mounting both sides and running `rsync` between the two mount points.
+## Switch storage and verify access
+
+After verification, update `patch-storage.type` and the destination backend's options through [Juju or standalone snap configuration](/server/reference/platform/configuration.md#setting-configuration). Verify patch downloads from the new store, including from the client network, then resume synchronization only if it was previously enabled. Keep the source unchanged until the migration is accepted.

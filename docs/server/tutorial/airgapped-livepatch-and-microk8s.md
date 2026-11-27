@@ -138,24 +138,12 @@ Once the status of the `livepatch` application changes to *"patch-sync token not
 By default, the charm assumes an ordinary (non-airgapped) deployment and prompts for a patch-sync token. Since this is an airgapped deployment, you can ignore this message and proceed with integrating the airgapped Ubuntu Pro server.
 ```
 
-### Configure the ingress
+### Find the server address
 
-Configure the nginx ingress integrator charm with a domain name for the Livepatch Server:
-
-```bash
-juju config ingress service-hostname=livepatch.test.com
-```
-
-After a short delay, verify the ingress resource was created:
+Note the IP address of the `livepatch/0` unit from `juju status`. The following steps refer to it as `<server-ip>`:
 
 ```bash
-microk8s kubectl get ingress -n livepatch
-```
-
-The output shows the IP address where the ingress is accessible. Add a corresponding entry to the VM's `/etc/hosts` file:
-
-```bash
-echo "127.0.0.1 livepatch.test.com" | sudo tee -a /etc/hosts
+juju status
 ```
 
 ```{note}
@@ -186,7 +174,7 @@ juju config pro-airgapped-server pro-tokens=<TOKEN>
 Configure the charm with your Livepatch on-prem address:
 
 ```bash
-juju config pro-airgapped-server entitlements-url-map='{"livepatch": {"remoteServer": "http://livepatch.test.com"},"livepatch-onprem": {"remoteServer": "http://livepatch.test.com"}}'
+juju config pro-airgapped-server entitlements-url-map='{"livepatch": {"remoteServer": "http://<server-ip>:8080"},"livepatch-onprem": {"remoteServer": "http://<server-ip>:8080"}}'
 ```
 
 Once the application status shows `active`, create a Juju application offer to allow the Livepatch on-prem deployment on the MicroK8s controller to integrate with it:
@@ -219,7 +207,7 @@ juju integrate livepatch pro-offer
 When the integration completes, the status message on the `livepatch` application changes to *"url-template not set"*. Configure the URL template:
 
 ```bash
-juju config livepatch server.url-template="http://livepatch.test.com/v1/patches/{filename}"
+juju config livepatch server.url-template="http://<server-ip>:8080/v1/patches/{filename}"
 ```
 
 ```{note}
@@ -229,11 +217,24 @@ The `{filename}` placeholder must not be omitted or replaced. Livepatch replaces
 After a short time, the Livepatch application status should change to `active`. Verify the server is running:
 
 ```bash
-curl http://livepatch.test.com
+curl http://<server-ip>:8080
 # Canonical Livepatch Health service, version v1.14.3
 ```
 
 Your Livepatch on-prem server is now operating in airgapped mode, with no communication to the upstream Livepatch Server.
+
+## Set up administrator authentication
+
+Install `apache2-utils` and run `htpasswd -nBC 10 admin` to create a bcrypt password hash for an `admin` user. Save the output in `admin-users.secret.yaml` as `value: 'admin:<bcrypt-hash>'`. Store it in a Juju secret, then configure Livepatch with the secret URI returned by `juju add-secret`:
+
+```bash
+chmod 0600 admin-users.secret.yaml
+juju add-secret livepatch-admin-users --file admin-users.secret.yaml
+juju grant-secret livepatch-admin-users livepatch
+juju config livepatch auth.basic.enabled=true auth.basic.users-secret='<secret-uri>'
+```
+
+Remove the local secret file after it is stored. See {ref}`password authentication <server-how-to-guides-password-authentication>` for account and credential procedures.
 
 ## Set up the Livepatch Client
 
@@ -260,7 +261,7 @@ sudo snap install canonical-livepatch
 Configure the Livepatch Client to communicate with your on-prem server instead of the upstream service:
 
 ```bash
-sudo canonical-livepatch config remote-server='http://livepatch.test.com'
+sudo canonical-livepatch config remote-server='http://<server-ip>:8080'
 ```
 
 Attach your Ubuntu Pro subscription. Replace `<TOKEN>` with your Ubuntu Pro token:

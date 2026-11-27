@@ -78,10 +78,10 @@ The output should indicate the token has been successfully acquired:
 After that, set the `url_template` setting as follows:
 
 ```
-juju config livepatch url_template="http://10.94.227.82/v1/patches/{filename}"
+juju config livepatch url_template="http://<server-ip>/v1/patches/{filename}"
 ```
 
-The `url_template` specifies the URL where patch files can be downloaded by Livepatch Client agents. The URL template should be of the form `http(s)://{HOSTNAME}/v1/patches/{filename}`. The hostname is the only part that needs to be changed. The hostname can be the IP address of the HAProxy unit. If a DNS hostname is configured for the HAProxy IP address, that can also be used.
+The `url_template` specifies the URL where patch files can be downloaded by Livepatch Client agents. Replace `<server-ip>` with the IP address of the HAProxy unit, or a DNS hostname configured for it. Keep `/v1/patches/{filename}` literal.
 
 #### Deploy with a config overlay (optional)
 

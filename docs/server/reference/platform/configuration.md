@@ -19,7 +19,7 @@ For reactive charm deployments — or if your deployment configuration differs f
 
 Configuration methods differ depending on whether the Livepatch Server is deployed with Juju and charms, or as a standalone snap.
 
-Default and example values are available on the respective [machine charm](https://charmhub.io/canonical-livepatch-server/configurations?channel=ops1.x/stable) and [K8s charm](https://charmhub.io/canonical-livepatch-server-k8s/configurations) configuration pages.
+Default and example values are available on the respective [machine charm](https://charmhub.io/canonical-livepatch-server/configurations?channel=latest/stable) and [K8s charm](https://charmhub.io/canonical-livepatch-server-k8s/configurations?channel=latest/stable) configuration pages.
 
 ### Juju
 
@@ -55,12 +55,12 @@ The following sections describe the available configuration values.
 
 | Name | Description | Values |
 | ---- | ----------- | ------ |
-| `server.log-level` | Log level for the server. | `debug`, `info`, `warn`, `error`, `dpanic`, `panic`, `fatal` |
+| `server.log-level` | Minimum emitted severity. Default: `info`. Higher thresholds discard security events; see the [logging guide](/server/how-to-guides/operations/configure-logging-and-monitoring.md#configure-the-log-level). | `debug`, `info`, `warn`, `error`, `fatal` |
 | `server.redirect_downloads` | Whether to redirect patch download requests to the URL specified in `server.url-template`. | `bool` |
 | `server.url-template` | Template URL for redirecting clients for patch downloads. Example: `https://my-file-server.com/{filename}`. | `string` |
 | `server.server-address` | Listen address for the server. | `url` |
-| `server.concurrency-limit` | Maximum number of API requests to serve concurrently. | `integer` |
-| `server.burst-limit` | Queue limit. Approximately equals `concurrency-limit`. | `integer` |
+| `server.concurrency-limit` | Maximum number of requests processed at once. `0` disables request limiting. Default: `1000` for both charms, `200` for the standalone snap. | `integer` |
+| `server.burst-limit` | Maximum number of requests being processed or queued. Takes effect only when greater than `server.concurrency-limit`: up to `burst-limit - concurrency-limit` requests then queue for at most 10 seconds. Otherwise, requests over `server.concurrency-limit` are rejected immediately with HTTP 503. Default: `500`. See [request-limit guidance](/server/how-to-guides/security/harden-your-deployment.md#configure-request-limits). | `integer` |
 | `server.is-leader` | In multi-server deployments, determines whether this unit is the leader. Not available for charmed deployments. | `bool` |
 | `server.is-hosted` | Enable configuration blocks specific to Canonical's hosted Livepatch configuration. | `bool` |
 
@@ -70,11 +70,13 @@ The following values configure authentication to the server's admin endpoints. U
 
 - Basic Auth configuration accepts a comma-separated list of users. See the [admin tool setup guide](/server/how-to-guides/security/setup-administration-tool.md#password-authentication) for details.
 - Basic Auth passwords must be bcrypt hashed.
+- For both charms, prefer `auth.basic.users-secret` to keep password hashes out of ordinary Juju configuration output. Restrict secret access as well.
 
 | Name | Description | Values |
 | ---- | ----------- | ------ |
 | `auth.basic.enabled` | Enable Basic Auth. | `bool` |
-| `auth.basic.users` | Comma-separated list of user objects. | `<user1>:<bcrypt hashed password>, <user2>:<bcrypt hashed password>` |
+| `auth.basic.users` | Comma-separated `username:bcrypt-hash` pairs. For charm deployments, prefer the secret-backed option below. | `<user1>:<bcrypt-hash1>,<user2>:<bcrypt-hash2>` |
+| `auth.basic.users-secret` | Juju secret URI for a secret whose `value` key contains the username-and-hash list. Takes precedence over `auth.basic.users` when set. Available for both charms, not the standalone snap. See the [configuration procedure](/server/how-to-guides/security/harden-your-deployment.md#secure-admin-credentials). | Juju secret URI |
 
 #### Ubuntu SSO authentication (removed)
 
@@ -213,7 +215,8 @@ The following values configure how the server synchronises patches from an upstr
 | `patch-sync.interval` | Automatic synchronisation interval (for example `12h`). | `string` |
 | `patch-sync.machine-count-strategy` | Strategy for reporting machine counts: `unit` reports exact counts; `bucket` reports bucketed counts using the following lower bounds: `[1-49]`, `[50-99]`, `[100-499]`, `[500-999]`, `[1000-1999]`, `[2000-4999]`, `[5000-9999]`, `[10000, ∞]`. | `oneof: unit, bucket` |
 | `patch-sync.send-machine-reports` | Whether to send machine reports during synchronisation. | `bool` |
-| `patch-sync.token` | Token for authenticating with an upstream Livepatch Server. | `string` |
+| `patch-sync.token` | Token for authenticating with an upstream Livepatch Server. For both charms, prefer `patch-sync.token-secret`. | `string` |
+| `patch-sync.token-secret` | Juju secret URI for a secret whose `value` key contains the upstream synchronization token. Takes precedence over `patch-sync.token` when set. Available for both charms, not the standalone snap. | Juju secret URI |
 | `patch-sync.upstream-url` | URL of the upstream server to pull patches from. | `string` |
  | `patch-sync.sync-tiers` | Whether to mirror the upstream tier structure and patch-to-tier assignments locally instead of synchronising a single tier. Enabling this removes existing local tiers and disables local tier management. When enabled, `patch-sync.upstream-tier` and `patch-sync.ingress-tier` are ignored. | `bool` |
  | `patch-sync.upstream-tier` | The tier requested from the upstream server when `patch-sync.sync-tiers` is `false`; defaults to `stable` when unset. For on-premises upstream servers, the sync token may restrict the tier that can be retrieved. | `string` |
@@ -247,10 +250,12 @@ The following values configure the server's machine report behaviour. Machine re
 
 | Name | Description | Values |
 | ---- | ----------- | ------ |
-| `machine-reports.database.enabled` | Whether to enable machine reporting to PostgreSQL. Reports are stored in the server's PostgreSQL database. | `bool` |
-| `machine-reports.database.retention-days` | Number of days to retain machine reports. | `int` |
-| `machine-reports.database.cleanup-row-limit` | Maximum number of rows to delete per cleanup operation. | `int` |
-| `machine-reports.database.cleanup-interval` | Interval for running report cleanup operations. | `string` |
+| `machine-reports.database.enabled` | Whether to store machine reports from connected clients in your server's PostgreSQL database. This does not enable forwarding reports upstream. Default: `false`. | `bool` |
+| `machine-reports.database.retention-days` | Number of days used by report cleanup. Default: `10` for the machine and Kubernetes charms; `7` for the standalone snap. Setting `0` disables automatic report cleanup. | `int` |
+| `machine-reports.database.cleanup-row-limit` | Maximum number of rows to delete from each report table per cleanup run. Default: `1000`. | `int` |
+| `machine-reports.database.cleanup-interval` | Interval for scheduling report cleanup operations. Default: `6h`. | `string` |
+
+Automatic report cleanup runs only on the leader, with database reporting enabled and a nonzero retention period. Cleanup is periodic and batch-limited, so reports can remain beyond the configured retention period if cleanup falls behind or fails. Disabling database reporting stops new report writes and automatic cleanup; it does not purge existing reports. These settings do not control retention of exports, backups, or copies sent to other services.
 
 ### Cloud delay (deprecated)
 

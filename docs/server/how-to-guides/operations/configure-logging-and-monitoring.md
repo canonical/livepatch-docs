@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How to configure logging and monitoring with Livepatch on-prem."
+    description: "Configure Livepatch Server log levels, local and centralized collection, Prometheus monitoring, and log retention and access controls."
 ---
 
 
@@ -9,7 +9,7 @@ myst:
 
 # Configure logging and monitoring for the Livepatch Server
 
-The Livepatch Server provides structured security event logging and Prometheus metrics for monitoring. The following sections describe how to configure and consume these security-relevant features. For general monitoring concepts and debug endpoints, see the [Logging and Monitoring explanation](/server/explanation/observability/logging-and-monitoring.md).
+The Livepatch Server provides structured security event logging and Prometheus metrics for monitoring. For general monitoring concepts and debug endpoints, see the [Logging and Monitoring explanation](/server/explanation/observability/logging-and-monitoring.md). The Juju examples assume that the Livepatch application is named `livepatch`; replace application names, namespaces, and pod names with your deployment's values.
 
 (server-how-to-guides-configure-the-log-level)=
 
@@ -17,14 +17,14 @@ The Livepatch Server provides structured security event logging and Prometheus m
 
 The server's log level controls the verbosity of output. Available levels are: `debug`, `info`, `warn`, `error`, `fatal`.
 
-For production deployments, use `info` or `warn` to capture security events without excessive noise.
+Use the default `info` level in production. Successful authentication, authorized administrative activity, and other security events are logged at `info`, so `warn` drops those records. Use `debug` only for bounded troubleshooting.
 
 ### Snap
 
 Set the log level through snap configuration:
 
 ```shell
-sudo snap set canonical-livepatch-server log-level=info
+sudo snap set canonical-livepatch-server lp.server.log-level=info
 ```
 
 ### Charm
@@ -32,18 +32,8 @@ sudo snap set canonical-livepatch-server log-level=info
 Set the log level through Juju configuration:
 
 ```shell
-juju config canonical-livepatch-server-k8s server.log-level=info
+juju config livepatch server.log-level=info
 ```
-
-## Security events
-
-All security events are emitted to the standard logger output as structured JSON. Each event includes a `type: "security"` field for filtering. The following categories of security events are logged:
-
-* **Authentication successes and failures** for all authentication methods (Basic Auth, Macaroons, machine tokens, resource tokens, sync tokens, webhook tokens)
-* **Authorization failures** (tier mismatches, invalid affordances, unauthorized access attempts)
-* **Token lifecycle events** (creation, deletion, and updates of authentication tokens)
-* **Administrative activity** (all admin API requests with identity and endpoint information)
-* **System events** (startup, shutdown, crash, and OS signal handling)
 
 ## Configure Prometheus monitoring
 
@@ -51,82 +41,67 @@ The server exposes metrics at the `/metrics` endpoint in Prometheus format. Key 
 
 | Metric | Description |
 | :---- | :---- |
-| `AuthDuration` | Time taken to authenticate requests, by token type |
-| `AuthorizerCount` | Count of authentication attempts, by token type |
-| `RequestOverloadCounter` | Requests dropped due to server overload |
-| `RequestDuration` | HTTP request latency, by method, handler, and status code |
-| `DatabaseErrorCount` | Total database errors |
+| `livepatch_server_http_auth_duration_seconds` | Authentication duration, grouped by `token_type`. |
+| `livepatch_server_http_authorizer_count` | Calls to token authorizers, grouped by the `token` label. This is not a count of unique clients or successful authentications. |
+| `livepatch_server_httpgovernor_request_overload` | Requests rejected because of overload. |
+| `livepatch_server_http_request_duration_seconds` | Request duration, grouped by `method`, `handler`, and HTTP status `code`. |
+| `livepatch_server_database_error_count` | Database errors. |
 
-Configure Prometheus to scrape the `/metrics` endpoint. For charm deployments, the charm provides a `metrics-endpoint` integration for Prometheus scraping and a `grafana-dashboard` integration that ships a pre-built Grafana dashboard:
+For the machine charm and standalone snap, configure Prometheus to scrape the private server listener's `/metrics` endpoint. For the Kubernetes charm, send metrics to COS as described below. In every deployment, keep `/metrics` on a protected network rather than exposing it publicly, and alert on sustained overload, request errors, database failures, and missing monitoring data.
 
-```shell
-juju integrate canonical-livepatch-server-k8s prometheus-k8s:metrics-endpoint
-juju integrate canonical-livepatch-server-k8s grafana-k8s:grafana-dashboard
-```
+## Send Kubernetes charm metrics and logs to COS
 
-The Grafana dashboard includes panels for authentication timing by token type, 24-hour token usage counts, contracts service errors, and request throughput.
-
-For centralized log collection, the charm supports forwarding logs to Loki:
+For the Kubernetes charm, aggregate metrics and logs in the [Canonical Observability Stack (COS)](https://canonical.com/observability/docs/track-3.1/), and query logs through Grafana rather than reading individual units. COS runs on Kubernetes in its own model and exposes Prometheus, Loki, and Grafana through Juju offers. Offer names depend on your COS deployment. From the Livepatch model, list them:
 
 ```shell
-## Juju >= 3.4 (direct log forwarding)
-juju integrate canonical-livepatch-server-k8s loki-k8s:logging
-
-## Juju < 3.4 (Promtail-based log proxy)
-juju integrate canonical-livepatch-server-k8s loki-k8s:log-proxy
+juju find-offers -m <cos-controller>:admin/<cos-model>
 ```
 
-## Log structure
-
-Log entries follow this structure:
-
-```json
-{
-  "level": "warn",
-  "ts": "2025-10-01T10:45:41.142Z",
-  "caller": "httpauth/basic.go:26",
-  "msg": "...",
-  "type": "security",
-  "appid": "server.admin_authn",
-  "event": "basicauth_authn_failed:user_not_found",
-  "description": "User not found",
-  "method": "POST",
-  "path": "/v1/admin/auth-token",
-  "trace-id": "39e28f24-..."
-}
-```
-
-### Snap
-
-Application logs are captured by systemd-journald. To view security logs:
+Consume the offers and integrate Livepatch with them:
 
 ```shell
-sudo journalctl -u snap.canonical-livepatch-server.livepatch.service | grep '"type":"security"'
+juju consume <cos-controller>:admin/<cos-model>.prometheus-metrics-endpoint
+juju consume <cos-controller>:admin/<cos-model>.loki-logging
+juju consume <cos-controller>:admin/<cos-model>.grafana-dashboards
+juju integrate livepatch:metrics-endpoint prometheus-metrics-endpoint
+juju integrate livepatch:logging loki-logging
+juju integrate livepatch:grafana-dashboard grafana-dashboards
 ```
 
-### Charm (Kubernetes)
+Restrict access to COS and check in Grafana that recent security records from each unit arrive in Loki.
 
-Container logs are available through standard Kubernetes log collection:
+## Read machine charm and standalone snap logs
+
+For the machine charm, read the server logs on each Livepatch unit:
 
 ```shell
-kubectl logs -n <model-name> <livepatch-pod> | grep '"type":"security"'
+juju ssh livepatch/0 sudo snap logs canonical-livepatch-server
 ```
 
-The server also writes logs to `/var/log/livepatch` inside the container, with logrotate configured for daily rotation (three files retained, 10MB size trigger, compression enabled).
+For the standalone snap, read the logs on the host:
 
-When integrated with Loki via the `logging` or `log-proxy` relations, logs are forwarded automatically and can be queried through Grafana.
+```shell
+sudo snap logs canonical-livepatch-server
+```
 
-## Charm log redaction
+Add `-n=<lines>` to show more lines, or `-f` to follow new entries. To aggregate these logs, configure your journal collector to forward the Livepatch service's records.
 
-The charm (not the server binary) includes a log redaction module that scrubs sensitive data from charm operator logs. The following patterns are redacted before logs reach any handler:
+To find security events, parse the JSON records, filter for `type` equal to `security`, and use `appid` and `event` to classify them; see the {ref}`logging schema <server-reference-logging-schema>`. Collectors can wrap records in journal, Kubernetes, or Juju metadata, and startup scripts and charm diagnostics use other formats. `juju debug-log` shows charm and Juju diagnostics; do not treat it as a complete copy of the server application's logs.
 
-* Database connection URIs with embedded credentials (e.g., `postgresql://user:password@host/db`)
-* HTTP Authorization headers (`Bearer` and `Basic` tokens)
-* Key-value pairs where the key implies a secret (e.g., `password=`, `token=`, `api-key=`, `credentials=`)
-* Specific environment variables: `LP_CONTRACTS_PASSWORD`, `LP_PATCH_SYNC_TOKEN`, `LP_PATCH_STORAGE_S3_SECRET_KEY`, `LP_PATCH_STORAGE_S3_ACCESS_KEY`, `LP_PATCH_STORAGE_SWIFT_API_KEY`, `LP_AUTH_BASIC_USERS`, `LP_AUTH_SSO_PUBLIC_KEY`, `LP_DATABASE_CONNECTION_STRING`, and others
+## Reduce logging or opt out of forwarding
 
-All redacted values are replaced with `***REDACTED***` in log output.
+Log levels and forwarding are separate controls: raising the log level does not turn logging off completely, and stopping forwarding does not stop local logging. To reduce output, for example to `error`, run `juju config livepatch server.log-level=error` for a charm, or `sudo snap set canonical-livepatch-server lp.server.log-level=error` for the standalone snap.
 
-## Risks of disabling logging
+To stop forwarding Kubernetes charm logs to COS, remove the Loki integration:
 
-Reducing the log level to `error` or `fatal` suppresses security event logs at the `info` and `warn` levels, which includes authentication successes, token lifecycle events, and administrative activity. This significantly reduces visibility into security-relevant operations and is not recommended for production deployments.
+```shell
+juju remove-relation livepatch:logging loki-logging
+```
+
+For the machine charm or standalone snap, disable the Livepatch job in your journal collector rather than stopping a shared collector.
+
+Raising the level to `error` or `fatal` drops `info` and `warn` records, including successful authentication, authorized administrative activity, and many authentication failures. This reduces the evidence available to detect and investigate security incidents and is not recommended for normal production operation; restore `info` when the need ends. Stopping forwarding removes centralized visibility and can leave evidence dependent on local retention or host availability. It does not delete collected records; manage those through the destination's retention policy.
+
+## Protect and retain log data
+
+Logs can contain administrator identities, machine identifiers, request paths, and infrastructure details. Restrict access to local logs, collectors, dashboards, exports, and backups, and set retention and rotation for the journal, Kubernetes log collection, and centralized backend. Machine-report database retention settings do not control log retention. Both charms replace recognized credentials, authorization headers, and secret values with `***REDACTED***` in their operator logs. This does not apply to the server application's logs or cover every sensitive value, so review diagnostic exports before sharing them.

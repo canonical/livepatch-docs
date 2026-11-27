@@ -35,8 +35,10 @@ Below, the "upstream" server is referred to as the original Livepatch Server and
 Using the admin tool:
 
 ```
-sudo livepatch-admin sync-tokens add edge my-token
+sudo livepatch-admin --url 'http://<server-ip>' sync-tokens add edge my-token
 ```
+
+Replace `<server-ip>` with the IP address or hostname of the upstream server's frontend. Use `https://` across untrusted networks and configure {ref}`certificate trust <server-how-to-guides-configuring-livepatch-admin-tool-with-tls>` if its certificate uses a private CA.
 
 This will return a token that another on-premises server can use to sync patches.
 Sync tokens, by default, do not expire but the `--valid-until` flag can be used to set an expiry date.
@@ -55,6 +57,10 @@ Configure the following values on the charm or snap deployment:
 
 - Set `patch-sync.token` using the previously obtained token.
 - Set `patch-sync.upstream-url` to the upstream server URL.
+
+For either charm, prefer `patch-sync.token-secret`: grant the application a Juju secret whose `value` key contains the sync token, and configure its URI instead of putting the token in ordinary Juju configuration. For the standalone snap, prefix configuration keys with `lp.`. See the [patch-sync configuration reference](/server/reference/platform/configuration.md#patch-sync).
+
+Protect the sync token as a secret and restrict its distribution to the intended downstream operators. It is a synchronization credential, not an administrator password or a client registration token.
 
 The downstream Livepatch Server is now configured to sync from the upstream server.
 This process can be repeated as many times as desired.

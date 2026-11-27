@@ -8,7 +8,7 @@ myst:
 
 # Livepatch Server authentication
 
-This document provides a technical reference for the authentication and authorization mechanisms used by the on-premises Livepatch Server. It covers the authentication flows for each API surface and the cryptographic technologies involved.
+This reference distinguishes the credentials used for administration, client registration, client requests, and upstream synchronization. For configuration procedures, see [administrator setup](/server/how-to-guides/security/setup-administration-tool.md), [client registration](/server/how-to-guides/operations/use-livepatch-client-with-on-prem-server.md), and [server chaining](/server/how-to-guides/patch-management/chain-livepatch-servers.md).
 
 ## Admin APIs
 
@@ -16,9 +16,11 @@ Admin APIs are consumed by administrators through the Livepatch Admin Tool.
 
 The following authentication flow is supported:
 
-- **Basic Auth → Macaroon**: Authenticate using [Basic Auth](#server-reference-basic-auth) to obtain a [macaroon](#server-reference-macaroons). Use the macaroon to authenticate subsequent requests. Macaroons expire after 240 hours.
+- **Basic Auth → Macaroon**: Authenticate using a configured local administrator username and password to obtain a [macaroon](#server-reference-macaroons). The tool uses this session credential for subsequent requests. Macaroons expire after 240 hours.
 
-All admin activity is logged as a structured security event with the `authz_admin` event code.
+Administrator passwords are stored as bcrypt hashes. Both charms support a Juju-secret-backed username-and-hash list; the standalone snap uses its configuration settings. Administrator login is independent of the patch storage backend and upstream synchronization credentials.
+
+Authorized administrative requests generate structured security events with the `authz_admin` event code. See [logging and monitoring](/server/how-to-guides/operations/configure-logging-and-monitoring.md).
 
 (server-reference-client-apis)=
 
@@ -26,20 +28,22 @@ All admin activity is logged as a structured security event with the `authz_admi
 
 Client APIs are consumed by Livepatch Client instances.
 
-- **Auth Token**: A UUIDv4 token used to authenticate and register a machine. After successful registration, a machine token is issued for subsequent requests. This is a legacy token format no longer used for new clients.
-- **Resource Token**: A macaroon verified against the Ubuntu Pro backend to authenticate requests. This token is provided to the Livepatch Client by the Ubuntu Pro client when enabling Pro.
+- **Authorization token (auth token)**: A UUIDv4 credential issued by an administrator of your server for a client group and tier. Clients use it to register with that server. Multiple clients can share one authorization token.
+- **Machine token**: A credential issued after successful local registration, used by that client for subsequent requests. Your server validates auth and machine tokens against your deployment's database.
+- **Resource token**: A macaroon that the Ubuntu Pro client provides to the Livepatch Client when enabling Livepatch. Your server accepts resource tokens only when the contracts service is enabled, either with `contracts.enabled` or through the Kubernetes charm's `pro-airgapped-server` integration, and validates each token against that service.
 
-After authentication, client requests are authorized based on tier and affordances (architecture and kernel compatibility).
+The auth-token workflow works in connected and air-gapped deployments. Clients register with and send subsequent requests to the local Livepatch Server, not to Canonical's hosted Livepatch service. Patch availability is governed by the client's assigned tier and kernel compatibility.
 
 ## Server APIs
 
 Server APIs are used for patch synchronisation between on-premises servers and their upstream patch source (Canonical's hosted Livepatch service or another on-premises server).
 
-- **Contract Resource Token**: A resource token obtained from the Ubuntu Pro contracts service, used to authenticate the on-premises server with Canonical's hosted Livepatch service.
-  - For charm deployments, obtain the token using the `get-resource-token` Juju action: `juju run canonical-livepatch-server-k8s/<leader> get-resource-token contract-token=<TOKEN>`.
-  - For snap deployments, the token is obtained implicitly by setting the contract token (`sudo snap set canonical-livepatch-server token=<CONTRACT_TOKEN>`). The snap's configure hook exchanges it for a resource token and sets `patch-sync.token` automatically.
-  - The process exchanges a contract token for a machine token, then retrieves the resource token with appropriate affordances.
-- **Sync Token**: A UUIDv4 token generated through the Admin APIs of the upstream server (`livepatch-admin sync-tokens add <tier> <token-name>`). Used in both direct (hosted) and federated (on-premises to on-premises) synchronisation. Sync tokens specify which tier patches are retrieved from. Configured via `patch-sync.token`. Stored in PostgreSQL with verification by direct comparison.
+- **Ubuntu Pro resource token**: Used by an on-premises server synchronizing with Canonical's hosted Livepatch service. The deployment's Ubuntu Pro configuration obtains the resource token for use as its upstream synchronization credential. This is separate from administrator login and local client registration.
+- **Sync token**: A UUIDv4 credential issued by an administrator of an upstream on-premises server for a specific tier. A downstream server uses it to authenticate synchronization requests to that upstream. The upstream stores and validates the token in its database.
+
+Configure the upstream address and credential through the [patch-sync settings](/server/reference/platform/configuration.md#patch-sync). Both charms support `patch-sync.token-secret` for a Juju-secret-backed credential; the standalone snap uses `lp.patch-sync.token`. Protect upstream credentials separately from client registration and administrator credentials.
+
+An air-gapped server can receive patches through offline imports instead of external synchronization.
 
 ## Technologies
 

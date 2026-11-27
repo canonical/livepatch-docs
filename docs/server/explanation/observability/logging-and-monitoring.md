@@ -23,16 +23,16 @@ The Livepatch Server exposes two debug endpoints that provide information about 
 
 The on-premises server exposes Prometheus text-formatted metrics at the `/metrics` endpoint. These metrics can be scraped by a Prometheus instance to monitor system performance, authentication activity, request latencies, and more.
 
-When deploying with the charm, the `metrics-endpoint` integration enables Prometheus scraping, and the `grafana-dashboard` integration ships a pre-built Grafana dashboard tracking authentication metrics, token usage by type, contracts service errors, and request performance.
+The Kubernetes charm integrates with the Canonical Observability Stack (COS) through Juju offers, using its `metrics-endpoint`, `logging`, and `grafana-dashboard` integrations. For the machine charm, Prometheus scrapes the `/metrics` endpoint directly and logs are read on each unit with `snap logs`. Metrics support aggregate monitoring but do not replace security-event records; for example, an authorizer-call count is not a count of successful logins or unique clients.
 
 ## Juju logging
 
-When deploying with Juju, debug logs from all deployed applications are available through the `juju debug-logs` command. The server's log level can be configured via the `log_level` configuration option. For a full list of log levels, see {ref}`Configure logging and monitoring <server-how-to-guides-configure-logging-and-monitoring-for-livepatch-server>`.
+Use `juju debug-log` for charm and Juju diagnostics; server application logs are in the machine's system journal or the Kubernetes application container. The log level is set by `server.log-level` for either charm and `lp.server.log-level` for the standalone snap. Both charms replace recognized credentials, authorization headers, and secret values with `***REDACTED***` in their operator logs, but this does not redact the server application's logs.
 
 For more information on using Juju for logging, see the [Juju documentation on debug-log](https://documentation.ubuntu.com/juju/latest/reference/juju-cli/list-of-juju-cli-commands/debug-log/).
 
 ## Security logging
 
-The Livepatch Server logs all authentication successes and failures, authorization decisions, token lifecycle events, admin activity, and system events as structured JSON in compliance with OWASP logging standards.
+The Livepatch Server emits structured JSON security events, identified by `type` equal to `security`, for authentication, authorization, administrative activity, token lifecycle, and system events; the {ref}`logging schema <server-reference-logging-schema>` describes their fields. The default `info` level retains successful-authentication and authorized-administration records that `warn` drops. Log levels, forwarding, and retention are separate controls: stopping forwarding does not stop local logging or delete collected data, and machine-report database retention does not govern application logs.
 
 For detailed guidance on configuring security event logging, Prometheus metrics, Grafana dashboards, log redaction, and centralized log forwarding, see {ref}`How to configure logging and monitoring <server-how-to-guides-configure-logging-and-monitoring-for-livepatch-server>`.
